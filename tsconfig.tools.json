@@ -1,0 +1,17 @@
+{
+  "extends": "./packages/tsconfig/base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": ["node"]
+  },
+  "include": [
+    "vitest.config.ts",
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "scripts/**/*.ts",
+    "packages/database/drizzle.config.ts"
+  ]
+}

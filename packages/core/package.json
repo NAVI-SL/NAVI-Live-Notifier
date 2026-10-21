@@ -1,0 +1,21 @@
+{
+  "name": "@navi/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./discord-rate": {
+      "types": "./dist/discord-rate.d.ts",
+      "import": "./dist/discord-rate.js",
+      "default": "./dist/discord-rate.js"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "devDependencies": {
+    "@navi/tsconfig": "*"
+  }
+}

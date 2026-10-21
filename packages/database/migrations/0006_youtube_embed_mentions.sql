@@ -1,0 +1,1 @@
+ALTER TABLE "notification_settings" ADD COLUMN "mention_everyone" boolean DEFAULT false NOT NULL;

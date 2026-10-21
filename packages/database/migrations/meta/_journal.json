@@ -1,0 +1,55 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1792171690795,
+      "tag": "0000_phase02_auth",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792175739043,
+      "tag": "0001_phase04_streamers",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792177836424,
+      "tag": "0002_phase05_notifications",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792213110855,
+      "tag": "0003_phase06_monitoring",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792213170544,
+      "tag": "0004_phase06_baseline",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792215319755,
+      "tag": "0005_phase07_reliability",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792262895927,
+      "tag": "0006_youtube_embed_mentions",
+      "breakpoints": true
+    }
+  ]
+}

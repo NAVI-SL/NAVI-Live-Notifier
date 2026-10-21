@@ -1,0 +1,29 @@
+{
+  "name": "@navi/database",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "db:prune-streamers": "tsx src/prune-streamers.ts",
+    "db:check": "tsx src/check.ts",
+    "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
+    "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts"
+  },
+  "dependencies": {
+    "@navi/config": "*",
+    "@navi/core": "*",
+    "drizzle-orm": "0.45.4",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@navi/tsconfig": "*",
+    "drizzle-kit": "0.31.11"
+  }
+}

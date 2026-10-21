@@ -1,0 +1,130 @@
+name: navi-production-review
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: '10m'
+    max-file: '3'
+x-app: &app
+  image: navi:${NAVI_IMAGE_TAG:-local-review}
+  build: .
+  init: true
+  restart: unless-stopped
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: ['no-new-privileges:true']
+  network_mode: service:edge
+  environment:
+    NODE_ENV: production
+    NAVI_ENV_FILE: /run/secrets/navi_env
+  tmpfs: ['/tmp:rw,noexec,nosuid,size=64m']
+  logging: *logging
+  stop_grace_period: 45s
+services:
+  edge:
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    # Loopback publication is deliberate for local review. Public binding needs approval.
+    ports:
+      - '${NAVI_BIND_ADDRESS:-127.0.0.1}:${NAVI_HTTP_PORT:-8080}:80'
+      - '${NAVI_BIND_ADDRESS:-127.0.0.1}:${NAVI_HTTPS_PORT:-8443}:443'
+    volumes:
+      - ./deployment/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${NAVI_TLS_DIRECTORY:-./.local/production/tls}:/etc/navi/tls:ro
+    read_only: true
+    tmpfs: ['/var/cache/nginx', '/var/run', '/tmp']
+    logging: *logging
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '-O', '/dev/null', 'http://127.0.0.1:8081/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: navi
+      POSTGRES_USER: navi_owner
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets: [postgres_password]
+    volumes:
+      - production_postgres:/var/lib/postgresql/data
+    # No host database port. Do not reuse the development volume.
+    logging: *logging
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U navi_owner -d navi']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  migrate:
+    <<: *app
+    profiles: [tools]
+    command: [migrate]
+    restart: 'no'
+    secrets:
+      - source: migration_env
+        target: navi_env
+    depends_on:
+      edge: { condition: service_healthy }
+      postgres: { condition: service_healthy }
+    healthcheck: { disable: true }
+  bot:
+    <<: *app
+    command: [bot]
+    secrets:
+      - source: bot_env
+        target: navi_env
+    depends_on:
+      edge: { condition: service_healthy }
+    healthcheck:
+      test: ['CMD', 'node', 'deployment/healthcheck.mjs', 'bot']
+      interval: 60s
+      timeout: 10s
+      start_period: 45s
+      retries: 3
+  worker:
+    <<: *app
+    command: [worker]
+    secrets:
+      - source: worker_env
+        target: navi_env
+    depends_on:
+      edge: { condition: service_healthy }
+      postgres: { condition: service_healthy }
+      bot: { condition: service_healthy }
+    healthcheck:
+      test: ['CMD', 'node', 'deployment/healthcheck.mjs', 'worker']
+      interval: 60s
+      timeout: 10s
+      start_period: 120s
+      retries: 3
+  web:
+    <<: *app
+    command: [web]
+    secrets:
+      - source: web_env
+        target: navi_env
+    tmpfs:
+      ['/tmp:rw,noexec,nosuid,size=64m', '/app/apps/web/.next/cache:uid=1000,gid=1000,size=128m']
+    depends_on:
+      edge: { condition: service_healthy }
+      postgres: { condition: service_healthy }
+      bot: { condition: service_healthy }
+    healthcheck:
+      test: ['CMD', 'node', 'deployment/healthcheck.mjs', 'web']
+      interval: 30s
+      timeout: 10s
+      start_period: 45s
+      retries: 3
+secrets:
+  postgres_password:
+    file: ${NAVI_SECRET_DIRECTORY:-./.local/production/secrets}/postgres_password
+  migration_env:
+    file: ${NAVI_SECRET_DIRECTORY:-./.local/production/secrets}/migration.env
+  web_env:
+    file: ${NAVI_SECRET_DIRECTORY:-./.local/production/secrets}/web.env
+  bot_env:
+    file: ${NAVI_SECRET_DIRECTORY:-./.local/production/secrets}/bot.env
+  worker_env:
+    file: ${NAVI_SECRET_DIRECTORY:-./.local/production/secrets}/worker.env
+volumes:
+  production_postgres:
