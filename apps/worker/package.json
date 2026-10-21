@@ -1,0 +1,23 @@
+{
+  "name": "@navi/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "smoke": "tsx src/index.ts --smoke",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@navi/config": "*",
+    "@navi/core": "*",
+    "@navi/database": "*",
+    "fast-xml-parser": "^5.11.2",
+    "lossless-json": "^4.3.2"
+  },
+  "devDependencies": {
+    "@navi/tsconfig": "*"
+  }
+}

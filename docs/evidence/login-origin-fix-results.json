@@ -1,0 +1,172 @@
+{
+  "date": "2026-10-20",
+  "timezone": "Asia/Colombo",
+  "scope": "focused existing Discord login repair",
+  "rootCause": "browser 127.0.0.1 origin differs from configured localhost origin; exact-Origin POST rejection before Discord",
+  "before": {
+    "event": "login_diagnosis",
+    "present": {
+      "WEB_ORIGIN": true,
+      "DATABASE_URL": true,
+      "BETTER_AUTH_SECRET": true,
+      "DISCORD_CLIENT_ID": true,
+      "DISCORD_CLIENT_SECRET": true,
+      "DISCORD_ALLOWED_USER_IDS": true,
+      "BOT_INTERNAL_SECRET": true
+    },
+    "configurationValid": true,
+    "browserOriginMatches": false,
+    "configuredOriginUsesLocalhost": true,
+    "authDatabaseReady": true,
+    "unexpiredSessionPresent": true,
+    "discordAccountPresent": true,
+    "wrongOrigin": {
+      "status": 403,
+      "error": "invalid_origin"
+    },
+    "canonical": {
+      "status": 200,
+      "discordAuthorize": true,
+      "clientIdMatches": true,
+      "callbackMatches": true,
+      "minimalScopes": true,
+      "statePresent": true
+    }
+  },
+  "after": {
+    "event": "login_fix_live_verification",
+    "aliasLogin": {
+      "status": 307,
+      "redirectsToConfiguredLogin": true
+    },
+    "canonicalPage": 200,
+    "wrongOriginStillBlocked": true,
+    "recentUnexpiredSession": true,
+    "storedCredentialFieldsPresent": true,
+    "projectedServerFailureLogPresent": true
+  },
+  "realBrowser": {
+    "originalReportedErrorObserved": true,
+    "aliasCanonicalized": true,
+    "expectedDiscordConsentObserved": true,
+    "consentScopes": "identify guilds",
+    "callbackAndAuthenticatedWorkspaceObserved": true,
+    "manageableServersObserved": 4,
+    "individualTokenEndpointResponsesCaptured": false,
+    "consentNavigationWaitTimedOutButCompletionVerified": true,
+    "consentReplayed": false,
+    "manualLogoutRepeated": false,
+    "manualUnauthorizedAccountRepeated": false,
+    "manualProductionHttpsVerified": false,
+    "privateProofFile": ".local/login-dashboard-verified.png"
+  },
+  "checks": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "tests": 380,
+    "testFiles": 35,
+    "newRegressionTests": 23,
+    "vitestSeconds": 8.21,
+    "typescript": "PASS",
+    "lint": "PASS zero warnings",
+    "format": "PASS",
+    "buildCommand": "npm run build",
+    "buildExitCode": 0,
+    "clientSecretScan": {
+      "check": "client_secret_values",
+      "scanned": 19,
+      "configuredCandidates": 12,
+      "leakedFields": []
+    }
+  },
+  "runtimeFiles": [
+    "apps/web/src/app/login/page.tsx",
+    "apps/web/src/components/auth-buttons.tsx",
+    "apps/web/src/lib/auth-handler.ts",
+    "apps/web/src/lib/auth-factory.ts",
+    "apps/web/src/lib/runtime.ts",
+    "apps/web/src/app/api/auth/[...all]/route.ts",
+    "apps/web/src/lib/login-origin.ts",
+    "apps/web/src/lib/auth-messages.ts",
+    "apps/web/src/lib/auth-failures.ts"
+  ],
+  "testFiles": [
+    "tests/login-diagnostics.test.ts",
+    "tests/auth-buttons.test.tsx",
+    "tests/login-page.test.tsx",
+    "tests/auth.test.ts"
+  ],
+  "sourceHashes": [
+    {
+      "path": "apps/web/src/app/login/page.tsx",
+      "sha256": "6ed6ccc85b5a038f71b59c292440529141a90e844af11f2d421676c3ddac2df0"
+    },
+    {
+      "path": "apps/web/src/components/auth-buttons.tsx",
+      "sha256": "b8924b52c5c7e251cf26930da2f36b01913f59f4ce6013add9ff4f59dd56185e"
+    },
+    {
+      "path": "apps/web/src/lib/auth-handler.ts",
+      "sha256": "16a9ee1fd8ac75243057e7d7ddc0a138ad1926f7bd1bef7f476b1ceb5ba6e42c"
+    },
+    {
+      "path": "apps/web/src/lib/auth-factory.ts",
+      "sha256": "1c52e809043d8176a918df11e8c0d9a88a49a413eca231774cedba8dc3c98217"
+    },
+    {
+      "path": "apps/web/src/lib/runtime.ts",
+      "sha256": "7b3c50f5a1fd69989d8cfbbe6a05935021e43d4b3fb813e00f083531119aed1e"
+    },
+    {
+      "path": "apps/web/src/app/api/auth/[...all]/route.ts",
+      "sha256": "79bd25e94c52f732e24dedeea605fee622b0bd3aca10c7af7273af57ee7c3a6b"
+    },
+    {
+      "path": "apps/web/src/lib/login-origin.ts",
+      "sha256": "01b96d7aad7ccdfa8cd558659ad89922576251d08799e16b9d2a2d3fc3c51903"
+    },
+    {
+      "path": "apps/web/src/lib/auth-messages.ts",
+      "sha256": "5a6fe4b041c5a1aa01ff68694d06ab05430e084f2405765b57082599fb33023c"
+    },
+    {
+      "path": "apps/web/src/lib/auth-failures.ts",
+      "sha256": "57cf27ceb68a033667aaa28709f727c8e1810ac99181eb621501dda5f60d1cc9"
+    },
+    {
+      "path": "tests/login-diagnostics.test.ts",
+      "sha256": "16286d36355974ae4c6e27fb7bc836a2d85b47c78d8b569f81d1f691ff8c01a7"
+    },
+    {
+      "path": "tests/auth-buttons.test.tsx",
+      "sha256": "18ad471b622ad0ec7d6a7e1b8ee3c7c90586838a47bef6fa009677d1f1f9e072"
+    },
+    {
+      "path": "tests/login-page.test.tsx",
+      "sha256": "8c9dc762e25c1af1d6af3ad2ce7d4f6e34d63767ae437225506ed445f1eb1091"
+    },
+    {
+      "path": "tests/auth.test.ts",
+      "sha256": "207ade0e3235bcb6cf05b2e4b7a3bda4c760847013fd43a65369efde1939a094"
+    }
+  ],
+  "preserved": {
+    "exactOriginPostRejection": true,
+    "oauthStateBrowserBinding": true,
+    "encryptedProviderTokens": true,
+    "fixedCallbackAndMinimalScopes": true,
+    "sessionCookiePolicy": true,
+    "accountAllowlist": true,
+    "freshGuildAuthorization": true,
+    "credentialsChanged": false,
+    "actualEnvironmentChanged": false,
+    "discordPermissionsChanged": false,
+    "dependenciesChanged": false,
+    "migrationAdded": false,
+    "manualApplicationDataDeletion": false,
+    "realDiscordNotificationSent": false,
+    "publicDeployment": false
+  },
+  "result": "PASS local confirmed root-cause repair",
+  "remaining": "manual failure personas/production HTTPS not repeated; existing wider release NO-GO remains"
+}

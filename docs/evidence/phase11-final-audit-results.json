@@ -1,0 +1,284 @@
+{
+  "date": "2026-10-20",
+  "timezone": "Asia/Colombo",
+  "capturedAtUtc": "2026-10-20T03:31:52.4997327Z",
+  "scope": "Phase 11 final audit; no runtime or deployment setting changes; no real notification sends or subscription creation",
+  "runtime": {
+    "platform": "Windows",
+    "npm": "11.15.0",
+    "node": "25.3.0"
+  },
+  "commands": [
+    {
+      "vitestSeconds": 17.78,
+      "exitCode": 0,
+      "files": 30,
+      "command": "npm run check",
+      "tests": 336
+    },
+    {
+      "exitCode": 0,
+      "command": "npm run build"
+    },
+    {
+      "exitCode": 0,
+      "command": "npm run env:check:auth"
+    },
+    {
+      "exitCode": 0,
+      "command": "npm run env:check:example"
+    },
+    {
+      "exitCode": 0,
+      "mode": "disconnected scaffold",
+      "command": "npm run smoke --workspace=@navi/bot"
+    },
+    {
+      "exitCode": 0,
+      "mode": "disconnected scaffold",
+      "command": "npm run smoke --workspace=@navi/worker"
+    },
+    {
+      "exitCode": 1,
+      "acceptance": "BLOCKED",
+      "command": "npm run db:check"
+    },
+    {
+      "exitCode": 1,
+      "acceptance": "BLOCKED",
+      "command": "npm run test:postgres"
+    },
+    {
+      "status": "degraded",
+      "command": "npm run beta:health",
+      "web": "unavailable",
+      "bot": "unavailable",
+      "worker": "unavailable",
+      "timeUtc": "2026-10-20T03:28:03.738Z",
+      "exitCode": 1
+    },
+    {
+      "realLivestreamVerified": false,
+      "checks": [
+        "Kick hosted RSA key",
+        "YouTube authenticated channels API",
+        "Kick app token/read-only subscriptions"
+      ],
+      "exitCode": 0,
+      "command": "npm run monitor:check -- --connectivity"
+    },
+    {
+      "assets": 19,
+      "exitCode": 0,
+      "configuredFields": 12,
+      "command": "npx tsx scripts/check-client-secrets.ts",
+      "leakedFields": []
+    },
+    {
+      "exitCode": 0,
+      "command": "docker compose -f compose.production.yaml --profile tools config --quiet"
+    },
+    {
+      "exitCode": 1,
+      "reason": "Docker Desktop Linux engine named pipe absent",
+      "acceptance": "BLOCKED",
+      "command": "docker compose -f compose.production.yaml build web"
+    },
+    {
+      "moderate": 4,
+      "exitCode": 1,
+      "critical": 0,
+      "high": 0,
+      "command": "npm audit --omit=dev --json"
+    }
+  ],
+  "projectedReadOnlyProbe": [
+    {
+      "check": "database",
+      "status": "failed",
+      "code": "ECONNREFUSED"
+    },
+    {
+      "check": "discord_application",
+      "httpStatus": 200,
+      "clientIdMatches": true,
+      "privateBot": true,
+      "requiresCodeGrant": false,
+      "descriptionPresent": false,
+      "privacyUrlPresent": false,
+      "termsUrlPresent": false,
+      "guildInstallReported": true
+    },
+    {
+      "check": "configuration",
+      "allowlistPresent": true,
+      "webHttps": false,
+      "monitoringEnabled": true,
+      "webhookOriginPresent": false,
+      "webhookSecretPresent": false
+    }
+  ],
+  "selectedSourceComparison": {
+    "reference": "phase10-audit-results.json",
+    "files": 20,
+    "changed": []
+  },
+  "capacityFixtureHashMatches": true,
+  "sourceHashes": [
+    {
+      "path": "package.json",
+      "sha256": "e69193e2bf08eda6998420b76dbcf43059fe376d701e8bb102760d3c16ca3b07"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "e329b8ee4ca9925de777835949cc2990ad8b156e9a9658f5babb9dc1c34427d4"
+    },
+    {
+      "path": "Dockerfile",
+      "sha256": "968daee28408265e4ad12867c023361a77ca41d5d2e5e9aa6860e70eec0c02b1"
+    },
+    {
+      "path": "compose.production.yaml",
+      "sha256": "26d50079647156176263e7674cc6d01bf5887bfd579fe10f194e0286b29a69d3"
+    },
+    {
+      "path": "deployment/nginx.conf",
+      "sha256": "81860d9281b1ddbf74a2c57750c0db8684c6ddfb64b3958aded3396a30242df7"
+    },
+    {
+      "path": "deployment/start.mjs",
+      "sha256": "a39515fd9b72845771dd8cc374e0e5b6e000bde5df1d7157f6f336e931bea4eb"
+    },
+    {
+      "path": "deployment/healthcheck.mjs",
+      "sha256": "20263514d70735d79b03781fd31ce5950cfc9776fe37c8f4b15e3be911a4ce96"
+    },
+    {
+      "path": "deployment/database-permissions.sql",
+      "sha256": "9e25ef867f3d24e619d046c5cf37ad5689bec8b4c6af6b385af8791ec12bfd59"
+    },
+    {
+      "path": "apps/worker/src/providers.ts",
+      "sha256": "c13c0ec5e5882c6c48c3406976648bd4b1a6e255b4baf6fa686ca183f25e2824"
+    },
+    {
+      "path": "apps/worker/src/monitor.ts",
+      "sha256": "24213800269b753e030f9e386f1b7115d5c692c9a1c46ecc23f674a0f0632b56"
+    },
+    {
+      "path": "apps/worker/src/webhooks.ts",
+      "sha256": "33f04f2b4ee9039724a43f24247a5ed078cd2a34c75031c4dab60b63cb497d89"
+    },
+    {
+      "path": "apps/worker/src/runtime.ts",
+      "sha256": "555a6c2004ef50a2c3c475790be1a5f8d8a1f9a0f16e6d0d06326111372a6cb2"
+    },
+    {
+      "path": "apps/bot/src/notifications.ts",
+      "sha256": "e4be859dfe27f32eef94f301f6153a62cc615a639f42eb57942f5f74a144e59d"
+    },
+    {
+      "path": "apps/bot/src/gateway.ts",
+      "sha256": "b389876f8ad249bf3d98e20ad28f8d625fe4debe6fc3ae3866a275da64552799"
+    },
+    {
+      "path": "apps/web/src/lib/auth-factory.ts",
+      "sha256": "af903541568b4c6f225e3c1cb3612d8683fa2c878a9f671842b0d20a328f9ec3"
+    },
+    {
+      "path": "apps/web/src/lib/auth-handler.ts",
+      "sha256": "2ba1681e9c465efef8d4822c2fdfb83507d00ce0786657bf2440807d90a1c080"
+    },
+    {
+      "path": "apps/web/src/lib/guild-service.ts",
+      "sha256": "dc5819da6e960d9927010b1ff9c1eaba942bca94ff40ee437cba207782fb171b"
+    },
+    {
+      "path": "apps/web/src/lib/notification-service.ts",
+      "sha256": "0e06fa5959c20fef70cf18d8df066fb9bd9a349e1c2b286bcfdb2fdbc0debc5a"
+    },
+    {
+      "path": "packages/core/src/notifications.ts",
+      "sha256": "2c2c7624aa9b9243ed44f2deceae0f3c1f5e2434ea953e8750d83887acfc4dea"
+    },
+    {
+      "path": "packages/database/src/monitoring.ts",
+      "sha256": "85216f0f2e60a8d05c09e988bcf9450966328d028a96d6cce65fc18c536fb8f1"
+    }
+  ],
+  "documentationInventory": [
+    "01-requirements.md",
+    "02-api-research.md",
+    "03-architecture.md",
+    "04-database-schema.md",
+    "05-security-and-risks.md",
+    "06-roadmap.md",
+    "07-decisions.md",
+    "DATA_DELETION_PROCESS.md",
+    "DEPLOYMENT_GUIDE.md",
+    "DEVELOPMENT_ROADMAP.md",
+    "DISCORD_CONFIGURATION_REVIEW.md",
+    "DISCORD_GATEWAY_PRESENCE.md",
+    "DISCORD_RATE_LIMIT_FIX.md",
+    "EVERYONE_PERMISSION_REFRESH.md",
+    "KICK_NOTIFICATION_EMBEDS.md",
+    "NOTIFICATION_MENTIONS.md",
+    "OAUTH_LOGIN_DEBUG.md",
+    "OPERATIONS_AND_SCALING.md",
+    "OPERATIONS_RUNBOOK.md",
+    "PHASE_01_AUDIT.md",
+    "PHASE_02_AUDIT.md",
+    "PHASE_02_AUTHENTICATION.md",
+    "PHASE_03_AUDIT.md",
+    "PHASE_03_DASHBOARD.md",
+    "PHASE_04_AUDIT.md",
+    "PHASE_04_STREAMER_REGISTRATION.md",
+    "PHASE_05_AUDIT.md",
+    "PHASE_05_NOTIFICATION_SETTINGS.md",
+    "PHASE_06_AUDIT.md",
+    "PHASE_06_IMPLEMENTATION.md",
+    "PHASE_07_AUDIT.md",
+    "PHASE_07_IMPLEMENTATION.md",
+    "PHASE_08_AUDIT.md",
+    "PHASE_08_IMPLEMENTATION.md",
+    "PHASE_09_FINAL_AUDIT.md",
+    "PHASE_09_TEST_REPORT.md",
+    "PHASE_10_AUDIT.md",
+    "PHASE_10_BETA_PLAN.md",
+    "PHASE_10_TEST_REPORT.md",
+    "PHASE_11_FINAL_AUDIT.md",
+    "PHASE_11_LAUNCH_READINESS.md",
+    "PLANNING_AUDIT.md",
+    "PRIVACY_POLICY_DRAFT.md",
+    "PRODUCTION_CHECKLIST.md",
+    "PROGRESS.md",
+    "PUBLIC_LAUNCH_CHECKLIST.md",
+    "README.md",
+    "RELEASE_READINESS.md",
+    "ROLLBACK_PLAN.md",
+    "TERMS_OF_SERVICE_DRAFT.md",
+    "USER_GUIDE.md",
+    "WORKSPACE_LOADING_DEBUG.md",
+    "YOUTUBE_MONITORING_DEBUG.md",
+    "YOUTUBE_NOTIFICATION_EMBEDS.md"
+  ],
+  "backupObservation": {
+    "customArchiveCount": 1,
+    "restoreVerified": false
+  },
+  "productionReviewPaths": {
+    "secretDirectoryPresent": false,
+    "certificatePresent": false,
+    "privateKeyPresent": false
+  },
+  "realAcceptance": {
+    "realYouTubeLiveAndReceipt": "UNVERIFIED",
+    "freshOAuthLogout": "BLOCKED",
+    "publicDeployment": "NOT_PERFORMED",
+    "realKickLiveAndReceipt": "UNVERIFIED",
+    "realBackupRestore": "UNVERIFIED",
+    "freshGuildInstall": "BLOCKED"
+  },
+  "assessment": "FAIL",
+  "controlledPublicRelease": "NO-GO"
+}

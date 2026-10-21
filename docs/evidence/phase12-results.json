@@ -1,0 +1,268 @@
+{
+  "date": "2026-10-20",
+  "timezone": "Asia/Colombo",
+  "scope": "Phase 12 preparation only; no external activation",
+  "commands": [
+    {
+      "command": "npm run check",
+      "vitestSeconds": 8.39,
+      "exitCode": 0,
+      "tests": 348,
+      "files": 31
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run release:check",
+      "exitCode": 1,
+      "acceptance": "BLOCKED external configuration"
+    },
+    {
+      "command": "npm run db:check",
+      "exitCode": 1,
+      "acceptance": "BLOCKED"
+    },
+    {
+      "command": "npm run test:postgres",
+      "exitCode": 1,
+      "acceptance": "BLOCKED"
+    },
+    {
+      "status": "degraded",
+      "web": "unavailable",
+      "command": "npm run beta:health",
+      "timeUtc": "2026-10-20T03:41:03.939Z",
+      "worker": "unavailable",
+      "exitCode": 1,
+      "bot": "unavailable"
+    },
+    {
+      "command": "npm run monitor:check -- --connectivity",
+      "exitCode": 0,
+      "realLivestreamVerified": false
+    },
+    {
+      "command": "npx tsx scripts/check-client-secrets.ts",
+      "exitCode": 0,
+      "assets": 19,
+      "leaks": 0,
+      "fields": 12
+    },
+    {
+      "command": "docker compose -f compose.production.yaml --profile tools config --quiet",
+      "exitCode": 0
+    },
+    {
+      "command": "docker compose -f compose.production.yaml build web",
+      "exitCode": 1,
+      "reason": "Docker Desktop Linux engine absent"
+    },
+    {
+      "command": "npm audit --omit=dev --json",
+      "moderate": 4,
+      "exitCode": 1,
+      "critical": 0,
+      "high": 0
+    }
+  ],
+  "releaseConfiguration": {
+    "event": "release_configuration",
+    "checks": {
+      "beta_guild_scope_present": false,
+      "web_worker_scope_matches": false,
+      "user_allowlist_present": true,
+      "broker_secret_matches": true,
+      "database_target_matches": true,
+      "broker_target_matches": true,
+      "source_cap_within_beta_ceiling": true,
+      "bot_token_configured": true,
+      "public_https_web_origin": false,
+      "public_https_webhook_origin": false
+    },
+    "ready": false,
+    "liveVerification": false
+  },
+  "nativeHttp": [
+    {
+      "event": "native_http",
+      "path": "/",
+      "method": "GET",
+      "expected": 200,
+      "actual": 200,
+      "markerVerified": true,
+      "pass": true
+    },
+    {
+      "event": "native_http",
+      "path": "/support",
+      "method": "GET",
+      "expected": 200,
+      "actual": 200,
+      "markerVerified": true,
+      "pass": true
+    },
+    {
+      "event": "native_http",
+      "path": "/privacy",
+      "method": "GET",
+      "expected": 200,
+      "actual": 200,
+      "markerVerified": true,
+      "pass": true
+    },
+    {
+      "event": "native_http",
+      "path": "/terms",
+      "method": "GET",
+      "expected": 200,
+      "actual": 200,
+      "markerVerified": true,
+      "pass": true
+    },
+    {
+      "event": "native_http",
+      "path": "/dashboard",
+      "method": "GET",
+      "expected": 307,
+      "actual": 307,
+      "markerVerified": null,
+      "pass": true
+    },
+    {
+      "event": "native_http",
+      "path": "/api/guilds",
+      "method": "GET",
+      "expected": 401,
+      "actual": 401,
+      "markerVerified": null,
+      "pass": true
+    },
+    {
+      "event": "native_http",
+      "path": "/api/auth/get-access-token",
+      "method": "GET",
+      "expected": 404,
+      "actual": 404,
+      "markerVerified": null,
+      "pass": true
+    },
+    {
+      "event": "native_http",
+      "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+      "method": "POST",
+      "expected": 403,
+      "actual": 403,
+      "markerVerified": null,
+      "pass": true
+    },
+    {
+      "event": "native_http",
+      "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+      "method": "POST",
+      "expected": 401,
+      "actual": 401,
+      "markerVerified": null,
+      "pass": true
+    }
+  ],
+  "nativeHttpBoundary": "Audit-owned loopback compiled Next process, synthetic credentials, HTTP not TLS, stopped after tests",
+  "deploymentInputsCompared": 6,
+  "deploymentInputChanges": [],
+  "sourceHashes": [
+    {
+      "sha256": "21332e6f5ce66861bb27b2ecc9b08a1dbd165b55963f37069dc6ef32f7249a23",
+      "path": "packages/config/src/index.ts"
+    },
+    {
+      "sha256": "6f5e0ed7e605863feeba60020278def3f9672fcc0a9f4a2573ce4353aeff479b",
+      "path": "packages/database/src/monitoring.ts"
+    },
+    {
+      "sha256": "222b88c093b051f9fd61a6ed4e24db440aeba477090179be45c299e274fb4c3b",
+      "path": "apps/worker/src/providers.ts"
+    },
+    {
+      "sha256": "d41f235644ca04898f85a27a58aea3a732cc94092299c11ead0a177724fee467",
+      "path": "apps/worker/src/monitor.ts"
+    },
+    {
+      "sha256": "b222b54f19eb6383af21504dbd0a75601d5c05cc40ca2864edeb1b56aab6c5c0",
+      "path": "apps/worker/src/index.ts"
+    },
+    {
+      "sha256": "22975b3ebe6c3d933c023da2d68af0efb3b0b855b98183e482159650b613e7c1",
+      "path": "apps/web/src/lib/guild-service.ts"
+    },
+    {
+      "sha256": "9f30a71c86240a4d1a89dbb19af2b214d6ba51d94567b7ac93b2bbb3524909fc",
+      "path": "apps/web/src/lib/runtime.ts"
+    },
+    {
+      "sha256": "518c02f508f67b5a88059d01fec54f097962de47695bfeee9d28df488c43a48d",
+      "path": "apps/web/src/lib/streamer-providers.ts"
+    },
+    {
+      "sha256": "46df9c699746c3810d03d2348c2ddfb57b4525b61fbf3695cec98c43bb63f555",
+      "path": "apps/web/src/app/page.tsx"
+    },
+    {
+      "sha256": "64b91743ece11839b01ebfc9fbb40ac11b454295af7c18182ae2abf9b86ca9dd",
+      "path": "apps/web/src/app/support/page.tsx"
+    },
+    {
+      "sha256": "27c17e3c88830efc0e675907ba542cb6c0dca3dc820cac85dbaf3e16b8aa3c2d",
+      "path": "scripts/check-release.ts"
+    },
+    {
+      "sha256": "4eea17eeb19b74fddda7bae13db2fc11fe3c4cc98560c3298b10bf0d475106bc",
+      "path": "package.json"
+    },
+    {
+      "sha256": "e329b8ee4ca9925de777835949cc2990ad8b156e9a9658f5babb9dc1c34427d4",
+      "path": "package-lock.json"
+    },
+    {
+      "sha256": "f8abcd2636481501088f2b1e471b757ab3cb0453c5501033f197965970561a06",
+      "path": "tests/beta-release.test.tsx"
+    },
+    {
+      "sha256": "181f62b4979bdafc33911ec82bebc7cc77e88a84542795c670b16b34f71ef7c3",
+      "path": "tests/guilds.test.ts"
+    },
+    {
+      "sha256": "2375761357fbae0a9ad246dd66759d130a4039787ee09a9cd891ce50a315a2a1",
+      "path": "tests/monitoring.test.ts"
+    },
+    {
+      "sha256": "9fc6b259c1bbc01da4e5999edae1b0ac20e1794fff77c3fcffd65e60637c1af8",
+      "path": "tests/streamer-providers.test.ts"
+    },
+    {
+      "sha256": "e8c5eae6be992ff3edc0ddb1ccf45eb1515c5911743493c1ca2a3c83bf27ddf7",
+      "path": "tests/production.test.ts"
+    },
+    {
+      "sha256": "aaa22c53fb22ed1566642efdcda5e8fc80c9cb7e577dd5773e9403a91e424ab8",
+      "path": ".env.example"
+    },
+    {
+      "sha256": "ca17e011c10f713e23f77abc0c0323974e57dee4e502f2bfcee416a5bbfbc55e",
+      "path": ".env.web.example"
+    },
+    {
+      "sha256": "ee4e6a557d454a7d4a9b2361c57afc12d2fcb4a4836c052f9226c69e7ccf8a77",
+      "path": ".env.worker.example"
+    }
+  ],
+  "sqlMigrationAdded": false,
+  "dependenciesChanged": false,
+  "realDiscordMessagesSent": 0,
+  "realSubscriptionsCreated": 0,
+  "actualEnvironmentChanged": false,
+  "realLivestreamVerification": "UNVERIFIED",
+  "externalUsersInvited": 0,
+  "decision": "NO-GO activation",
+  "readiness": "Local preparation and automated corrections pass; real acceptance blocked"
+}

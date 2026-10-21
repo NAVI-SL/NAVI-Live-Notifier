@@ -1,0 +1,17 @@
+node_modules/
+**/dist/
+**/.next/
+coverage/
+package-lock.json
+*.tsbuildinfo
+**/next-env.d.ts
+# Preserve reviewed planning documents; new progress notes are formatted.
+docs/README.md
+docs/01-requirements.md
+docs/02-api-research.md
+docs/03-architecture.md
+docs/04-database-schema.md
+docs/05-security-and-risks.md
+docs/06-roadmap.md
+docs/07-decisions.md
+docs/PLANNING_AUDIT.md

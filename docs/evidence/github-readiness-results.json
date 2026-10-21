@@ -1,0 +1,517 @@
+{
+  "date": "2026-10-20",
+  "scope": "Independent sanitized private GitHub source copy; no deployment or live provider sends",
+  "runtime": {
+    "windowsNode": "25.3.0",
+    "windowsNpm": "11.15.0",
+    "dockerEngine": "29.8.2",
+    "armContainerNode": "24.22.0",
+    "armContainerArchitecture": "arm64"
+  },
+  "checks": [
+    {
+      "name": "npm ci --no-audit --no-fund",
+      "status": "PASS",
+      "exitCode": 0,
+      "packagesInstalled": 314
+    },
+    {
+      "name": "npm run check",
+      "status": "PASS",
+      "exitCode": 0,
+      "components": [
+        "TypeScript workspaces and tools",
+        "ESLint zero warnings",
+        "Prettier",
+        "Vitest"
+      ],
+      "testFiles": 35,
+      "tests": 380
+    },
+    {
+      "name": "npm run build",
+      "status": "PASS",
+      "exitCode": 0,
+      "components": ["shared packages", "Next.js production", "bot TypeScript", "worker TypeScript"]
+    },
+    {
+      "name": "npm run env:check:example",
+      "status": "PASS",
+      "exitCode": 0,
+      "externalServicesContacted": false
+    },
+    {
+      "name": "docker compose -f compose.production.yaml config --quiet",
+      "status": "PASS",
+      "exitCode": 0,
+      "startupVerified": false
+    },
+    {
+      "name": "local Compose missing password rejected",
+      "status": "PASS",
+      "actualExitCode": 1,
+      "expectedExitCode": 1
+    },
+    {
+      "name": "local Compose config with in-memory synthetic password",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "Linux ARM64 image build",
+      "status": "PASS",
+      "exitCode": 0,
+      "image": "navi-github-preparation:arm64",
+      "platform": "linux/arm64",
+      "emulation": true
+    },
+    {
+      "name": "ARM64 runtime network-isolated smoke",
+      "status": "PASS",
+      "exitCode": 0,
+      "checks": [
+        "bot --smoke",
+        "worker --smoke",
+        "production bot missing credentials rejected",
+        "Next.js /api/health HTTP 200 initialized"
+      ],
+      "network": "none",
+      "databaseAndProviderReadinessClaimed": false
+    },
+    {
+      "name": "ARM64 container image manifests",
+      "status": "PASS",
+      "images": [
+        "node:24-bookworm-slim",
+        "postgres:17-alpine",
+        "redis:7-alpine",
+        "nginx:stable-alpine"
+      ]
+    },
+    {
+      "name": "real OAuth/provider/Discord delivery from copy",
+      "status": "BLOCKED",
+      "reason": "Real credentials deliberately excluded; live sends not authorized."
+    },
+    {
+      "name": "actual Oracle deployment and native host capacity",
+      "status": "BLOCKED",
+      "reason": "No infrastructure approved or provisioned."
+    }
+  ],
+  "postgres": [
+    {
+      "name": "start isolated fresh PostgreSQL fixture",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "npm run db:migrate",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "npm run db:check",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "npm run test:postgres",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "PostgreSQL assertion evidence",
+      "lines": [
+        "PASS: concurrent PostgreSQL admission and SKIP LOCKED claims return one delivery.",
+        "PASS: concurrent connections retain the longest provider cooldown.",
+        "PASS: independent PostgreSQL connections serialize the shared route advisory lock.",
+        "PASS: reconstructed repository quarantines interrupted sending and retains deduplication.",
+        "PASS: temporary integration schema removed; application tables untouched."
+      ]
+    },
+    {
+      "name": "remove only newly created fixture container and anonymous data volume",
+      "exitCode": 0,
+      "status": "PASS"
+    }
+  ],
+  "ignoreRules": [
+    {
+      "path": ".env",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": ".env.web",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": ".env.bot",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": ".env.worker",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": ".env.deploy",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": "deployment/web.env",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": "deployment/.env.deploy",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": "secrets/token.txt",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": "node_modules/test.js",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": "apps/web/.next/server.js",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": ".local/results.json",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": "backups/database.sql",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": "nested/backups/database.sql",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": "database.dump",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": "id_ed25519",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": "ssh.key",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": ".npmrc",
+      "expectedIgnored": true,
+      "actualIgnored": true
+    },
+    {
+      "path": ".gitignore",
+      "expectedIgnored": false,
+      "actualIgnored": false
+    },
+    {
+      "path": ".env.example",
+      "expectedIgnored": false,
+      "actualIgnored": false
+    },
+    {
+      "path": ".env.web.example",
+      "expectedIgnored": false,
+      "actualIgnored": false
+    },
+    {
+      "path": "deployment/web.env.example",
+      "expectedIgnored": false,
+      "actualIgnored": false
+    },
+    {
+      "path": "deployment/.env.deploy.example",
+      "expectedIgnored": false,
+      "actualIgnored": false
+    },
+    {
+      "path": "packages/database/migrations/0000_phase02_auth.sql",
+      "expectedIgnored": false,
+      "actualIgnored": false
+    },
+    {
+      "path": "package-lock.json",
+      "expectedIgnored": false,
+      "actualIgnored": false
+    }
+  ],
+  "initialSecretScan": {
+    "filesScanned": 294,
+    "browserAssetsScanned": 19,
+    "configuredCredentialCandidates": 8,
+    "findings": [],
+    "realEnvironmentFiles": [],
+    "gitHistoryPresent": false
+  },
+  "sourceIntegrity": {
+    "originalFilesHashed": 289,
+    "originalChanged": [],
+    "copyFilesModified": [
+      ".dockerignore",
+      ".env.example",
+      ".env.web.example",
+      ".env.worker.example",
+      ".gitignore",
+      "README.md",
+      "compose.yaml",
+      "docs/DISCORD_CONFIGURATION_REVIEW.md",
+      "docs/PHASE_02_AUDIT.md",
+      "docs/PHASE_02_AUTHENTICATION.md",
+      "docs/PHASE_09_TEST_REPORT.md",
+      "docs/PROGRESS.md",
+      "docs/WORKSPACE_LOADING_DEBUG.md",
+      "docs/evidence/phase09-results.json",
+      "docs/evidence/phase12-results.json",
+      "docs/evidence/phase13-results.json",
+      "docs/evidence/phase14-results.json"
+    ],
+    "workspaceLinksStayInCopy": {
+      "config": true,
+      "core": true,
+      "database": true,
+      "tsconfig": true
+    }
+  },
+  "dependencyAudit": {
+    "exitCode": 1,
+    "metadata": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 0,
+      "critical": 0,
+      "total": 4
+    },
+    "advisories": [
+      {
+        "name": "@esbuild-kit/core-utils",
+        "severity": "moderate",
+        "isDirect": false,
+        "via": ["esbuild"],
+        "fixAvailable": {
+          "name": "drizzle-kit",
+          "version": "0.18.1",
+          "isSemVerMajor": true
+        }
+      },
+      {
+        "name": "@esbuild-kit/esm-loader",
+        "severity": "moderate",
+        "isDirect": false,
+        "via": ["@esbuild-kit/core-utils"],
+        "fixAvailable": {
+          "name": "drizzle-kit",
+          "version": "0.18.1",
+          "isSemVerMajor": true
+        }
+      },
+      {
+        "name": "drizzle-kit",
+        "severity": "moderate",
+        "isDirect": true,
+        "via": ["@esbuild-kit/esm-loader"],
+        "fixAvailable": {
+          "name": "drizzle-kit",
+          "version": "0.18.1",
+          "isSemVerMajor": true
+        }
+      },
+      {
+        "name": "esbuild",
+        "severity": "moderate",
+        "isDirect": false,
+        "via": [
+          {
+            "title": "esbuild enables any website to send any requests to the development server and read the response",
+            "url": "https://github.com/advisories/GHSA-67mh-4wv8-2f99",
+            "range": "<=0.24.2"
+          }
+        ],
+        "fixAvailable": {
+          "name": "drizzle-kit",
+          "version": "0.18.1",
+          "isSemVerMajor": true
+        }
+      }
+    ]
+  },
+  "productionDependencyAudit": {
+    "scope": "production dependency tree",
+    "exitCode": 1,
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 0,
+      "critical": 0,
+      "total": 4
+    },
+    "packages": ["@esbuild-kit/core-utils", "@esbuild-kit/esm-loader", "drizzle-kit", "esbuild"]
+  },
+  "excludedOriginalEntries": [
+    {
+      "path": ".env",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": ".env.bot",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": ".env.web",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": ".env.worker",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": ".local/",
+      "reason": "generated, private or unnecessary directory"
+    },
+    {
+      "path": "apps/bot/dist/",
+      "reason": "generated, private or unnecessary directory"
+    },
+    {
+      "path": "apps/web/.next/",
+      "reason": "generated, private or unnecessary directory"
+    },
+    {
+      "path": "apps/web/AGENTS.md",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": "apps/web/next-env.d.ts",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": "apps/web/node_modules/",
+      "reason": "generated, private or unnecessary directory"
+    },
+    {
+      "path": "apps/web/tsconfig.tsbuildinfo",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": "apps/worker/dist/",
+      "reason": "generated, private or unnecessary directory"
+    },
+    {
+      "path": "docs/evidence/discord-rate-fixed.png",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": "docs/evidence/kick-embed-preview.png",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": "docs/evidence/mention-dropdown-permission.png",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": "docs/evidence/mention-permission-refresh.png",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": "docs/evidence/phase09-login-database-unavailable.png",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": "docs/evidence/workspace-recovered.png",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": "node_modules/",
+      "reason": "generated, private or unnecessary directory"
+    },
+    {
+      "path": "packages/config/dist/",
+      "reason": "generated, private or unnecessary directory"
+    },
+    {
+      "path": "packages/config/tsconfig.tsbuildinfo",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": "packages/core/dist/",
+      "reason": "generated, private or unnecessary directory"
+    },
+    {
+      "path": "packages/core/tsconfig.tsbuildinfo",
+      "reason": "secret/runtime/generated/private evidence file"
+    },
+    {
+      "path": "packages/database/dist/",
+      "reason": "generated, private or unnecessary directory"
+    },
+    {
+      "path": "packages/database/tsconfig.tsbuildinfo",
+      "reason": "secret/runtime/generated/private evidence file"
+    }
+  ],
+  "initialFormattingFailure": {
+    "command": "npm run check",
+    "failedStep": "format:check",
+    "file": "docs/PHASE_09_TEST_REPORT.md",
+    "cause": "Privacy redaction changed table column width",
+    "correction": "Formatted copy only; subsequent complete check passed"
+  },
+  "applicationFunctionalityModified": false,
+  "gitInitialized": false,
+  "committed": false,
+  "pushed": false,
+  "deployed": false,
+  "liveDiscordMessagesSent": false,
+  "cleanup": {
+    "status": "PASS",
+    "generatedDirectoriesRemoved": [
+      ".local",
+      "apps/bot/dist",
+      "apps/web/.next",
+      "apps/web/node_modules",
+      "apps/worker/dist",
+      "node_modules",
+      "packages/config/dist",
+      "packages/core/dist",
+      "packages/database/dist"
+    ],
+    "generatedFileCountRemoved": 5,
+    "originalFilesRechecked": 289,
+    "originalChangedCount": 0,
+    "dependenciesRequireReinstall": true
+  },
+  "finalSourceScan": {
+    "status": "PASS",
+    "configuredCredentialCandidates": 8,
+    "credentialMatches": 0,
+    "realEnvironmentFiles": 0,
+    "gitHistoryPresent": false,
+    "generatedDirectoriesPresent": false,
+    "scannedFiles": 277,
+    "originalFilesUnchanged": true
+  }
+}

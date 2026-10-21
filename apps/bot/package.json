@@ -1,0 +1,21 @@
+{
+  "name": "@navi/bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "smoke": "tsx src/index.ts --smoke",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@navi/config": "*",
+    "@navi/core": "*",
+    "discord.js": "14.27.0"
+  },
+  "devDependencies": {
+    "@navi/tsconfig": "*"
+  }
+}

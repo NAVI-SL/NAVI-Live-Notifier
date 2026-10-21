@@ -1,0 +1,308 @@
+{
+  "date": "2026-10-20",
+  "timezone": "Asia/Colombo",
+  "scope": "local infrastructure recovery/controlled beta preparation only",
+  "infrastructure": {
+    "dockerDesktop": "4.95.0",
+    "dockerEngine": "29.8.2",
+    "postgresVersion": "17.11",
+    "initialUnrestrictedProbeAlreadyHealthy": true,
+    "agentRestartedExistingServices": false,
+    "originalPostgresContainerHealthy": true,
+    "originalRedisContainerHealthy": true,
+    "retainedVolumes": ["navi-local_postgres_data", "navi-local_redis_data"],
+    "redisPing": "PONG",
+    "redisAofEnabled": true,
+    "redisPersistenceStatuses": "ok",
+    "redisKeysObserved": 0
+  },
+  "commands": [
+    {
+      "command": "npm run db:check",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run test:postgres",
+      "exitCode": 0,
+      "cases": [
+        "concurrent admission and SKIP LOCKED",
+        "longest provider cooldown",
+        "independent route advisory locking",
+        "interrupted send quarantine and reconstructed dedup",
+        "temporary schema cleanup"
+      ]
+    },
+    {
+      "command": "npm run check",
+      "exitCode": 0,
+      "tests": 357,
+      "files": 32,
+      "vitestSeconds": 8.94,
+      "typescript": "PASS",
+      "lint": "PASS zero warnings",
+      "format": "PASS"
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0
+    },
+    {
+      "command": "docker compose -f compose.production.yaml build web",
+      "exitCode": 0
+    },
+    {
+      "command": "drizzle-kit check --config=drizzle.config.ts (database workspace)",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run monitor:check -- --connectivity",
+      "exitCode": 0,
+      "realReadOnly": true,
+      "realLiveVerified": false
+    },
+    {
+      "command": "npx tsx scripts/check-client-secrets.ts",
+      "exitCode": 0,
+      "assets": 19,
+      "candidateFields": 12,
+      "matches": 0
+    },
+    {
+      "command": "npm audit --json and --omit=dev",
+      "exitCode": 1,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 4,
+        "high": 0,
+        "critical": 0,
+        "total": 4
+      },
+      "packages": ["@esbuild-kit/core-utils", "@esbuild-kit/esm-loader", "drizzle-kit", "esbuild"]
+    },
+    {
+      "command": "npm run release:check",
+      "exitCode": 1
+    },
+    {
+      "command": "npm run beta:health",
+      "exitCode": 1
+    }
+  ],
+  "databaseIntegrity": {
+    "event": "database_integrity",
+    "expectedMigrations": 7,
+    "appliedMigrations": 7,
+    "migrationHashesMatch": true,
+    "monitoringSchemaReady": true,
+    "requiredUniqueIndexes": 3,
+    "orphanNotificationSettings": 0
+  },
+  "backupRestore": {
+    "event": "isolated_backup_restore",
+    "sourceRelations": 14,
+    "backupCreated": true,
+    "archiveHashMatches": true,
+    "restored": true,
+    "restoredRowsMatch": true,
+    "sourceUnchanged": true,
+    "scratchRemoved": true,
+    "backupEncrypted": false,
+    "offsiteBackupVerified": false,
+    "backupSha256": "be3cf630831db54484edaf39733633b3fa0575a4bd86b3abe015d243c9b6906d",
+    "backupBytes": 33381,
+    "restoreSeconds": 0.837,
+    "backupFile": ".local/phase14/backups/navi_phase14_restore_ac4efbc3148f.dump"
+  },
+  "backupAcl": {
+    "inheritanceProtected": true,
+    "explicitRules": 2,
+    "roleDescriptions": ["operator", "System"],
+    "notEncrypted": true
+  },
+  "redisIsolatedRestart": {
+    "event": "isolated_redis_aof_restart",
+    "setSucceeded": true,
+    "restartSucceeded": true,
+    "valueRecovered": true,
+    "fixtureContainerRemoved": true,
+    "fixtureVolumeRemoved": true,
+    "existingRedisUntouched": true
+  },
+  "linuxImage": {
+    "imageId": "sha256:53e6fadc721938d5689f4575704455e5a5bdd4e52f6eb6d35aea1e25a218a648",
+    "nodeVersion": "v24.22.0",
+    "uid": 1000,
+    "checkedSecretPathsPresent": false,
+    "network": "none",
+    "hostPortsPublished": false,
+    "botScaffoldExitCode": 0,
+    "workerScaffoldExitCode": 0,
+    "websiteStarted": true,
+    "httpCases": [
+      {
+        "path": "/",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/support",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/privacy",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/terms",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/dashboard",
+        "method": "GET",
+        "expected": 307,
+        "actual": 307,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds",
+        "method": "GET",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      },
+      {
+        "path": "/api/auth/get-access-token",
+        "method": "GET",
+        "expected": 404,
+        "actual": 404,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "method": "POST",
+        "expected": 403,
+        "actual": 403,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "method": "POST",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      }
+    ],
+    "stopExitCode": 143,
+    "fixtureRemoved": true,
+    "fullWorkerDrainVerified": false,
+    "imageSecurityScanCompleted": false
+  },
+  "applicationHealth": [
+    {
+      "time": "2026-10-20T04:28:45.167Z",
+      "event": "beta_health",
+      "severity": "error",
+      "sample": 1,
+      "status": "degraded",
+      "services": {
+        "web": "unavailable",
+        "bot": "unavailable",
+        "worker": "unavailable"
+      }
+    },
+    {
+      "time": "2026-10-20T04:28:45.167Z",
+      "event": "health_alert",
+      "severity": "error",
+      "status": "degraded",
+      "services": {
+        "web": "unavailable",
+        "bot": "unavailable",
+        "worker": "unavailable"
+      },
+      "delivery": "console_only"
+    }
+  ],
+  "releaseConfiguration": {
+    "event": "release_configuration",
+    "checks": {
+      "beta_guild_scope_present": false,
+      "web_worker_scope_matches": false,
+      "user_allowlist_present": true,
+      "broker_secret_matches": true,
+      "database_target_matches": true,
+      "broker_target_matches": true,
+      "source_cap_within_beta_ceiling": true,
+      "bot_token_configured": true,
+      "public_https_web_origin": false,
+      "public_https_webhook_origin": false
+    },
+    "ready": false,
+    "liveVerification": false
+  },
+  "configuredInventory": [
+    {
+      "provider": "kick",
+      "sources": 1,
+      "subscriptions": 1,
+      "enabledDestinations": 1
+    },
+    {
+      "provider": "youtube",
+      "sources": 1,
+      "subscriptions": 1,
+      "enabledDestinations": 1
+    }
+  ],
+  "preservation": {
+    "applicationSourceInputsCompared": 15,
+    "applicationSourceChanges": [],
+    "deploymentInputsCompared": 6,
+    "deploymentChanges": [],
+    "manifestHashMatchesPrePhase": true,
+    "lockfileHashMatchesPrePhase": true,
+    "actualCredentialsModified": false,
+    "accessListsModified": false,
+    "applicationMigrationsApplied": false,
+    "existingApplicationRowsIntentionallyModified": false,
+    "remainingTemporaryIntegrationSchemas": 0,
+    "remainingRestoreDatabases": 0,
+    "remainingRedisFixtureContainers": 0,
+    "remainingRedisFixtureVolumes": 0
+  },
+  "approvalsAndBoundaries": {
+    "realDiscordMessagesSent": false,
+    "actualMonitoringWorkerStarted": false,
+    "actualGatewayStarted": false,
+    "webhookSubscriptionsCreated": false,
+    "publicDeploymentPerformed": false,
+    "publicInstallationEnabled": false,
+    "spendingIncurred": false,
+    "realYouTubeReceipt": "BLOCKED exact target/send approval",
+    "realKickReceipt": "BLOCKED exact target/send approval",
+    "externalOAuthInstall": "UNVERIFIED",
+    "publicHttpsCallbacks": "BLOCKED",
+    "externalAlertReceipt": "UNVERIFIED",
+    "nextPhaseStarted": false
+  },
+  "decision": {
+    "localInfrastructure": "PASS",
+    "actualDatabaseReliability": "PASS",
+    "localBackupRestore": "PASS",
+    "controlledBetaAcceptance": "BLOCKED",
+    "dependencyAudit": "FAIL four moderate",
+    "widerPublicLaunch": "NO-GO"
+  }
+}

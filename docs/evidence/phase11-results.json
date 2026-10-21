@@ -1,0 +1,124 @@
+{
+  "date": "2026-10-18",
+  "timezone": "Asia/Colombo",
+  "runtime": {
+    "node": "25.3.0",
+    "platform": "Windows",
+    "npm": "11.15.0"
+  },
+  "approvedPlanning": {
+    "stage": "private beta",
+    "legalIdentityAndContacts": "unconfirmed placeholders",
+    "country": "Sri Lanka, provisional",
+    "hostingTargetUsdMonthly": 0,
+    "contingencyUsdMonthly": "15-25",
+    "publicName": "NAVI Live Notifier",
+    "guilds": 10,
+    "spendingAuthorized": false,
+    "uniqueSources": 10
+  },
+  "commands": [
+    {
+      "testDurationSeconds": 12.86,
+      "exitCode": 0,
+      "files": 30,
+      "tests": 336,
+      "command": "npm run check (final)"
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0
+    },
+    {
+      "acceptance": "BLOCKED",
+      "exitCode": 1,
+      "command": "npm run db:check"
+    },
+    {
+      "acceptance": "BLOCKED",
+      "exitCode": 1,
+      "command": "npm run test:postgres"
+    },
+    {
+      "worker": "unavailable",
+      "command": "npm run beta:health",
+      "exitCode": 1,
+      "bot": "unavailable",
+      "web": "unavailable",
+      "state": "degraded"
+    },
+    {
+      "realLivestreamVerified": false,
+      "exitCode": 0,
+      "command": "npm run monitor:check -- --connectivity"
+    },
+    {
+      "leaks": 0,
+      "exitCode": 0,
+      "assets": 19,
+      "command": "npx tsx scripts/check-client-secrets.ts",
+      "fields": 12
+    },
+    {
+      "command": "docker compose -f compose.production.yaml --profile tools config --quiet",
+      "exitCode": 0
+    },
+    {
+      "reason": "Linux engine pipe absent",
+      "exitCode": 1,
+      "command": "docker compose -f compose.production.yaml build web"
+    },
+    {
+      "moderate": 4,
+      "exitCode": 1,
+      "critical": 0,
+      "high": 0,
+      "command": "npm audit --omit=dev --json"
+    }
+  ],
+  "applicationReview": [
+    {
+      "event": "phase11_application_review",
+      "httpStatus": 200,
+      "clientIdMatches": true,
+      "privateBot": true,
+      "requiresCodeGrant": false,
+      "nameConfigured": true,
+      "descriptionConfigured": false,
+      "iconConfigured": true,
+      "privacyUrlConfigured": false,
+      "termsUrlConfigured": false,
+      "customInstallUrlConfigured": false,
+      "guildInstallContextReported": true,
+      "installationDefaultsReported": false
+    },
+    {
+      "event": "phase11_configuration_review",
+      "allowlistConfigured": true,
+      "webHttps": false,
+      "monitoringEnabled": true,
+      "publicWebhookConfigured": false,
+      "webhookSecretConfigured": false
+    }
+  ],
+  "syntheticLoad": {
+    "destinations": 100,
+    "database": "isolated PGlite",
+    "rateLimitedAttempts": 1,
+    "attempts": 101,
+    "providerAndSender": "simulated",
+    "realResourceSizingVerified": false,
+    "retryBeforeDeadline": false,
+    "acceptedSimulatedMessages": 100,
+    "duplicatesAfterReconstruction": 0,
+    "test": "tests/launch-capacity.test.ts",
+    "guilds": 10,
+    "uniqueSources": 10
+  },
+  "sourceTestSha256": "731e4b99ca0c2aecd962f93be1e8bdaa90ed233f8f18a2428c8ac619cce3c278",
+  "decision": "NO-GO public release; private-beta activation still blocked",
+  "realDiscordSends": 0,
+  "realLivestreamVerification": false,
+  "productionChanges": false,
+  "spending": false
+}

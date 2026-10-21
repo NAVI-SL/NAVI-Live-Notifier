@@ -1,0 +1,224 @@
+{
+  "date": "2026-10-20",
+  "timezone": "Asia/Colombo",
+  "scope": "Phase 13 final audit only",
+  "commands": [
+    {
+      "command": "npm run check",
+      "exitCode": 0,
+      "tests": 357,
+      "testFiles": 32,
+      "vitestSeconds": 7.77,
+      "typescript": "PASS",
+      "lint": "PASS zero warnings",
+      "format": "PASS"
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "scope": "native shared/web/bot/worker"
+    },
+    {
+      "command": "npm run release:check",
+      "exitCode": 1
+    },
+    {
+      "command": "npm run db:check",
+      "exitCode": 1,
+      "status": "BLOCKED actual connection"
+    },
+    {
+      "command": "npm run test:postgres",
+      "exitCode": 1,
+      "status": "BLOCKED independent PostgreSQL"
+    },
+    {
+      "command": "npm run beta:health",
+      "exitCode": 1
+    },
+    {
+      "command": "npm run monitor:check -- --connectivity",
+      "exitCode": 0,
+      "boundary": "real read-only key/authentication/inventory only; no LIVE or delivery"
+    },
+    {
+      "command": "npx tsx scripts/check-client-secrets.ts",
+      "exitCode": 0,
+      "assets": 19,
+      "candidateFields": 12,
+      "leakedFields": 0
+    },
+    {
+      "command": "docker compose -f compose.production.yaml --profile tools config --quiet",
+      "exitCode": 0
+    },
+    {
+      "command": "docker compose -f compose.production.yaml build web",
+      "exitCode": 1,
+      "blocker": "Docker Desktop Linux engine named pipe unavailable"
+    },
+    {
+      "command": "npm audit --omit=dev --json",
+      "exitCode": 1,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 4,
+        "high": 0,
+        "critical": 0,
+        "total": 4
+      },
+      "packages": ["@esbuild-kit/core-utils", "@esbuild-kit/esm-loader", "drizzle-kit", "esbuild"]
+    }
+  ],
+  "healthEvents": [
+    {
+      "time": "2026-10-20T04:14:35.997Z",
+      "event": "beta_health",
+      "severity": "error",
+      "sample": 1,
+      "status": "degraded",
+      "services": {
+        "web": "unavailable",
+        "bot": "unavailable",
+        "worker": "unavailable"
+      }
+    },
+    {
+      "time": "2026-10-20T04:14:35.997Z",
+      "event": "health_alert",
+      "severity": "error",
+      "status": "degraded",
+      "services": {
+        "web": "unavailable",
+        "bot": "unavailable",
+        "worker": "unavailable"
+      },
+      "delivery": "console_only"
+    }
+  ],
+  "releaseConfiguration": {
+    "event": "release_configuration",
+    "checks": {
+      "beta_guild_scope_present": false,
+      "web_worker_scope_matches": false,
+      "user_allowlist_present": true,
+      "broker_secret_matches": true,
+      "database_target_matches": true,
+      "broker_target_matches": true,
+      "source_cap_within_beta_ceiling": true,
+      "bot_token_configured": true,
+      "public_https_web_origin": false,
+      "public_https_webhook_origin": false
+    },
+    "ready": false,
+    "liveVerification": false
+  },
+  "phase13InputsCompared": 15,
+  "phase13InputChanges": [],
+  "sourceHashes": [
+    {
+      "path": "apps/bot/src/gateway.ts",
+      "sha256": "2faf4bd79ca91c954327305aa7d1bcf2227695843e8e9ae685f49b8f4a254585"
+    },
+    {
+      "path": "apps/bot/src/status-server.ts",
+      "sha256": "295c9614b50b21dd33e0eef762ff877275665ba69ec64f24ed52abda627dca87"
+    },
+    {
+      "path": "apps/bot/src/index.ts",
+      "sha256": "9b6aa0b43413fb19ee78ad7e9786816b25efb7920381e5ea71fa33c09a8f4508"
+    },
+    {
+      "path": "apps/worker/src/monitor.ts",
+      "sha256": "28398c22027fa244189ee9ee1ba9aeaceab420c33bb4ea5033bc10ed74a23038"
+    },
+    {
+      "path": "apps/worker/src/telemetry.ts",
+      "sha256": "98cc84b84ad0227acbf61713843ef8e236ef7315d1dc36b668305f5d75104b38"
+    },
+    {
+      "path": "packages/database/src/monitoring.ts",
+      "sha256": "5aba82463261ad8f558564862bcd603714afaf8e3154914d1fec19a31b82d9c4"
+    },
+    {
+      "path": "apps/web/src/components/streamer-manager.tsx",
+      "sha256": "1f974b1666bbed3c58acc7a8d03f9be49ecb21a9f60d8ca3a38bb580fb5f8012"
+    },
+    {
+      "path": "scripts/lib/beta-health.ts",
+      "sha256": "0c1656d7e240423a77fd791d0e081baf89b38f3397beea22a2855b409c1f7db1"
+    },
+    {
+      "path": "scripts/check-beta-health.ts",
+      "sha256": "a6636b3ad598d1fd655319e3084b075bd6c37163f58ab02ec497e3c236d45c4e"
+    },
+    {
+      "path": "tests/bot-gateway.test.ts",
+      "sha256": "942689d0aafb5239591bcbd8a352c282448db78cabd9f2996dde3637de684c8a"
+    },
+    {
+      "path": "tests/worker-reliability.test.ts",
+      "sha256": "3735cf8c4efcf026c3a42e44935997d09b0daa4462cb225cfbeedfb521368e2f"
+    },
+    {
+      "path": "tests/beta-health.test.ts",
+      "sha256": "2b03cda7eae98cfe57201c5a0132c2f0b77a563cdd94ad891aac82d69d9dc929"
+    },
+    {
+      "path": "tests/monitoring.test.ts",
+      "sha256": "b2e722b304765e0799980a6686cb2c6d760d31f2ebfded6f1e4c66d7af757683"
+    },
+    {
+      "path": "tests/streamer-ui.test.tsx",
+      "sha256": "597c782de9149d45bff78dbcdd05edc414d878025b4d548d78c3b29b7ad47d47"
+    },
+    {
+      "path": "tests/telemetry.test.ts",
+      "sha256": "e7fbfd6f428a7c4cccd8c14d5fc326d327a575222a037c6079c8b49f06dac1df"
+    }
+  ],
+  "deploymentInputsCompared": 6,
+  "deploymentInputChanges": [],
+  "documentationFilesReadBeforeAudit": 63,
+  "earlierHttpEvidence": {
+    "source": "phase13-results.json",
+    "cases": 9,
+    "passed": 9,
+    "rerunDuringAudit": false,
+    "boundary": "synthetic-credential compiled loopback HTTP; no real consent/install/TLS/persistence"
+  },
+  "localReviewPaths": {
+    "secretDirectoryPresent": false,
+    "certificatePresent": false,
+    "privateKeyPresent": false,
+    "defaultBackupDirectoryFileCount": 0,
+    "restoreVerified": false
+  },
+  "realAcceptance": {
+    "productionDeployment": "UNVERIFIED / NOT ACTIVATED",
+    "externalOAuthLogoutInstall": "UNVERIFIED",
+    "youtubeStreamAndDiscordReceipt": "UNVERIFIED",
+    "kickStreamAndDiscordReceipt": "UNVERIFIED",
+    "independentPostgresRecovery": "BLOCKED",
+    "isolatedBackupRestore": "UNVERIFIED",
+    "externalAlertReceipt": "UNVERIFIED",
+    "actualBetaFeedback": "UNVERIFIED",
+    "productionMetricsAvailable": false
+  },
+  "auditActions": {
+    "applicationCodeChanged": false,
+    "actualEnvironmentChanged": false,
+    "productionSettingsChanged": false,
+    "credentialsChanged": false,
+    "accessRestrictionsRemoved": false,
+    "realDiscordMessagesSent": false,
+    "platformSubscriptionsCreated": false,
+    "externalUsersInvited": false,
+    "phase14Started": false
+  },
+  "automatedBaseline": "PASS",
+  "assessment": "FAIL / HOLD",
+  "unrestrictedPublicInstallation": "NO-GO",
+  "widerPublicLaunch": "NO-GO"
+}

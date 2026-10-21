@@ -1,0 +1,175 @@
+{
+  "date": "2026-10-18",
+  "timezone": "Asia/Colombo",
+  "scope": "Local Phase 9 verification; no real Discord messages or livestream starts",
+  "commands": [
+    {
+      "command": "npm run check",
+      "exitCode": 0,
+      "testFiles": 23,
+      "testsPassed": 249,
+      "testsFailed": 0
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run env:check:example",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run env:check:auth",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run smoke --workspace=@navi/bot",
+      "exitCode": 0,
+      "mode": "disconnected scaffold"
+    },
+    {
+      "command": "npm run smoke --workspace=@navi/worker",
+      "exitCode": 0,
+      "mode": "disconnected scaffold"
+    },
+    {
+      "command": "npx tsx scripts/check-client-secrets.ts",
+      "exitCode": 0,
+      "assetsScanned": 19,
+      "configuredCandidates": 12,
+      "leakedFields": []
+    },
+    {
+      "command": "npm run monitor:check -- --connectivity",
+      "exitCode": 0,
+      "checks": [
+        "Kick hosted RSA key",
+        "YouTube authenticated channels API",
+        "Kick app token/read-only subscriptions"
+      ],
+      "livestreamVerified": false
+    },
+    {
+      "command": "docker compose -f compose.production.yaml --profile tools config --quiet",
+      "exitCode": 0
+    },
+    {
+      "command": "docker compose -f compose.production.yaml build web",
+      "exitCode": 1,
+      "acceptanceStatus": "BLOCKED",
+      "reason": "Docker Linux engine named pipe absent"
+    },
+    {
+      "command": "npm run test:postgres",
+      "exitCode": 1,
+      "acceptanceStatus": "BLOCKED",
+      "connectionDiagnosis": "ECONNREFUSED"
+    },
+    {
+      "command": "npm audit --omit=dev --json (sanitized)",
+      "exitCode": 1,
+      "moderate": 4,
+      "high": 0,
+      "critical": 0
+    }
+  ],
+  "localHttp": {
+    "configuration": "Compiled Next start, HTTP development auth posture, synthetic credentials and intentionally unreachable PostgreSQL; not production HTTPS",
+    "checksPassed": 10,
+    "checks": [
+      {
+        "method": "GET",
+        "path": "/api/health",
+        "expected": 200,
+        "actual": 200
+      },
+      {
+        "method": "GET",
+        "path": "/login",
+        "expected": 200,
+        "actual": 200
+      },
+      {
+        "method": "GET",
+        "path": "/dashboard",
+        "expected": 307,
+        "actual": 307
+      },
+      {
+        "method": "GET",
+        "path": "/dashboard/REDACTED_DISCORD_ID",
+        "expected": 307,
+        "actual": 307
+      },
+      {
+        "method": "GET",
+        "path": "/api/guilds",
+        "expected": 401,
+        "actual": 401
+      },
+      {
+        "method": "GET",
+        "path": "/api/me",
+        "expected": 401,
+        "actual": 401
+      },
+      {
+        "method": "GET",
+        "path": "/api/auth/get-access-token",
+        "expected": 404,
+        "actual": 404
+      },
+      {
+        "method": "POST",
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "origin": "same-origin",
+        "expected": 401,
+        "actual": 401
+      },
+      {
+        "method": "POST",
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "origin": "untrusted",
+        "expected": 403,
+        "actual": 403
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/sign-in/social",
+        "origin": "same-origin",
+        "expected": 500,
+        "actual": 500,
+        "note": "Expected database outage response; successful OAuth remains BLOCKED"
+      }
+    ]
+  },
+  "existingBot": {
+    "privateHealthHttp": 200,
+    "restHealthy": true,
+    "botIdentity": true,
+    "configuredClientIdMatchesApplication": true,
+    "applicationPrivate": true,
+    "gatewayVisualVerification": false,
+    "restHealthyAfterIsolatedWebStopped": true
+  },
+  "monitoring": {
+    "enabled": false,
+    "publicHttpsCallbackConfigured": false,
+    "webhookSecretConfigured": false
+  },
+  "browser": {
+    "engine": "Chrome",
+    "passed": [
+      "compiled home renders",
+      "home login link",
+      "login button recoverable unavailable-database error",
+      "dashboard redirects to login",
+      "guild notification route redirects to login",
+      "privacy navigation"
+    ],
+    "realOAuth": "BLOCKED",
+    "screenshot": "phase09-login-database-unavailable.png"
+  },
+  "privateBetaRecommendation": "NO-GO",
+  "cleanup": "Audit-owned web listener closed; synthetic environment and temporary probes removed; existing bot preserved."
+}

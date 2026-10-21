@@ -1,0 +1,5 @@
+{
+  "extends": "@navi/tsconfig/node.json",
+  "compilerOptions": { "rootDir": "src", "outDir": "dist" },
+  "include": ["src/**/*.ts"]
+}
