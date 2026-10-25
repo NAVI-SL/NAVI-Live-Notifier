@@ -1,0 +1,494 @@
+{
+  "date": "2026-10-22",
+  "timezone": "Asia/Colombo",
+  "scope": "Phase 14 release blockers review; local verification only",
+  "decision": "NO-GO for wider public launch",
+  "history": {
+    "phase13": "Local service/database/image checks blocked on 2026-10-20 during audit",
+    "laterPhase14": "Local SQL/restore/Redis/image checks passed on 2026-10-20",
+    "loginFix": "Real owner consent/callback/workspace observed 2026-10-20; not repeated here"
+  },
+  "dockerRecovery": {
+    "initialEngine": "Linux engine named pipe absent; Desktop status unavailable",
+    "initialStartupReview": "Rejected due to possible automatic bot/worker restart and real sends",
+    "ownerConfirmation": "Owner confirmed no bot/worker containers auto-start and approved starting Docker",
+    "approvedStartResult": "Docker Desktop is already running",
+    "observedEngine": "29.8.2",
+    "runningContainers": ["navi-local-postgres-1", "navi-local-redis-1"],
+    "originalNamedVolumesRetained": true,
+    "resets": false,
+    "existingVolumesDeleted": false
+  },
+  "checks": [
+    {
+      "command": "npm run check (sandbox)",
+      "exitCode": 1,
+      "status": "BLOCKED harness",
+      "reason": "Vitest cache rename EPERM before collecting tests; 35 suite load failures, no tests executed"
+    },
+    {
+      "command": "npm run check (unrestricted local)",
+      "exitCode": 0,
+      "status": "PASS",
+      "testFiles": 35,
+      "tests": 380,
+      "vitestSeconds": 18.23,
+      "includes": [
+        "TypeScript",
+        "ESLint zero warnings",
+        "Prettier",
+        "unit/security/hydrated UI/embedded database/provider and sender simulations"
+      ]
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "status": "PASS",
+      "scope": "Native shared/web/bot/worker builds"
+    },
+    {
+      "command": "docker compose -f compose.production.yaml config --quiet",
+      "exitCode": 0,
+      "status": "PASS",
+      "scope": "Syntax/model only"
+    },
+    {
+      "command": "docker compose -f compose.production.yaml build web",
+      "exitCode": 0,
+      "status": "PASS",
+      "scope": "Local Linux amd64 image; no production Compose activation"
+    },
+    {
+      "command": "tsx scripts/check-client-secrets.ts",
+      "exitCode": 0,
+      "status": "PASS",
+      "browserAssets": 19,
+      "configuredCandidateFields": 12,
+      "leakedFields": []
+    },
+    {
+      "command": "diagnostic integrity harness, first attempt",
+      "status": "FAIL harness",
+      "reason": "Attempted import of private discordRest helper; corrected diagnostic only; no database/provider operations executed"
+    }
+  ],
+  "commands": [
+    {
+      "command": "npm run env:check:auth",
+      "exitCode": 0,
+      "timeout": false,
+      "lines": ["Environment configuration is valid. No services were contacted."]
+    },
+    {
+      "command": "npm run db:check",
+      "exitCode": 0,
+      "timeout": false,
+      "lines": []
+    },
+    {
+      "command": "npm run test:postgres",
+      "exitCode": 0,
+      "timeout": false,
+      "lines": [
+        "PASS: concurrent PostgreSQL admission and SKIP LOCKED claims return one delivery.",
+        "PASS: concurrent connections retain the longest provider cooldown.",
+        "PASS: independent PostgreSQL connections serialize the shared route advisory lock.",
+        "PASS: reconstructed repository quarantines interrupted sending and retains deduplication.",
+        "PASS: temporary integration schema removed; application tables untouched."
+      ]
+    },
+    {
+      "command": "npm run release:check",
+      "exitCode": 1,
+      "timeout": false,
+      "lines": [
+        "{\"event\":\"release_configuration\",\"checks\":{\"beta_guild_scope_present\":false,\"web_worker_scope_matches\":false,\"user_allowlist_present\":true,\"broker_secret_matches\":true,\"database_target_matches\":true,\"broker_target_matches\":true,\"source_cap_within_beta_ceiling\":true,\"bot_token_configured\":true,\"public_https_web_origin\":false,\"public_https_webhook_origin\":false},\"ready\":false,\"liveVerification\":false}"
+      ]
+    },
+    {
+      "command": "npm run beta:health",
+      "exitCode": 1,
+      "timeout": false,
+      "lines": [
+        "{\"time\":\"2026-10-22T04:19:32.244Z\",\"event\":\"beta_health\",\"severity\":\"error\",\"sample\":1,\"status\":\"degraded\",\"services\":{\"web\":\"unavailable\",\"bot\":\"unavailable\",\"worker\":\"unavailable\"}}",
+        "{\"time\":\"2026-10-22T04:19:32.244Z\",\"event\":\"health_alert\",\"severity\":\"error\",\"status\":\"degraded\",\"services\":{\"web\":\"unavailable\",\"bot\":\"unavailable\",\"worker\":\"unavailable\"},\"delivery\":\"console_only\"}"
+      ]
+    },
+    {
+      "command": "npm run monitor:check -- --connectivity",
+      "exitCode": 0,
+      "timeout": false,
+      "lines": [
+        "Monitoring configuration is valid. No secret values printed.",
+        "PASS: official Kick public-key endpoint and RSA key format (unauthenticated).",
+        "PASS: authenticated YouTube channels API connectivity; no livestream verified.",
+        "PASS: Kick app token and read-only subscription inventory; no livestream verified."
+      ]
+    }
+  ],
+  "integrity": {
+    "event": "release_blockers_read_only_checks",
+    "migrations": {
+      "expected": 7,
+      "applied": 7,
+      "hashesMatch": true
+    },
+    "monitoringSchemaReady": true,
+    "requiredUniqueIndexes": {
+      "expected": 3,
+      "found": 3,
+      "valid": true
+    },
+    "orphanNotificationSettings": 0,
+    "discordIdentity": {
+      "status": "PASS",
+      "configuredApplicationMatches": true
+    },
+    "configuredGuildMembership": {
+      "checked": 1,
+      "installed": 1,
+      "notInstalled": 0,
+      "unknown": 0,
+      "installationPerformed": false
+    },
+    "scratchRestoreDatabasesRemaining": 0,
+    "scratchTestSchemasRemaining": 0
+  },
+  "restore": {
+    "event": "isolated_backup_restore",
+    "sourceRelations": 14,
+    "backupCreated": true,
+    "archiveHashMatches": true,
+    "restored": true,
+    "restoredRowsMatch": true,
+    "sourceUnchanged": true,
+    "scratchRemoved": true,
+    "backupEncrypted": false,
+    "offsiteBackupVerified": false,
+    "backupBytes": 33527,
+    "restoreSeconds": 0.926
+  },
+  "image": {
+    "event": "isolated_linux_image",
+    "imageId": "sha256:0ae0df303ea2863737f0a12e99ac22d99e7a22179a13d357c9de0b8e2e2ca957",
+    "nodeVersion": "v24.22.1",
+    "botScaffoldExit": 0,
+    "workerScaffoldExit": 0,
+    "websiteStarted": true,
+    "httpCases": [
+      {
+        "path": "/",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/support",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/privacy",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/terms",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/dashboard",
+        "method": "GET",
+        "expected": 307,
+        "actual": 307,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds",
+        "method": "GET",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      },
+      {
+        "path": "/api/auth/get-access-token",
+        "method": "GET",
+        "expected": 404,
+        "actual": 404,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "method": "POST",
+        "expected": 403,
+        "actual": 403,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "method": "POST",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      }
+    ],
+    "gracefulExitCode": 143,
+    "fixtureRemoved": true,
+    "network": "none",
+    "realMessages": false,
+    "realOAuth": false,
+    "scope": "Synthetic credentials/network none/no host ports",
+    "isolation": {
+      "uid": 1000,
+      "configuredSecretFilesPresent": false
+    }
+  },
+  "redis": {
+    "ping": "PONG",
+    "aofEnabled": true,
+    "aofLastWrite": "ok",
+    "aofLastRewrite": "ok",
+    "lastRdbSave": "ok",
+    "originalNotRestartedForFaultInjection": true,
+    "isolatedRestartToday": false,
+    "historicalIsolatedRestart": "PASS 2026-10-20"
+  },
+  "dependencyReview": [
+    {
+      "command": "npm audit --json",
+      "exitCode": 1,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 4,
+        "high": 0,
+        "critical": 0,
+        "total": 4
+      },
+      "findings": [
+        {
+          "name": "@esbuild-kit/core-utils",
+          "severity": "moderate",
+          "nodes": ["node_modules/@esbuild-kit/core-utils"],
+          "fix": {
+            "name": "drizzle-kit",
+            "version": "0.18.1",
+            "isSemVerMajor": true
+          },
+          "via": ["esbuild"]
+        },
+        {
+          "name": "@esbuild-kit/esm-loader",
+          "severity": "moderate",
+          "nodes": ["node_modules/@esbuild-kit/esm-loader"],
+          "fix": {
+            "name": "drizzle-kit",
+            "version": "0.18.1",
+            "isSemVerMajor": true
+          },
+          "via": ["@esbuild-kit/core-utils"]
+        },
+        {
+          "name": "drizzle-kit",
+          "severity": "moderate",
+          "nodes": ["node_modules/drizzle-kit"],
+          "fix": {
+            "name": "drizzle-kit",
+            "version": "0.18.1",
+            "isSemVerMajor": true
+          },
+          "via": ["@esbuild-kit/esm-loader"]
+        },
+        {
+          "name": "esbuild",
+          "severity": "moderate",
+          "nodes": ["node_modules/@esbuild-kit/core-utils/node_modules/esbuild"],
+          "fix": {
+            "name": "drizzle-kit",
+            "version": "0.18.1",
+            "isSemVerMajor": true
+          },
+          "via": [
+            {
+              "title": "esbuild enables any website to send any requests to the development server and read the response",
+              "url": "https://github.com/advisories/GHSA-67mh-4wv8-2f99",
+              "range": "<=0.24.2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "npm audit --omit=dev --json",
+      "exitCode": 1,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 4,
+        "high": 0,
+        "critical": 0,
+        "total": 4
+      },
+      "findings": [
+        {
+          "name": "@esbuild-kit/core-utils",
+          "severity": "moderate",
+          "nodes": ["node_modules/@esbuild-kit/core-utils"],
+          "fix": {
+            "name": "drizzle-kit",
+            "version": "0.18.1",
+            "isSemVerMajor": true
+          },
+          "via": ["esbuild"]
+        },
+        {
+          "name": "@esbuild-kit/esm-loader",
+          "severity": "moderate",
+          "nodes": ["node_modules/@esbuild-kit/esm-loader"],
+          "fix": {
+            "name": "drizzle-kit",
+            "version": "0.18.1",
+            "isSemVerMajor": true
+          },
+          "via": ["@esbuild-kit/core-utils"]
+        },
+        {
+          "name": "drizzle-kit",
+          "severity": "moderate",
+          "nodes": ["node_modules/drizzle-kit"],
+          "fix": {
+            "name": "drizzle-kit",
+            "version": "0.18.1",
+            "isSemVerMajor": true
+          },
+          "via": ["@esbuild-kit/esm-loader"]
+        },
+        {
+          "name": "esbuild",
+          "severity": "moderate",
+          "nodes": ["node_modules/@esbuild-kit/core-utils/node_modules/esbuild"],
+          "fix": {
+            "name": "drizzle-kit",
+            "version": "0.18.1",
+            "isSemVerMajor": true
+          },
+          "via": [
+            {
+              "title": "esbuild enables any website to send any requests to the development server and read the response",
+              "url": "https://github.com/advisories/GHSA-67mh-4wv8-2f99",
+              "range": "<=0.24.2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "npm view drizzle-kit version --json",
+      "exitCode": 0,
+      "result": "0.31.11"
+    },
+    {
+      "command": "npm ls drizzle-kit --omit=dev --json",
+      "exitCode": 0,
+      "result": {
+        "version": "0.1.0",
+        "name": "navi-live-notifier",
+        "dependencies": {
+          "@navi/web": {
+            "version": "0.1.0",
+            "resolved": "file:../../apps/web",
+            "overridden": false,
+            "dependencies": {
+              "better-auth": {
+                "version": "1.7.10",
+                "resolved": "https://registry.npmjs.org/better-auth/-/better-auth-1.7.10.tgz",
+                "overridden": false,
+                "dependencies": {
+                  "drizzle-kit": {
+                    "version": "0.31.11",
+                    "resolved": "https://registry.npmjs.org/drizzle-kit/-/drizzle-kit-0.31.11.tgz",
+                    "overridden": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "manualGates": [
+    {
+      "name": "New YouTube LIVE to observed Discord receipt",
+      "status": "BLOCKED",
+      "reason": "Exact targets/send/broadcast approval and observed receipt matrix pending"
+    },
+    {
+      "name": "New Kick LIVE to observed Discord receipt",
+      "status": "BLOCKED",
+      "reason": "Exact targets/send/broadcast approval and observed receipt matrix pending"
+    },
+    {
+      "name": "Fresh complete install/login/logout/revocation/multi-server journey",
+      "status": "BLOCKED",
+      "reason": "Automated guards and read-only current membership do not establish completed external onboarding"
+    },
+    {
+      "name": "Production TLS/proxy/webhooks/full stack and immutable rollback",
+      "status": "BLOCKED",
+      "reason": "No production configuration change or deployment authorized"
+    },
+    {
+      "name": "External operational alert receipt and always-on soak",
+      "status": "BLOCKED",
+      "reason": "Implemented health transitions are console_only; protected collector/destination/owner not operationally verified"
+    },
+    {
+      "name": "Encrypted offsite backup/retention/key restore/host-loss recovery",
+      "status": "BLOCKED",
+      "reason": "Fresh local protected archive and isolated restore pass only; no production RPO/RTO proof"
+    },
+    {
+      "name": "Measured hosting/API capacity and cost",
+      "status": "BLOCKED",
+      "reason": "No host selected/provisioned or sustained representative resource/latency/real delivery measurement"
+    }
+  ],
+  "invariants": {
+    "realDiscordMessagesSent": false,
+    "realBotOrMonitoringWorkerStarted": false,
+    "publicDeployment": false,
+    "credentialsChanged": false,
+    "permissionsOrAccessListsChanged": false,
+    "applicationSourceChanged": false,
+    "migrationsAppliedToExistingDatabase": false,
+    "dependencyManifestOrLockChanged": false,
+    "existingDataReset": false,
+    "scratchRestoreDatabaseRemoved": true
+  },
+  "officialSources": [
+    {
+      "url": "https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm",
+      "reviewed": "2026-10-22",
+      "finding": "Always Free A1 documentation lists 1500 OCPU hours/9000 GB hours, equivalent to 2 OCPUs/12GB; entitlement/capacity require tenant review"
+    },
+    {
+      "url": "https://render.com/docs/free",
+      "reviewed": "2026-10-22",
+      "finding": "15 minute idle web spin-down; free PostgreSQL expires after 30 days; unsuitable assumption for continuous whole stack"
+    },
+    {
+      "url": "https://github.com/evanw/esbuild/security/advisories/GHSA-67mh-4wv8-2f99",
+      "reviewed": "2026-10-22",
+      "finding": "esbuild serve cross-origin response exposure through 0.24.2; patched from 0.25.0"
+    }
+  ]
+}

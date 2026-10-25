@@ -1,0 +1,49 @@
+# REVIEW ONLY: PostgreSQL command dashboard, NOT a complete NAVI deployment.
+# Importing creates/deploys a service and requires approval. No queue activation is authorized.
+# The bot and worker intentionally have no Free web-service definitions. See README.md.
+services:
+  - type: web
+    name: navi-dashboard-experiment
+    runtime: node
+    plan: free
+    autoDeployTrigger: off
+    buildCommand: npm ci --include=dev --no-audit --no-fund && npm run build
+    startCommand: node deployment/render/check-web.mjs && exec node node_modules/next/dist/bin/next start apps/web --hostname 0.0.0.0 --port "$PORT"
+    healthCheckPath: /api/health
+    maxShutdownDelaySeconds: 60
+    envVars:
+      - key: NODE_VERSION
+        value: '24'
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_TELEMETRY_DISABLED
+        value: '1'
+      - key: LOG_LEVEL
+        value: info
+      - key: WEB_ORIGIN
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        sync: false
+      - key: DISCORD_CLIENT_ID
+        sync: false
+      - key: DISCORD_CLIENT_SECRET
+        sync: false
+      - key: DISCORD_ALLOWED_USER_IDS
+        sync: false
+      - key: BETA_GUILD_IDS
+        sync: false
+      # Explicit operator selection after approval; library default stays HTTP.
+      - key: BOT_COMMAND_TRANSPORT
+        sync: false
+      - key: BOT_COMMAND_ADMISSION_ENABLED
+        value: 'false'
+      - key: YOUTUBE_API_KEY
+        sync: false
+      - key: KICK_CLIENT_ID
+        sync: false
+      - key: KICK_CLIENT_SECRET
+        sync: false
+      - key: STREAMER_SOURCE_LIMIT
+        value: '10'

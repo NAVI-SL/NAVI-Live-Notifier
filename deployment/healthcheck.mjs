@@ -1,6 +1,6 @@
 /* global fetch, AbortSignal */
 import { loadRootEnvironment } from '@navi/config';
-import { createDatabase } from '@navi/database';
+import { createDatabase, inspectCommandDatabase } from '@navi/database';
 let database;
 try {
   const service = process.argv[2];
@@ -24,6 +24,14 @@ try {
     database = createDatabase(env.DATABASE_URL);
     // The public route stays liveness-only; the private container probe also verifies auth schema access.
     await database.pool.query('SELECT id FROM auth_user LIMIT 0');
+    if (
+      env.BOT_COMMAND_TRANSPORT === 'postgres' &&
+      (await inspectCommandDatabase(database.pool, 'web')).status !== 'ok'
+    )
+      throw new Error();
+  } else if (service === 'bot' && env.BOT_COMMANDS_ENABLED === 'true') {
+    database = createDatabase(env.DATABASE_URL);
+    if ((await inspectCommandDatabase(database.pool, 'bot')).status !== 'ok') throw new Error();
   }
 } catch {
   process.exitCode = 1; // Probe output must not leak internal credentials or response bodies.

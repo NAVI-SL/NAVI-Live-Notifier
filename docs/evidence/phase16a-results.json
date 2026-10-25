@@ -1,0 +1,523 @@
+{
+  "date": "2026-10-25",
+  "phase": "16A",
+  "decision": "GO for reviewed private feature-branch upload after explicit commit/push approval; NO-GO for deployment/activation/public release",
+  "repository": {
+    "name": "NAVI-SL/NAVI-Live-Notifier",
+    "visibility": "private",
+    "metadataReadOnly": true,
+    "defaultBranch": "main",
+    "featureBranch": "feature/phase-15-cloud-architecture",
+    "base": "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+    "main": "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+    "originMain": "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+    "remote": "https://github.com/NAVI-SL/NAVI-Live-Notifier.git",
+    "mainAheadBehind": [0, 0],
+    "initialWorkingTree": "clean",
+    "originalHasGit": false,
+    "newCommit": false,
+    "push": false,
+    "merge": false
+  },
+  "synchronization": {
+    "originalFiles": 352,
+    "githubFilesBefore": 277,
+    "originalOnly": 79,
+    "githubOnly": 4,
+    "substantiveDifferences": 55,
+    "lineEndingOnlyDifferences": 215,
+    "byteIdentical": 3,
+    "addedFromOriginal": 79,
+    "updatedFromOriginal": 39,
+    "preservedEntries": 235,
+    "sourceManifest": "../PHASE_16A_SYNC_MANIFEST.json",
+    "originalSourceChanges": [],
+    "sourceDrift": [],
+    "historicalSqlBlobs0000Through0006": "unchanged",
+    "normalDatabaseMigration": false,
+    "staged": {
+      "files": 126,
+      "added": 84,
+      "modified": 42,
+      "deleted": 0,
+      "committed": false,
+      "pushed": false
+    }
+  },
+  "checks": {
+    "install": {
+      "status": "PASS",
+      "command": "npm ci --include=dev --no-audit --no-fund",
+      "exitCode": 0,
+      "packages": 312
+    },
+    "automated": {
+      "status": "PASS",
+      "command": "npm run check",
+      "exitCode": 0,
+      "tests": 537,
+      "files": 43,
+      "vitestSeconds": 10.31,
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "formatting": "PASS",
+      "externalResponses": "simulated"
+    },
+    "productionBuild": {
+      "status": "PASS",
+      "command": "npm run build",
+      "exitCode": 0,
+      "applications": ["web", "bot", "worker"],
+      "serviceStartup": false
+    },
+    "exampleEnv": {
+      "status": "PASS",
+      "command": "npm run env:check:example",
+      "exitCode": 0,
+      "servicesContacted": false
+    },
+    "isolated": {
+      "postgres": "PASS",
+      "redis": "PASS",
+      "cleanup": true,
+      "normalDatabaseUsed": false,
+      "realDiscord": false,
+      "postgresExitCode": 0,
+      "postgresPassLines": 29,
+      "postgresScenarios": 27,
+      "redisExitCode": 0,
+      "redisPassLines": 5,
+      "redisScenarios": 5
+    },
+    "postgresIntegration": {
+      "date": "2026-10-25",
+      "results": [
+        {
+          "scenario": "Prepared grant file and private readiness profiles (no writes or claims)",
+          "status": "PASS",
+          "milliseconds": 49
+        },
+        {
+          "scenario": "Exact migrations, unique/index constraints and restricted service identities",
+          "status": "PASS",
+          "milliseconds": 98
+        },
+        {
+          "scenario": "Dashboard handler → physical PostgreSQL → bot → acknowledgment → dashboard poll",
+          "status": "PASS",
+          "milliseconds": 95
+        },
+        {
+          "scenario": "Real loopback HTTP command admission and status (synthetic identity and Discord)",
+          "status": "PASS",
+          "milliseconds": 84
+        },
+        {
+          "scenario": "Unauthenticated, unauthorized and cross-guild results are rejected",
+          "status": "PASS",
+          "milliseconds": 28
+        },
+        {
+          "scenario": "Strict allowlist, hostile payloads and CSRF cannot enter queue",
+          "status": "PASS",
+          "milliseconds": 18
+        },
+        {
+          "scenario": "Concurrent duplicate submissions and processors execute one command",
+          "status": "PASS",
+          "milliseconds": 75
+        },
+        {
+          "scenario": "Execution-time permission revocation fails without settings change",
+          "status": "PASS",
+          "milliseconds": 50
+        },
+        {
+          "scenario": "Session revoked after admission cannot execute or poll protected results",
+          "status": "PASS",
+          "milliseconds": 47
+        },
+        {
+          "scenario": "Independent guild settings share source identity without destination leakage",
+          "status": "PASS",
+          "milliseconds": 75
+        },
+        {
+          "scenario": "Safe errors and logs omit synthetic secrets and command internals",
+          "status": "PASS",
+          "milliseconds": 39
+        },
+        {
+          "scenario": "Bot offline expiration and retained pending evidence",
+          "status": "PASS",
+          "milliseconds": 38
+        },
+        {
+          "scenario": "Crash before effect, lease recovery and stale acknowledgment fencing",
+          "status": "PASS",
+          "milliseconds": 49
+        },
+        {
+          "scenario": "Physical PostgreSQL connection loss, transaction rollback and restoration",
+          "status": "PASS",
+          "milliseconds": 58
+        },
+        {
+          "scenario": "Immediate disabling invalidates older queued apply while backend offline",
+          "status": "PASS",
+          "milliseconds": 49
+        },
+        {
+          "scenario": "Atomic settings/ack rollback when commit path is interrupted",
+          "status": "PASS",
+          "milliseconds": 72
+        },
+        {
+          "scenario": "Rate limits defer safely and oversized Retry-After expires without an early retry",
+          "status": "PASS",
+          "milliseconds": 71
+        },
+        {
+          "scenario": "Ambiguous external send stays uncertain and a late receipt never authorizes retry",
+          "status": "PASS",
+          "milliseconds": 68
+        },
+        {
+          "scenario": "Simulated successful test receipt is durable and replay does not send twice",
+          "status": "PASS",
+          "milliseconds": 111
+        },
+        {
+          "scenario": "Legacy pruning preserves unresolved and command-linked test records",
+          "status": "PASS",
+          "milliseconds": 40
+        },
+        {
+          "scenario": "Rollback admission pause retains status access, queued evidence and direct disabling",
+          "status": "PASS",
+          "milliseconds": 34
+        },
+        {
+          "scenario": "Actual opt-in command loop startup and graceful stop with synthetic Discord only",
+          "status": "PASS",
+          "milliseconds": 89
+        },
+        {
+          "scenario": "Measured local command overhead and retention size (synthetic metadata)",
+          "status": "PASS",
+          "milliseconds": 1297
+        },
+        {
+          "scenario": "Owned command process SIGKILL and restart (unstarted work recovered)",
+          "status": "PASS",
+          "milliseconds": 637
+        },
+        {
+          "scenario": "Owned command process SIGKILL and restart (marked effect quarantined)",
+          "status": "PASS",
+          "milliseconds": 652
+        },
+        {
+          "scenario": "Existing SQL regression: scripts/check-command-queue.ts (isolated database only)",
+          "status": "PASS",
+          "milliseconds": 810
+        },
+        {
+          "scenario": "Existing SQL regression: scripts/check-reliability.ts (isolated database only)",
+          "status": "PASS",
+          "milliseconds": 1628
+        }
+      ],
+      "metrics": {
+        "normalCommandTableBefore": false,
+        "completedAckBytes": 329,
+        "sampleCommands": 50,
+        "p50Milliseconds": 22.090999999999894,
+        "p95Milliseconds": 32.30439999999999,
+        "idleStatementsPerStep": 6,
+        "estimatedIdleStatementsPer30Days": 5184000,
+        "sqlStatementsThroughDrizzle": 2185,
+        "rssBeforeBytes": 155820032,
+        "rssAfterBytes": 199819264,
+        "retention": {
+          "command_bytes": "163840",
+          "attempt_bytes": "32768",
+          "average_row_bytes": 484
+        },
+        "poolMaximums": {
+          "web": 3,
+          "bot": 3,
+          "owner": 2,
+          "admin": 1
+        },
+        "normalCommandTableAfter": false
+      },
+      "exitCode": 0,
+      "boundary": "Physical local PostgreSQL; exact migrations in a new database; effective NOLOGIN service roles via SET ROLE; synthetic session/Discord adapters, no real Discord or provider traffic."
+    },
+    "security": {
+      "fullAudit": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "productionAudit": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      }
+    },
+    "uploadScan": {
+      "sourceFiles": 361,
+      "clientAssets": 19,
+      "knownSecretCandidates": 8,
+      "patternFamilies": 6,
+      "secretMatches": 0,
+      "historyBlobs": 276,
+      "historyMatches": 0,
+      "stagedBlobCount": 359,
+      "stagedSecretMatches": 0,
+      "privateFileNames": [],
+      "stagedFiles": 126,
+      "indexEmpty": false,
+      "unstagedContentPaths": [],
+      "deletedFiles": [],
+      "ignoreChecks": [
+        {
+          "path": ".env",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": ".env.web",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": ".env.production.local",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "apps/web/.env.local",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "secrets/private",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "node_modules/package/a.js",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "apps/web/.next/server/test.js",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "apps/bot/dist/index.js",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": ".local/log.txt",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "backups/database.sql",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "database.dump",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "database.backup",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "id_rsa",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "id_ed25519",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "id_ecdsa",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "id_dsa",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": ".pgpass",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": ".envrc",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "host.pem",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "host.key",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": ".ssh/config",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "tmp/check.txt",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "logs/runtime.txt",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "database.sqlite",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "data.db",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": "private.pfx",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": ".aws/credentials",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": ".npmrc",
+          "expected": "ignored",
+          "pass": true
+        },
+        {
+          "path": ".env.example",
+          "expected": "included",
+          "pass": true
+        },
+        {
+          "path": ".env.web.example",
+          "expected": "included",
+          "pass": true
+        },
+        {
+          "path": "deployment/.env.deploy.example",
+          "expected": "included",
+          "pass": true
+        },
+        {
+          "path": "deployment/render/web.env.example",
+          "expected": "included",
+          "pass": true
+        },
+        {
+          "path": "packages/database/migrations/0007_phase15c_commands.sql",
+          "expected": "included",
+          "pass": true
+        },
+        {
+          "path": "package-lock.json",
+          "expected": "included",
+          "pass": true
+        },
+        {
+          "path": "docs/PHASE_15F_CLOUD_DEPLOYMENT_PLAN.md",
+          "expected": "included",
+          "pass": true
+        }
+      ],
+      "originalSourceFilesChecked": 352,
+      "originalChanges": [],
+      "sourceDrift": [],
+      "branch": "feature/phase-15-cloud-architecture",
+      "head": "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+      "main": "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+      "originMain": "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+      "upstream": "https://github.com/NAVI-SL/NAVI-Live-Notifier.git",
+      "safe": true
+    }
+  },
+  "resolvedFindings": [
+    {
+      "issue": "Checkout CRLF conflicts with existing Prettier LF policy",
+      "resolution": "Normalize text and add .gitattributes; preserve SQL migration bytes using -text; final checks pass"
+    },
+    {
+      "issue": "Privacy-redacted JSON formatting",
+      "resolution": "Format five new JSON reports with no evidence-value changes"
+    },
+    {
+      "issue": "Extra SSH/local credential filename exclusions",
+      "resolution": "Preserve stronger ignores and add ECDSA/DSA, .pgpass and .envrc protections"
+    },
+    {
+      "issue": "Git stat-cache noise after normalization",
+      "resolution": "Renormalize index metadata and assert every staged object identity unchanged; no additional content staged"
+    }
+  ],
+  "restrictions": {
+    "credentialsChanged": false,
+    "realEnvironmentCopied": false,
+    "realDiscordSent": false,
+    "liveMonitoringStarted": false,
+    "queueEnabled": false,
+    "productionChanged": false,
+    "existingDataDeleted": false
+  },
+  "boundaries": [
+    "Source/history/index secret scanning is bounded; unknown secrets cannot be categorically excluded",
+    "No live OAuth/install or YouTube/Kick delivery verification in this task",
+    "No cloud deployment or target-host certification",
+    "Existing Phase 15F and GitHub/ARM64 evidence is historical",
+    "Repository remains private; commit/push and PR creation await approval"
+  ],
+  "excluded": [
+    "real environment files and credentials",
+    "original .git history",
+    "node_modules",
+    "build/cache output",
+    "logs and temporary artifacts",
+    "database data/dumps/backups",
+    "private key material",
+    "private screenshots and generated instructions"
+  ]
+}

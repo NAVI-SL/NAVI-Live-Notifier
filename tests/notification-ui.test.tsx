@@ -29,6 +29,7 @@ const targets = {
 const fetcher = vi.fn<typeof fetch>();
 let root: Root, container: HTMLDivElement;
 beforeEach(() => {
+  sessionStorage.clear();
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
   vi.stubGlobal('fetch', fetcher);
   fetcher.mockReset();
@@ -62,6 +63,117 @@ async function choose(suffix: string, value: string) {
   });
 }
 describe('hydrated notification settings', () => {
+  it('recovers a committed queued save after status refresh fails, without a second save', async () => {
+    const commandId = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
+    const statusUrl = `/api/guilds/${ids.guild}/commands/${commandId}`;
+    let lost = true,
+      puts = 0;
+    fetcher.mockImplementation(async (input, init) => {
+      const url = String(input);
+      if (url.endsWith('/commands'))
+        return Response.json(
+          {
+            accepted: true,
+            command: {
+              id: 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
+              status: 'pending',
+              statusUrl: `/api/guilds/${ids.guild}/commands/eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee`,
+            },
+          },
+          { status: 202 },
+        );
+      if (url.endsWith('/eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'))
+        return Response.json({
+          id: 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
+          status: 'completed',
+          result: targets,
+        });
+      if (init?.method === 'PUT') {
+        puts++;
+        return Response.json(
+          { accepted: true, command: { id: commandId, status: 'pending', statusUrl } },
+          { status: 202 },
+        );
+      }
+      if (url === statusUrl) {
+        if (lost) throw new Error('synthetic status outage');
+        return Response.json({
+          id: commandId,
+          status: 'completed',
+          result: { ...initial, config, version: 1 },
+        });
+      }
+      throw new Error('Unexpected route');
+    });
+    await act(async () => {
+      root.render(<NotificationManager guildId={ids.guild} initial={[initial]} commandMode />);
+    });
+    await choose('channel', ids.channel);
+    await click('Save settings');
+    expect(container.textContent).toContain('pending');
+    expect(container.textContent).not.toContain('Settings saved.');
+    expect(
+      sessionStorage.getItem(
+        `navi-command:/api/guilds/${ids.guild}/notifications/${subscriptionId}`,
+      ),
+    ).toContain(commandId);
+    lost = false;
+    await click('Check command status');
+    expect(container.textContent).toContain('Settings saved.');
+    expect(puts).toBe(1);
+    expect(fetcher.mock.calls.some(([url]) => String(url).includes('127.0.0.1'))).toBe(false);
+  });
+  it('allows immediate disabling while a queue acknowledgment is still pending', async () => {
+    const queuedId = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
+    let release!: (response: Response) => void;
+    fetcher.mockImplementation(async (input, init) => {
+      const url = String(input);
+      if (url.includes('/targets')) return Response.json(targets);
+      if (init?.method === 'PUT')
+        return Response.json(
+          {
+            accepted: true,
+            command: {
+              id: queuedId,
+              status: 'processing',
+              statusUrl: `/api/guilds/${ids.guild}/commands/${queuedId}`,
+            },
+          },
+          { status: 202 },
+        );
+      if (url.endsWith('/commands/' + queuedId))
+        return new Promise<Response>((resolve) => {
+          release = resolve;
+        });
+      if (url.endsWith('/disable'))
+        return Response.json({ ...initial, config: { ...config, enabled: false }, version: 3 });
+      throw new Error('Unexpected route');
+    });
+    await render([{ ...initial, config: { ...config, enabled: true }, version: 1 }]);
+    const save = [...container.querySelectorAll('button')].find(
+      (button) => button.textContent === 'Save settings',
+    )!;
+    await act(async () => {
+      save.click();
+    });
+    const disable = [...container.querySelectorAll('button')].find(
+      (button) => button.textContent === 'Disable saved notifications',
+    )!;
+    expect(disable.disabled).toBe(false);
+    await click('Disable saved notifications');
+    expect(container.textContent).toContain('Notifications disabled');
+    // The old completion is evidence of its commit, not authority to overwrite newer disabled settings.
+    await act(async () => {
+      release(
+        Response.json({
+          id: queuedId,
+          status: 'completed',
+          result: { ...initial, config: { ...config, enabled: true }, version: 2 },
+        }),
+      );
+    });
+    expect(container.textContent).toContain('Notifications disabled');
+  });
   it.each([true, false])(
     'renders an accessible Kick sample embed with rich response=%s, without sending, then clears it on edit',
     async (rich) => {

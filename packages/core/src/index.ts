@@ -1,5 +1,6 @@
 export const PROJECT_NAME = 'NAVI Live Notifier';
 export * from './notifications.js';
+export * from './bot-commands.js';
 export * from './read-cache.js';
 export type ServiceName = 'web' | 'bot' | 'worker';
 

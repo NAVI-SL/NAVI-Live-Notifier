@@ -1,0 +1,25 @@
+# REVIEW ONLY; marker AND MONITORING_ENABLED=true require explicit startup/reconciliation approval.
+[Unit]
+Description=NAVI monitoring worker (separate process, same backend host)
+After=network-online.target navi-bot.service
+Wants=network-online.target navi-bot.service
+ConditionPathExists=/etc/navi/APPROVED_MONITORING
+[Service]
+Type=simple
+User=navi
+WorkingDirectory=/opt/navi
+EnvironmentFile=/etc/navi/worker.env
+ExecStart=/usr/bin/node deployment/start.mjs worker
+Restart=on-failure
+RestartSec=10
+KillSignal=SIGTERM
+KillMode=mixed
+TimeoutStopSec=45
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+StandardOutput=journal
+StandardError=journal
+[Install]
+WantedBy=multi-user.target

@@ -1,5 +1,7 @@
 # Phase 14 — moderate dependency advisory review
 
+**Subsequent remediation — 2026-10-22:** [verified correction](PHASE_14_REMEDIATION.md) replaces the stale nested loader resolution with an exact patched esbuild override, without a Drizzle/ORM downgrade or unrelated version updates. Clean install, behavioral/config/generation/SQL regressions, native/Linux builds and actual production-image resolution PASS; current full/production audits return zero findings. npm 11 workspace listing/update behavior remains an explicit caveat: preserve the lock, use `npm ci` and new guards. The failed four-moderate snapshot below remains historical. Wider release stays NO-GO for the independent operational/live acceptance blockers.
+
 Reviewed **2026-10-20** using current installed tree, registry metadata, full/production `npm audit` and the [esbuild maintainer advisory GHSA-67mh-4wv8-2f99](https://github.com/evanw/esbuild/security/advisories/GHSA-67mh-4wv8-2f99). **Advisory check: FAIL; four moderate remain.** No high/critical finding returned; this is not a complete vulnerability certificate.
 
 ## Actual chain and scope

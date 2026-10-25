@@ -4,6 +4,7 @@ import { REST, Routes, DiscordAPIError, RESTEvents } from 'discord.js';
 import { NotificationError, createReadCache } from '@navi/core';
 import { discordRateLog, discordRetrySeconds, recordDiscordRate } from '@navi/core/discord-rate';
 import { createBotNotifications, type BotNotifications } from './notifications.js';
+import { createCommandDiscordAccess } from './command-discord.js';
 
 export type BotStatus = 'installed' | 'not_installed' | 'unknown';
 function authenticated(value: string, secret: string) {
@@ -192,6 +193,7 @@ export function discordBotServices(token: string) {
   });
   const lookup = discordBotLookup(token, rest);
   const cached = createReadCache<BotStatus>(10000);
+  const notifications = createBotNotifications(rest);
   return {
     lookup: async (id: string) => {
       try {
@@ -204,7 +206,8 @@ export function discordBotServices(token: string) {
         return 'unknown' as const;
       }
     },
-    notifications: createBotNotifications(rest),
+    notifications,
+    commandAccess: createCommandDiscordAccess(rest, notifications),
     diagnostics: () => structuredClone(recent),
   };
 }

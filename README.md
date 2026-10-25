@@ -2,7 +2,17 @@
 
 Private beta source for a Next.js dashboard, Discord bot and independent YouTube/Kick monitoring worker. PostgreSQL stores authentication, server-scoped subscriptions, notification preferences and durable delivery records. Redis is included for local tooling; the implemented delivery queue uses PostgreSQL.
 
-This is a sanitized source copy, not a production deployment. No real environment files, credentials, database data or Git history are included. Existing historical reports are preserved with private identifiers redacted; private evidence screenshots are omitted. Current copy verification is recorded in [GitHub readiness report](docs/GITHUB_READINESS_REPORT.md).
+This is a sanitized source copy, not a production deployment. Source synchronization excludes real environment files, credentials and database data. This checkout preserves its existing Git history. Existing historical reports are preserved with private identifiers redacted; private evidence screenshots are omitted. Current copy verification is recorded in [GitHub readiness report](docs/GITHUB_READINESS_REPORT.md).
+
+## Phase 15 source and cloud preparation
+
+The current feature branch adds the verified Phase 15 PostgreSQL command architecture. See [cloud deployment plan](docs/PHASE_15F_CLOUD_DEPLOYMENT_PLAN.md) and [Phase 16A synchronization evidence](docs/PHASE_16A_GITHUB_SYNC_REPORT.md). The earlier GitHub readiness report/file manifest are dated historical records; this checkout preserves the existing Git history and privacy redactions.
+
+- HTTP broker mode remains the default; the PostgreSQL consumer remains disabled. No cloud service, Public Bot setting, real monitoring or notification is activated by this checkout.
+- PostgreSQL mode removes the dashboard-to-bot broker dependency. It requires separately reviewed migration 0007, distinct least-privilege roles, matching approved user/guild scopes and explicit activation approval. Do not apply migrations to an existing normal database just to validate the copy.
+- Pending acceptance is separate from completed action. Leases, idempotency, uncertain outcomes and immediate notification disabling remain covered by tests. The worker retains its private loopback broker.
+- Render/Neon/Upstash files are review-only examples. Complete continuous free/no-card hosting and production/public release remain **NO-GO**; use the plan's approval, capacity and rollback gates.
+- The portable local environment placeholders, isolated Compose name/ports and stronger GitHub ignore rules are preserved. No real environment files were synchronized.
 
 ## Requirements
 

@@ -1,0 +1,277 @@
+{
+  "event": "phase14_independent_final_readiness_audit",
+  "auditDate": "2026-10-22",
+  "timezone": "Asia/Colombo",
+  "assessment": "FAIL",
+  "publicLaunch": "NO-GO",
+  "realMessagesSent": false,
+  "productionChanged": false,
+  "automated": {
+    "checkExit": 0,
+    "tests": 383,
+    "testFiles": 36,
+    "vitestSeconds": 17.99,
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "format": "PASS",
+    "nativeBuildExit": 0,
+    "composeModelExit": 0,
+    "dockerBuildExit": 0,
+    "dockerCacheAllowed": true,
+    "postgresReliabilityExit": 0,
+    "proxyExit": 0,
+    "proxyAssertions": 14,
+    "clientAssetsScanned": 19,
+    "configuredSecretCandidateFields": 12,
+    "leakedFields": 0
+  },
+  "dependencyAudits": {
+    "fullExit": 0,
+    "productionExit": 0,
+    "findings": 0,
+    "loaderVersion": "0.28.2",
+    "linuxRuntimeTransformer": "0.28.2",
+    "linuxTransformPass": true,
+    "npmLsExit": 1,
+    "npmLsWarning": "ELSPROBLEMS workspace override parent range",
+    "completeImageOsScanPerformed": false
+  },
+  "actualIntegrations": {
+    "event": "phase14_final_actual_integrations",
+    "observedAt": "2026-10-22T05:52:48.158Z",
+    "migrations": {
+      "expected": 7,
+      "applied": 7,
+      "match": true
+    },
+    "monitoringSchema": true,
+    "uniqueIndexes": {
+      "expected": 3,
+      "found": 3,
+      "valid": true
+    },
+    "orphanSettings": 0,
+    "deliveryLedger": [
+      {
+        "provider": "kick",
+        "status": "sent",
+        "count": 3
+      },
+      {
+        "provider": "youtube",
+        "status": "sent",
+        "count": 3
+      },
+      {
+        "provider": "youtube",
+        "status": "uncertain",
+        "count": 1
+      }
+    ],
+    "ledgerIsNotReceiptProof": true,
+    "discord": {
+      "identity": "PASS",
+      "configuredApplicationMatches": true,
+      "checkedGuilds": 1,
+      "installed": 1,
+      "unknown": 0,
+      "notInstalled": 0,
+      "newInstallationPerformed": false,
+      "gatewayConnectedByAudit": false
+    }
+  },
+  "historicalMessageObservations": {
+    "event": "historical_message_classification",
+    "observedAt": "2026-10-22T05:54:59.441Z",
+    "realMessagesSent": false,
+    "results": [
+      {
+        "providers": ["kick"],
+        "labelledNaviTest": false,
+        "hasRichEmbed": true,
+        "liveStyleFooter": true,
+        "youtubeRedEmbed": false,
+        "timestamp": "2026-10-18T20:27:07.799+05:30",
+        "nonceReturned": false,
+        "exactStoredDeliveryNonceMatches": 0,
+        "matchIsNotOfficialLiveObservation": true
+      },
+      {
+        "providers": ["youtube"],
+        "labelledNaviTest": false,
+        "hasRichEmbed": true,
+        "liveStyleFooter": false,
+        "youtubeRedEmbed": true,
+        "timestamp": "2026-10-18T20:27:57.504+05:30",
+        "nonceReturned": false,
+        "exactStoredDeliveryNonceMatches": 0,
+        "matchIsNotOfficialLiveObservation": true
+      }
+    ]
+  },
+  "historicalYoutubeOfficialCrosscheck": {
+    "event": "historical_youtube_official_crosscheck",
+    "observedAt": "2026-10-22T05:55:48.958Z",
+    "currentLiveTransitionTest": false,
+    "realMessagesSent": false,
+    "status": "PASS_official_historical_record",
+    "stableChannelMatches": true,
+    "titleMatchesStored": true,
+    "officialActualStartPresent": true,
+    "officialEndPresent": true,
+    "startMatchesStored": true,
+    "apiRequests": 1
+  },
+  "uncertainDelivery": {
+    "provider": "youtube",
+    "count": 1,
+    "errorCode": "delivery_interrupted",
+    "attempts": 1,
+    "updatedAt": "2026-10-18T04:43:50.810Z",
+    "modified": false,
+    "automaticallyRetried": false
+  },
+  "backupRestore": {
+    "event": "independent_scratch_restore",
+    "archiveHashMatches": true,
+    "sourceRelations": 14,
+    "restored": true,
+    "restoredRowsMatch": true,
+    "sourceUnchanged": true,
+    "scratchRemoved": true,
+    "backupEncrypted": false,
+    "offsiteBackupVerified": false
+  },
+  "isolatedImage": {
+    "event": "isolated_linux_image",
+    "imageId": "sha256:ffb881c76a29f5ecc8accf2dd3aa40e841166d62a0388f7809f1c2dff76d4486",
+    "nodeVersion": "v24.22.1",
+    "botScaffoldExit": 0,
+    "workerScaffoldExit": 0,
+    "websiteStarted": true,
+    "httpCases": [
+      {
+        "path": "/",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/support",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/privacy",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/terms",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/dashboard",
+        "method": "GET",
+        "expected": 307,
+        "actual": 307,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds",
+        "method": "GET",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      },
+      {
+        "path": "/api/auth/get-access-token",
+        "method": "GET",
+        "expected": 404,
+        "actual": 404,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "method": "POST",
+        "expected": 403,
+        "actual": 403,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "method": "POST",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      }
+    ],
+    "gracefulExitCode": 143,
+    "fixtureRemoved": true,
+    "network": "none",
+    "realMessages": false,
+    "realOAuth": false
+  },
+  "imageIsolation": {
+    "uid": 1000,
+    "configuredSecretFilesPresent": false
+  },
+  "redis": {
+    "ping": "PONG",
+    "loading": 0,
+    "aofEnabled": 1,
+    "aofLastWriteStatus": "ok",
+    "rdbLastBackgroundSaveStatus": "ok",
+    "originalServicesRestarted": false
+  },
+  "releaseConfiguration": {
+    "exit": 1,
+    "betaGuildScopePresent": false,
+    "webWorkerScopeMatches": false,
+    "userAllowlistPresent": true,
+    "brokerSecretMatches": true,
+    "databaseTargetMatches": true,
+    "brokerTargetMatches": true,
+    "sourceCapWithinBetaCeiling": true,
+    "publicHttpsWebOrigin": false,
+    "publicHttpsWebhookOrigin": false
+  },
+  "health": {
+    "exit": 1,
+    "observedAt": "2026-10-22T05:55:04.074Z",
+    "web": "unavailable",
+    "bot": "unavailable",
+    "worker": "unavailable",
+    "alertDelivery": "console_only"
+  },
+  "providerConnectivity": {
+    "exit": 0,
+    "youtubeChannelsHttp": 200,
+    "kickPublicKey": "PASS",
+    "kickAppToken": "PASS",
+    "kickSubscriptionInventory": "PASS",
+    "currentLiveTransitionTest": false,
+    "realWebhookDeliveryVerified": false
+  },
+  "sourceIntegrity": {
+    "trackedSourceFiles": 185,
+    "changedSourceFiles": 0
+  },
+  "limitations": [
+    "No new live broadcast-to-receipt test",
+    "No full browser OAuth/install E2E rerun",
+    "Historical channel sample limited to 25 recent messages per configured destination",
+    "No exact message nonce to delivery-row correlation",
+    "No production deployment or uptime verification",
+    "No offsite encrypted host-loss restore",
+    "No approved hosting capacity or observed production costs"
+  ]
+}

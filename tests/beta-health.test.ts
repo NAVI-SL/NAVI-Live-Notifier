@@ -6,9 +6,96 @@ import {
   healthOptions,
   probeHealth,
   createHealthAlerts,
+  probeHealthResult,
+  probeAuthDatabase,
 } from '../scripts/lib/beta-health';
 
 describe('private beta read-only operational checks', () => {
+  it.each([
+    [{ cause: { code: 'ECONNREFUSED', message: 'FAKE_SECRET' } }, 'connection_refused'],
+    [{ cause: { errors: [{ code: 'ECONNREFUSED' }] } }, 'connection_refused'],
+    [{ name: 'TimeoutError' }, 'timeout'],
+    [{ cause: { code: 'ENOTFOUND' } }, 'dns_failure'],
+    [new Error('FAKE_SECRET'), 'network_error'],
+  ])(
+    'distinguishes safe connection failure reasons without raw causes',
+    async (failure, reason) => {
+      const result = await probeHealthResult(
+        { url: 'http://localhost', expected: 'ok' },
+        async () => {
+          throw failure;
+        },
+      );
+      expect(result).toEqual({ status: 'unavailable', reason });
+      expect(JSON.stringify(result)).not.toContain('FAKE_SECRET');
+    },
+  );
+  it('separates website liveness from bot and worker readiness and retains HTTP failure status', async () => {
+    const result = await betaHealth(
+      {
+        webOrigin: 'http://localhost',
+        botUrl: 'http://127.0.0.1:4001',
+        botSecret: 'FAKE_SECRET',
+        workerPort: 4100,
+        workerSecret: 'FAKE_SECRET',
+        monitoringEnabled: true,
+      },
+      async (url) =>
+        String(url).endsWith('/api/health')
+          ? Response.json({ status: 'initialized' })
+          : new Response('FAKE_SECRET', { status: 503 }),
+    );
+    expect(result.status).toBe('degraded');
+    expect(result.checks.web).toEqual({
+      kind: 'liveness',
+      status: 'ok',
+      reason: 'healthy',
+      httpStatus: 200,
+    });
+    expect(result.checks.bot).toEqual({
+      kind: 'readiness',
+      status: 'degraded',
+      reason: 'dependency_unready',
+      httpStatus: 503,
+    });
+    expect(JSON.stringify(result)).not.toContain('FAKE_SECRET');
+  });
+  it('checks all OAuth persistence tables read-only rather than treating HTTP liveness as database readiness', async () => {
+    const query = vi.fn(async () => undefined);
+    expect(await probeAuthDatabase(query)).toEqual({
+      status: 'ok',
+      reason: 'auth_schema_accessible',
+    });
+    expect(query).toHaveBeenCalledExactlyOnceWith(
+      'SELECT 1 FROM auth_user, auth_session, auth_account, auth_verification LIMIT 0',
+    );
+  });
+  it.each([
+    ['42P01', 'auth_schema_missing'],
+    ['42501', 'database_permission_denied'],
+    ['28P01', 'database_authentication_failed'],
+    ['ECONNREFUSED', 'connection_refused'],
+  ])('classifies database failure %s without leaking connection details', async (code, reason) => {
+    const result = await probeAuthDatabase(async () => {
+      throw { code, message: 'FAKE_SECRET' };
+    });
+    expect(result).toEqual({ status: 'degraded', reason });
+    expect(JSON.stringify(result)).not.toContain('FAKE_SECRET');
+  });
+  it('alerts and recovers when database readiness changes with unchanged HTTP services', () => {
+    const alert = createHealthAlerts();
+    const services = { web: 'ok', bot: 'ok', worker: 'ok' } as const;
+    expect(alert({ status: 'ok', services, database: { status: 'ok' } })).toBeNull();
+    const failed = { status: 'degraded', services, database: { status: 'degraded' } } as const;
+    expect(alert(failed)).toMatchObject({
+      event: 'health_alert',
+      database: { status: 'degraded' },
+    });
+    expect(alert(failed)).toBeNull();
+    expect(alert({ status: 'ok', services, database: { status: 'ok' } })).toMatchObject({
+      event: 'health_recovered',
+    });
+  });
   it('emits console-only incident/recovery transitions without flooding unchanged failures', () => {
     const alert = createHealthAlerts();
     const healthy = { status: 'ok', services: { web: 'ok', bot: 'ok', worker: 'ok' } } as const;
@@ -121,7 +208,7 @@ describe('private beta read-only operational checks', () => {
       },
       fetcher,
     );
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       status: 'degraded',
       services: { web: 'ok', bot: 'ok', worker: 'disabled' },
     });

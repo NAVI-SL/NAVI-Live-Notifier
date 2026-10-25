@@ -1229,6 +1229,43 @@ describe('Phase 6 durable monitor and existing Discord sender integration (simul
       (await db.select().from(schema.liveDeliveries)).every((x) => x.status === 'suppressed'),
     ).toBe(true);
   });
+  it.each(['youtube', 'kick'] as const)(
+    'uses the saved no-mention configuration time as a %s controlled-test cutoff',
+    async (provider) => {
+      await registrations(provider, false);
+      await monitor().tick(); // Establish offline baseline.
+      clock += 60001;
+      live = true;
+      startedAt = new Date(clock - 1000).toISOString();
+      const settings = createNotificationRepository(db, now);
+      const [row] = await settings.list(ids.guild);
+      await settings.save(
+        ids.guild,
+        row!.subscriptionId,
+        { ...row!.config!, roleId: null, mentionEveryone: false },
+        row!.version,
+      );
+      await monitor().tick();
+      expect(fixture.rest.post).not.toHaveBeenCalled();
+      expect((await db.select().from(schema.liveDeliveries))[0]).toMatchObject({
+        status: 'suppressed',
+        errorCode: 'baseline_or_stale',
+      });
+      clock += 60001;
+      videoId = 'newstream01';
+      startedAt = new Date(clock - 1000).toISOString();
+      await monitor().tick();
+      expect(fixture.rest.post).toHaveBeenCalledTimes(1);
+      expect(fixture.rest.post).toHaveBeenCalledWith(
+        `/channels/${ids.channel}/messages`,
+        expect.objectContaining({
+          body: expect.objectContaining({
+            allowed_mentions: expect.objectContaining({ parse: [], roles: [] }),
+          }),
+        }),
+      );
+    },
+  );
   it('recovers a pending queue through a fresh worker and does not resend interrupted sends', async () => {
     const source = await registrations('kick');
     await monitor().tick();

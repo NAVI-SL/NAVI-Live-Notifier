@@ -1,5 +1,7 @@
 # Production checklist
 
+**Local evidence update — 2026-10-22:** [Phase 14 blocker review](PHASE_14_RELEASE_BLOCKERS.md) verifies local Docker build/offline runtime, actual PostgreSQL concurrency/schema checks and a fresh isolated restore. Older unchecked items below retain their original full-production scope: local success does not verify complete TLS/Compose deployment, encrypted offsite recovery, actual livestream receipts or externally delivered alerts. Production release remains **NO-GO**; no settings are changed by this note.
+
 Prepared 2026-10-18. **Release decision: HOLD.** Files are prepared for local review, not a completed public deployment. Checkboxes describe actual evidence; leave manual gates unchecked until performed. See [deployment instructions](DEPLOYMENT_GUIDE.md) and [Phase 8 report](PHASE_08_IMPLEMENTATION.md).
 
 ## Scope and approvals

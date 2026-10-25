@@ -8,6 +8,8 @@ export { schema };
 export * from './streamers.js';
 export * from './notifications.js';
 export * from './monitoring.js';
+export * from './bot-commands.js';
+export * from './command-readiness.js';
 
 /** Lazy factory: importing the package never connects or modifies the database. */
 export function createDatabase(connectionString: string) {

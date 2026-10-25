@@ -29,6 +29,7 @@ type Dependencies = {
   origin: string;
   fetchGuilds: (token: string, options?: { fresh: boolean }) => Promise<DiscordGuild[]>;
   installationStatus: (id: string) => Promise<InstallationStatus>;
+  commandMode?: boolean;
   accessToken?: (headers: Headers, accountId: string) => Promise<string>;
 };
 
@@ -101,7 +102,11 @@ export function createGuildService(deps: Dependencies) {
     authorize,
     async status(headers: Headers, id: string) {
       const guild = await authorize(headers, id);
-      return { guild, status: await deps.installationStatus(id) };
+      return {
+        guild,
+        status: await deps.installationStatus(id),
+        commandMode: deps.commandMode ?? false,
+      };
     },
     async install(headers: Headers, id: string) {
       await authorize(headers, id);

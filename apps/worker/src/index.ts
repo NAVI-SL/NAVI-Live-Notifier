@@ -13,6 +13,18 @@ import { startWebhookServer } from './server.js';
 import { startMonitorRuntime } from './runtime.js';
 import { createWorkerHealthHandler } from './health.js';
 
+// Unknown flags must not silently start a send-capable worker (notably --dry-run).
+const arguments_ = process.argv.slice(2);
+if (arguments_.some((value) => value !== '--smoke') || arguments_.length > 1) {
+  console.error(
+    JSON.stringify({
+      event: 'worker_invalid_options',
+      code: 'use_monitor_dry_run_for_offline_planning',
+    }),
+  );
+  process.exit(1);
+}
+
 const values = loadRootEnvironment('worker');
 const environment = readWorkerEnvironment(values),
   monitoring = readMonitoringEnvironment(values);

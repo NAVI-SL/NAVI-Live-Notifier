@@ -1,0 +1,25 @@
+# REVIEW ONLY; do not install, enable or start without owner approval.
+# Review Node 24 path, /opt/navi ownership and the dedicated unprivileged navi user.
+[Unit]
+Description=NAVI private bot and opt-in command consumer
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=simple
+User=navi
+WorkingDirectory=/opt/navi
+EnvironmentFile=/etc/navi/bot.env
+ExecStart=/usr/bin/node deployment/start.mjs bot
+Restart=on-failure
+RestartSec=10
+KillSignal=SIGTERM
+KillMode=mixed
+TimeoutStopSec=75
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+StandardOutput=journal
+StandardError=journal
+[Install]
+WantedBy=multi-user.target

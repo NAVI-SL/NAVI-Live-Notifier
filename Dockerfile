@@ -12,7 +12,7 @@ COPY packages/tsconfig/package.json packages/tsconfig/package.json
 RUN npm ci --no-audit --no-fund
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN npm run build
+RUN npm run test:tooling && npm run build
 
 FROM node:24-bookworm-slim AS dependencies
 WORKDIR /app
