@@ -32,4 +32,4 @@ Tests should use synthetic external responses unless a separately approved integ
 
 ## License
 
-No project license has been selected. There is no LICENSE file or contributor license agreement asserted by this document. Owner review is required before choosing licensing terms or public distribution.
+The owner selected the [MIT License](LICENSE). The copyright notice is 2026 NAVI-SL. Contributions must be yours to license and must preserve third-party notices. This document does not assert a separate contributor license agreement.

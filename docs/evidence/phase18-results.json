@@ -1,0 +1,1012 @@
+{
+  "date": "2026-10-26",
+  "branch": "release/phase-18-mit-self-hosting",
+  "baseMain": "8979360afac987803fd78cd02efa97b2985249ab",
+  "localMain": "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+  "remoteMain": "8979360afac987803fd78cd02efa97b2985249ab",
+  "repositoryVisibility": "private",
+  "historyRewritten": false,
+  "license": {
+    "identifier": "MIT",
+    "year": 2026,
+    "copyrightHolder": "NAVI-SL",
+    "terms": "Complete standard MIT terms; no additional terms inserted",
+    "source": "https://opensource.org/license/mit",
+    "termsMatchSpdxReference": true,
+    "placeholder": false
+  },
+  "windows": {
+    "freshClone": true,
+    "source": "main plus explicit safe uncommitted candidate overlay",
+    "node": "25.3.0",
+    "shellNpm": "11.15.0",
+    "install": "PASS",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "format": "PASS",
+    "fullSuite": {
+      "status": "PASS",
+      "tests": 537,
+      "files": 43,
+      "command": "npm run test -- --maxWorkers=1"
+    },
+    "productionBuild": "PASS",
+    "exampleValidation": "PASS",
+    "initialRuns": [
+      {
+        "passed": 536,
+        "failed": 1,
+        "reason": "5-second startup test timeout during concurrent Windows/Linux validation"
+      },
+      {
+        "passed": 535,
+        "failed": 2,
+        "reason": "CLI subprocess timing failures during concurrent validation"
+      }
+    ]
+  },
+  "linux": {
+    "platform": "Linux x64 Node 24",
+    "source": "Git archive from new remote main clone plus reviewed safe candidate files",
+    "install": "PASS",
+    "productionBuild": "PASS",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "format": "PASS",
+    "fullSuite": {
+      "status": "PASS",
+      "tests": 537,
+      "files": 43,
+      "command": "npm run test -- --maxWorkers=1",
+      "network": "none"
+    },
+    "initialRun": {
+      "passed": 535,
+      "failed": 2,
+      "reason": "5-second subprocess/loopback timing failures during concurrent validation"
+    }
+  },
+  "runtime": {
+    "date": "2026-10-26",
+    "results": [
+      {
+        "scenario": "Fresh instance A migrations, repeat safety and connectivity",
+        "status": "PASS",
+        "migrations": 8,
+        "normalDatabase": false
+      },
+      {
+        "scenario": "Fresh instance B migrations, repeat safety and connectivity",
+        "status": "PASS",
+        "migrations": 8,
+        "normalDatabase": false
+      },
+      {
+        "scenario": "test:commands:integration on isolated fresh clone",
+        "status": "PASS",
+        "scenarios": 27,
+        "externalResponses": "synthetic"
+      },
+      {
+        "scenario": "test:redis:compatibility on isolated fresh clone",
+        "status": "PASS",
+        "scenarios": 5,
+        "externalResponses": "synthetic"
+      },
+      {
+        "scenario": "Independent database marker isolation",
+        "status": "PASS",
+        "separateDatabases": true
+      },
+      {
+        "scenario": "npm run dev:web instance A and synthetic OAuth initiation",
+        "status": "PASS",
+        "httpHealth": 200,
+        "anonymousApi": 401,
+        "protectedDashboard": 307,
+        "oauthStateCreated": true,
+        "discordContacted": false,
+        "independentClientConfiguration": true
+      },
+      {
+        "scenario": "npm run dev:web instance B and synthetic OAuth initiation",
+        "status": "PASS",
+        "httpHealth": 200,
+        "anonymousApi": 401,
+        "protectedDashboard": 307,
+        "oauthStateCreated": true,
+        "discordContacted": false,
+        "independentClientConfiguration": true
+      },
+      {
+        "scenario": "npm run dev:bot disabled/no-token scaffold",
+        "status": "PASS",
+        "mode": "scaffold",
+        "gatewayVerified": false,
+        "monitoring": false
+      },
+      {
+        "scenario": "npm run start --workspace=@navi/bot scaffold",
+        "status": "PASS",
+        "mode": "scaffold",
+        "gatewayVerified": false,
+        "monitoring": false
+      },
+      {
+        "scenario": "npm run smoke --workspace=@navi/bot",
+        "status": "PASS",
+        "gatewayVerified": false,
+        "monitoring": false
+      },
+      {
+        "scenario": "npm run dev:worker disabled/no-token scaffold",
+        "status": "PASS",
+        "mode": "scaffold",
+        "gatewayVerified": false,
+        "monitoring": false
+      },
+      {
+        "scenario": "npm run start --workspace=@navi/worker scaffold",
+        "status": "PASS",
+        "mode": "scaffold",
+        "gatewayVerified": false,
+        "monitoring": false
+      },
+      {
+        "scenario": "npm run smoke --workspace=@navi/worker",
+        "status": "PASS",
+        "gatewayVerified": false,
+        "monitoring": false
+      },
+      {
+        "scenario": "Built website workspace start (HTTP backend liveness only)",
+        "status": "PASS",
+        "httpHealth": 200,
+        "anonymousApi": 401,
+        "protectedDashboard": 307,
+        "oauthStateCreated": false,
+        "discordContacted": false
+      },
+      {
+        "scenario": "Production website wrapper (HTTP backend liveness only)",
+        "status": "PASS",
+        "httpHealth": 200,
+        "anonymousApi": 401,
+        "protectedDashboard": 307,
+        "oauthStateCreated": false,
+        "discordContacted": false
+      },
+      {
+        "scenario": "Production bot wrapper rejects missing credentials/disabled monitoring",
+        "status": "PASS",
+        "intentionalExit": 1,
+        "healthyServiceVerified": false
+      },
+      {
+        "scenario": "Production worker wrapper rejects missing credentials/disabled monitoring",
+        "status": "PASS",
+        "intentionalExit": 1,
+        "healthyServiceVerified": false
+      },
+      {
+        "scenario": "Combined npm run dev stays non-sending under isolated disabled configuration",
+        "status": "PASS",
+        "httpHealth": 200,
+        "anonymousApi": 401,
+        "protectedDashboard": 307,
+        "oauthStateCreated": false,
+        "discordContacted": false
+      }
+    ],
+    "cleanup": true,
+    "realDiscord": false,
+    "monitoringEnabled": false,
+    "normalDatabaseUsed": false,
+    "syntheticCredentials": true,
+    "shutdownBoundary": "Owned Windows process trees terminated; this is not proof of graceful production shutdown"
+  },
+  "compose": {
+    "datastores": true,
+    "migrations": true,
+    "persistence": true,
+    "cleanup": true,
+    "normalProjectTouched": false
+  },
+  "security": {
+    "date": "2026-10-26",
+    "head": "8979360afac987803fd78cd02efa97b2985249ab",
+    "currentFiles": 372,
+    "knownCredentialCandidates": 8,
+    "patternFamilies": 6,
+    "currentSecretFiles": [],
+    "privacyReview": [
+      {
+        "file": "tests/cloud-preparation.test.ts",
+        "knownIds": false,
+        "userHome": false,
+        "contacts": 3
+      },
+      {
+        "file": "tests/controlled-test-plan.test.ts",
+        "knownIds": false,
+        "userHome": false,
+        "contacts": 1
+      },
+      {
+        "file": "tests/kick-embed.test.ts",
+        "knownIds": false,
+        "userHome": false,
+        "contacts": 1
+      },
+      {
+        "file": "tests/login-diagnostics.test.ts",
+        "knownIds": false,
+        "userHome": false,
+        "contacts": 1
+      },
+      {
+        "file": "tests/production.test.ts",
+        "knownIds": false,
+        "userHome": false,
+        "contacts": 1
+      },
+      {
+        "file": "tests/render-compatibility.test.ts",
+        "knownIds": false,
+        "userHome": false,
+        "contacts": 2
+      },
+      {
+        "file": "tests/streamer-providers.test.ts",
+        "knownIds": false,
+        "userHome": false,
+        "contacts": 1
+      },
+      {
+        "file": "tests/youtube-embed.test.ts",
+        "knownIds": false,
+        "userHome": false,
+        "contacts": 1
+      }
+    ],
+    "historyBlobs": 421,
+    "historySecretMatches": 0,
+    "historyPrivacyBlobs": 8,
+    "commitsReviewed": 7,
+    "commitsWithNonNoreplyMetadata": [
+      "8979360afac987803fd78cd02efa97b2985249ab",
+      "3e1377f80abb3a774ba521282bc369f86537505d",
+      "a6fec23397d7b00f65725ecfaccb0db550044ec5",
+      "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+      "da063301685c7f5893750d0de204e8a7bb4966ed",
+      "c98cab894dbe89d4312ae40508c72f8b0f8e1c39",
+      "405726afc9ef7f6abbb4f9db50e065b630981229"
+    ],
+    "ignoreCases": [
+      {
+        "file": ".env",
+        "pass": true
+      },
+      {
+        "file": ".env.web",
+        "pass": true
+      },
+      {
+        "file": ".env.bot",
+        "pass": true
+      },
+      {
+        "file": ".env.worker",
+        "pass": true
+      },
+      {
+        "file": ".env.production",
+        "pass": true
+      },
+      {
+        "file": ".env.local",
+        "pass": true
+      },
+      {
+        "file": "apps/web/.env.local",
+        "pass": true
+      },
+      {
+        "file": ".env.production.local",
+        "pass": true
+      },
+      {
+        "file": "deployment/filled.env",
+        "pass": true
+      },
+      {
+        "file": "secrets/file",
+        "pass": true
+      },
+      {
+        "file": "backups/backup.sql",
+        "pass": true
+      },
+      {
+        "file": ".local/temp.log",
+        "pass": true
+      },
+      {
+        "file": "node_modules/pkg/a.js",
+        "pass": true
+      },
+      {
+        "file": "apps/web/.next/server/a.js",
+        "pass": true
+      },
+      {
+        "file": "apps/bot/dist/index.js",
+        "pass": true
+      },
+      {
+        "file": "id_rsa",
+        "pass": true
+      },
+      {
+        "file": "id_ecdsa",
+        "pass": true
+      },
+      {
+        "file": "id_ed25519",
+        "pass": true
+      },
+      {
+        "file": ".pgpass",
+        "pass": true
+      },
+      {
+        "file": ".envrc",
+        "pass": true
+      }
+    ],
+    "licensePresent": true,
+    "historyRewritten": false,
+    "rawPersonalValuesDisclosed": false,
+    "scanBoundary": "Known values/common patterns and privacy heuristics; false positives require review; no guarantee about unknown secrets."
+  },
+  "dependencyLicensing": {
+    "date": "2026-10-26",
+    "scope": "Locked external package metadata and installed package metadata; not a complete source/notice legal certification",
+    "packages": 413,
+    "licenseCounts": {
+      "MIT": 307,
+      "MIT-0": 2,
+      "Apache-2.0": 45,
+      "LGPL-3.0-or-later": 10,
+      "Apache-2.0 AND LGPL-3.0-or-later AND MIT": 1,
+      "Apache-2.0 AND LGPL-3.0-or-later": 3,
+      "ISC": 15,
+      "CC-BY-4.0": 1,
+      "BSD-2-Clause": 9,
+      "BSD-3-Clause": 4,
+      "MPL-2.0": 12,
+      "BlueOak-1.0.0": 2,
+      "CC0-1.0": 1,
+      "0BSD": 1
+    },
+    "requiresReview": [
+      {
+        "path": "node_modules/@img/sharp-libvips-darwin-arm64",
+        "name": "@img/sharp-libvips-darwin-arm64",
+        "version": "1.3.4",
+        "license": "LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-libvips-darwin-x64",
+        "name": "@img/sharp-libvips-darwin-x64",
+        "version": "1.3.4",
+        "license": "LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-libvips-linux-arm",
+        "name": "@img/sharp-libvips-linux-arm",
+        "version": "1.3.4",
+        "license": "LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-libvips-linux-arm64",
+        "name": "@img/sharp-libvips-linux-arm64",
+        "version": "1.3.4",
+        "license": "LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-libvips-linux-ppc64",
+        "name": "@img/sharp-libvips-linux-ppc64",
+        "version": "1.3.4",
+        "license": "LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-libvips-linux-riscv64",
+        "name": "@img/sharp-libvips-linux-riscv64",
+        "version": "1.3.4",
+        "license": "LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-libvips-linux-s390x",
+        "name": "@img/sharp-libvips-linux-s390x",
+        "version": "1.3.4",
+        "license": "LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-libvips-linux-x64",
+        "name": "@img/sharp-libvips-linux-x64",
+        "version": "1.3.4",
+        "license": "LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-libvips-linuxmusl-arm64",
+        "name": "@img/sharp-libvips-linuxmusl-arm64",
+        "version": "1.3.4",
+        "license": "LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-libvips-linuxmusl-x64",
+        "name": "@img/sharp-libvips-linuxmusl-x64",
+        "version": "1.3.4",
+        "license": "LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-wasm32",
+        "name": "@img/sharp-wasm32",
+        "version": "0.35.5",
+        "license": "Apache-2.0 AND LGPL-3.0-or-later AND MIT",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-win32-arm64",
+        "name": "@img/sharp-win32-arm64",
+        "version": "0.35.5",
+        "license": "Apache-2.0 AND LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-win32-ia32",
+        "name": "@img/sharp-win32-ia32",
+        "version": "0.35.5",
+        "license": "Apache-2.0 AND LGPL-3.0-or-later",
+        "installed": false
+      },
+      {
+        "path": "node_modules/@img/sharp-win32-x64",
+        "name": "@img/sharp-win32-x64",
+        "version": "0.35.5",
+        "license": "Apache-2.0 AND LGPL-3.0-or-later",
+        "installed": true
+      }
+    ],
+    "trackedBinaryOrImageAssets": [],
+    "thirdPartyTermsPreserved": true,
+    "licenseHolderConfirmed": true
+  },
+  "dependencyAudit": {
+    "full": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "production": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "notVerified": [
+    "Real Discord consent/callback/install or Gateway login",
+    "Real YouTube/Kick credentials, webhooks or live Discord delivery",
+    "Continuous uptime, hosted HTTPS, offsite recovery, native macOS or fresh ARM64 execution"
+  ],
+  "decision": "NO-GO public visibility pending Git metadata privacy review and explicit upload/publication approval",
+  "committed": false,
+  "pushed": false,
+  "finalChecks": {
+    "format": "PASS",
+    "diffWhitespace": "PASS",
+    "documentation": {
+      "markdownFiles": 103,
+      "relativeLinks": 477,
+      "brokenLinks": 0,
+      "npmScriptReferences": 45,
+      "unknownScripts": 0,
+      "unknownEnvironment": 0
+    },
+    "publicInstallationMarkedUnavailable": true,
+    "projectLicensePlaceholder": false,
+    "noStagedChanges": true
+  },
+  "phase18b": {
+    "date": "2026-10-26",
+    "branch": "release/phase-18-mit-self-hosting",
+    "head": "8979360afac987803fd78cd02efa97b2985249ab",
+    "license": {
+      "termsMatchSpdxReference": true,
+      "reference": "https://raw.githubusercontent.com/spdx/license-list-data/main/text/MIT.txt",
+      "year": 2026,
+      "holder": "NAVI-SL",
+      "unresolvedCopyrightPlaceholders": false,
+      "rightsOwnership": "Holder text verified as supplied; legal ownership is not independently certified."
+    },
+    "privacy": {
+      "refs": [
+        {
+          "ref": "refs/heads/feature/phase-15-cloud-architecture",
+          "commits": 6,
+          "nonNoreplyAuthorCommits": 6,
+          "nonNoreplyCommitterCommits": 3
+        },
+        {
+          "ref": "refs/heads/main",
+          "commits": 4,
+          "nonNoreplyAuthorCommits": 4,
+          "nonNoreplyCommitterCommits": 1
+        },
+        {
+          "ref": "refs/heads/release/phase-18-mit-self-hosting",
+          "commits": 7,
+          "nonNoreplyAuthorCommits": 7,
+          "nonNoreplyCommitterCommits": 3
+        },
+        {
+          "ref": "refs/remotes/origin/feature/phase-15-cloud-architecture",
+          "commits": 6,
+          "nonNoreplyAuthorCommits": 6,
+          "nonNoreplyCommitterCommits": 3
+        },
+        {
+          "ref": "refs/remotes/origin/main",
+          "commits": 7,
+          "nonNoreplyAuthorCommits": 7,
+          "nonNoreplyCommitterCommits": 3
+        }
+      ],
+      "uniqueReachableCommits": 7,
+      "authorRiskCommits": 7,
+      "committerRiskCommits": 3,
+      "uniqueNonNoreplyEmails": 1,
+      "rawAddressesStored": false,
+      "rawAddressesPrinted": false,
+      "historyRewritten": false,
+      "classification": "Non-noreply addresses are potentially identifying; public disclosure consent has not been provided."
+    },
+    "dependencies": {
+      "packages": 413,
+      "licenses": {
+        "MIT": 307,
+        "MIT-0": 2,
+        "Apache-2.0": 45,
+        "LGPL-3.0-or-later": 10,
+        "Apache-2.0 AND LGPL-3.0-or-later AND MIT": 1,
+        "Apache-2.0 AND LGPL-3.0-or-later": 3,
+        "ISC": 15,
+        "CC-BY-4.0": 1,
+        "BSD-2-Clause": 9,
+        "BSD-3-Clause": 4,
+        "MPL-2.0": 12,
+        "BlueOak-1.0.0": 2,
+        "CC0-1.0": 1,
+        "0BSD": 1
+      },
+      "unknownLicenses": [],
+      "scope": "Metadata inventory, not legal certification"
+    },
+    "localMain": "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+    "remoteMain": "8979360afac987803fd78cd02efa97b2985249ab",
+    "noStagedFiles": true,
+    "security": {
+      "date": "2026-10-26",
+      "head": "8979360afac987803fd78cd02efa97b2985249ab",
+      "currentFiles": 372,
+      "knownCredentialCandidates": 8,
+      "patternFamilies": 6,
+      "currentSecretFiles": [],
+      "privacyReview": [
+        {
+          "file": "tests/cloud-preparation.test.ts",
+          "knownIds": false,
+          "userHome": false,
+          "contacts": 3
+        },
+        {
+          "file": "tests/controlled-test-plan.test.ts",
+          "knownIds": false,
+          "userHome": false,
+          "contacts": 1
+        },
+        {
+          "file": "tests/kick-embed.test.ts",
+          "knownIds": false,
+          "userHome": false,
+          "contacts": 1
+        },
+        {
+          "file": "tests/login-diagnostics.test.ts",
+          "knownIds": false,
+          "userHome": false,
+          "contacts": 1
+        },
+        {
+          "file": "tests/production.test.ts",
+          "knownIds": false,
+          "userHome": false,
+          "contacts": 1
+        },
+        {
+          "file": "tests/render-compatibility.test.ts",
+          "knownIds": false,
+          "userHome": false,
+          "contacts": 2
+        },
+        {
+          "file": "tests/streamer-providers.test.ts",
+          "knownIds": false,
+          "userHome": false,
+          "contacts": 1
+        },
+        {
+          "file": "tests/youtube-embed.test.ts",
+          "knownIds": false,
+          "userHome": false,
+          "contacts": 1
+        }
+      ],
+      "historyBlobs": 421,
+      "historySecretMatches": 0,
+      "historyPrivacyBlobs": 8,
+      "historyMetadataObjects": 7,
+      "historyMetadataSecretMatches": 0,
+      "commitsReviewed": 7,
+      "commitsWithNonNoreplyMetadata": [
+        "8979360afac987803fd78cd02efa97b2985249ab",
+        "3e1377f80abb3a774ba521282bc369f86537505d",
+        "a6fec23397d7b00f65725ecfaccb0db550044ec5",
+        "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+        "da063301685c7f5893750d0de204e8a7bb4966ed",
+        "c98cab894dbe89d4312ae40508c72f8b0f8e1c39",
+        "405726afc9ef7f6abbb4f9db50e065b630981229"
+      ],
+      "ignoreCases": [
+        {
+          "file": ".env",
+          "pass": true
+        },
+        {
+          "file": ".env.web",
+          "pass": true
+        },
+        {
+          "file": ".env.bot",
+          "pass": true
+        },
+        {
+          "file": ".env.worker",
+          "pass": true
+        },
+        {
+          "file": ".env.production",
+          "pass": true
+        },
+        {
+          "file": ".env.local",
+          "pass": true
+        },
+        {
+          "file": "apps/web/.env.local",
+          "pass": true
+        },
+        {
+          "file": ".env.production.local",
+          "pass": true
+        },
+        {
+          "file": "deployment/filled.env",
+          "pass": true
+        },
+        {
+          "file": "secrets/file",
+          "pass": true
+        },
+        {
+          "file": "backups/backup.sql",
+          "pass": true
+        },
+        {
+          "file": ".local/temp.log",
+          "pass": true
+        },
+        {
+          "file": "node_modules/pkg/a.js",
+          "pass": true
+        },
+        {
+          "file": "apps/web/.next/server/a.js",
+          "pass": true
+        },
+        {
+          "file": "apps/bot/dist/index.js",
+          "pass": true
+        },
+        {
+          "file": "id_rsa",
+          "pass": true
+        },
+        {
+          "file": "id_ecdsa",
+          "pass": true
+        },
+        {
+          "file": "id_ed25519",
+          "pass": true
+        },
+        {
+          "file": ".pgpass",
+          "pass": true
+        },
+        {
+          "file": ".envrc",
+          "pass": true
+        }
+      ],
+      "licensePresent": true,
+      "historyRewritten": false,
+      "rawPersonalValuesDisclosed": false,
+      "scanBoundary": "Known values/common patterns and privacy heuristics; false positives require review; no guarantee about unknown secrets."
+    },
+    "verification": {
+      "source": "Existing isolated Phase 18 main clone with current safe license/documentation overlay",
+      "tests": {
+        "status": "PASS",
+        "count": 537,
+        "files": 43,
+        "command": "npm run test -- --maxWorkers=1"
+      },
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "format": "PASS",
+      "productionBuild": "PASS",
+      "fullDependencyAudit": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "productionDependencyAudit": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "secretScan": {
+        "prospectiveFiles": 372,
+        "clientAssets": 19,
+        "credentialMatches": 0,
+        "historicalBlobs": 421,
+        "commitAndTagObjects": 7,
+        "commitAndTagCredentialMatches": 0,
+        "knownCandidates": 8,
+        "patternFamilies": 6
+      },
+      "documentation": {
+        "markdownFiles": 103,
+        "localLinks": 478,
+        "brokenLinks": 0,
+        "scriptReferences": 45,
+        "missingScripts": 0
+      },
+      "copyrightPlaceholderDeclarations": 0,
+      "repositoryVisibility": "private",
+      "historyRewritten": false,
+      "committed": false,
+      "pushed": false,
+      "realExternalIntegrationVerified": false
+    }
+  },
+  "phase18c": {
+    "date": "2026-10-26",
+    "scope": "Planning/read-only inspection only",
+    "inventory": {
+      "date": "2026-10-26",
+      "branch": "release/phase-18-mit-self-hosting",
+      "commits": [
+        {
+          "commit": "8979360afac987803fd78cd02efa97b2985249ab",
+          "authorNonNoreply": true,
+          "committerNonNoreply": false,
+          "signaturePresent": true,
+          "mergeParents": 2,
+          "tree": "b435c889c60b06e4642728e640a5c879b8cdf0e8"
+        },
+        {
+          "commit": "3e1377f80abb3a774ba521282bc369f86537505d",
+          "authorNonNoreply": true,
+          "committerNonNoreply": true,
+          "signaturePresent": false,
+          "mergeParents": 1,
+          "tree": "b435c889c60b06e4642728e640a5c879b8cdf0e8"
+        },
+        {
+          "commit": "a6fec23397d7b00f65725ecfaccb0db550044ec5",
+          "authorNonNoreply": true,
+          "committerNonNoreply": true,
+          "signaturePresent": false,
+          "mergeParents": 1,
+          "tree": "225ea9dc028a6bc01aa8428ef0f24349634f1e51"
+        },
+        {
+          "commit": "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+          "authorNonNoreply": true,
+          "committerNonNoreply": true,
+          "signaturePresent": false,
+          "mergeParents": 1,
+          "tree": "89223cfa4b41b46a394bd0ff244dbe436968c5ee"
+        },
+        {
+          "commit": "da063301685c7f5893750d0de204e8a7bb4966ed",
+          "authorNonNoreply": true,
+          "committerNonNoreply": false,
+          "signaturePresent": true,
+          "mergeParents": 1,
+          "tree": "ffce2c81a3a6889738e1c794f0855979169616eb"
+        },
+        {
+          "commit": "c98cab894dbe89d4312ae40508c72f8b0f8e1c39",
+          "authorNonNoreply": true,
+          "committerNonNoreply": false,
+          "signaturePresent": true,
+          "mergeParents": 1,
+          "tree": "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
+        },
+        {
+          "commit": "405726afc9ef7f6abbb4f9db50e065b630981229",
+          "authorNonNoreply": true,
+          "committerNonNoreply": false,
+          "signaturePresent": true,
+          "mergeParents": 0,
+          "tree": "9ba3b3c365ff5ca646a89564395c3ff4f633318e"
+        }
+      ],
+      "signatureHeaders": 4,
+      "signatureTrustNotVerified": true,
+      "tags": [],
+      "refs": [
+        "refs/heads/feature/phase-15-cloud-architecture\t3e1377f80abb3a774ba521282bc369f86537505d\tcommit\t",
+        "refs/heads/main\t69c75f4b6d723067349534ab6bfaea92196f0cfb\tcommit\t",
+        "refs/heads/release/phase-18-mit-self-hosting\t8979360afac987803fd78cd02efa97b2985249ab\tcommit\t",
+        "refs/remotes/origin/HEAD\t8979360afac987803fd78cd02efa97b2985249ab\tcommit\trefs/remotes/origin/main",
+        "refs/remotes/origin/feature/phase-15-cloud-architecture\t3e1377f80abb3a774ba521282bc369f86537505d\tcommit\t",
+        "refs/remotes/origin/main\t8979360afac987803fd78cd02efa97b2985249ab\tcommit"
+      ],
+      "replaceRefs": [],
+      "remoteRefs": [
+        {
+          "hash": "8979360afac987803fd78cd02efa97b2985249ab",
+          "ref": "HEAD"
+        },
+        {
+          "hash": "3e1377f80abb3a774ba521282bc369f86537505d",
+          "ref": "refs/heads/feature/phase-15-cloud-architecture"
+        },
+        {
+          "hash": "8979360afac987803fd78cd02efa97b2985249ab",
+          "ref": "refs/heads/main"
+        },
+        {
+          "hash": "3e1377f80abb3a774ba521282bc369f86537505d",
+          "ref": "refs/pull/1/head"
+        }
+      ],
+      "knownLocalFixtureClones": [
+        {
+          "path": ".local/phase18/fresh-windows",
+          "gitPresent": true
+        },
+        {
+          "path": ".local/phase18/fresh-default",
+          "gitPresent": true
+        },
+        {
+          "path": ".local/phase18-mit/fresh-windows",
+          "gitPresent": true
+        }
+      ],
+      "filterRepoAvailable": false,
+      "gitVersion": "git version 2.52.0.windows.1",
+      "trackedFileHashesMentioningCommitIds": 5,
+      "emailsPrinted": false,
+      "historyChanged": false
+    },
+    "external": {
+      "repository": "NAVI-SL/NAVI-Live-Notifier",
+      "visibility": "private",
+      "defaultBranch": "main",
+      "prSearchCount": 1,
+      "prs": [
+        {
+          "number": 1,
+          "state": "closed"
+        }
+      ],
+      "pr1": {
+        "number": 1,
+        "merged": true,
+        "state": "closed",
+        "head": "feature/phase-15-cloud-architecture",
+        "headSha": "3e1377f80abb3a774ba521282bc369f86537505d",
+        "base": "main",
+        "baseSha": "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+        "mergeSha": "8979360afac987803fd78cd02efa97b2985249ab",
+        "url": "https://github.com/NAVI-SL/NAVI-Live-Notifier/pull/1"
+      },
+      "noreplyVerified": true,
+      "noreplyVerificationSource": "Owner confirmation, not connector profile verification"
+    },
+    "exactNoreplyVerified": true,
+    "toolInstalled": false,
+    "rewritePerformed": false,
+    "backupCreatedOrRestored": false,
+    "forcePushPerformed": false,
+    "publicVisibilityChanged": false,
+    "decision": "NO-GO execution/publication; owner review of plan only",
+    "noreply": "226720061+NAVI-SL@users.noreply.github.com",
+    "verificationSource": "Direct owner confirmation: copied from GitHub Settings; UI not independently inspected",
+    "proposedFilterRepoVersion": "2.47.0",
+    "ownerReplyRestriction": "Plan only; no rewrite or force-push",
+    "verification": {
+      "date": "2026-10-26",
+      "refsUnchanged": true,
+      "authorFieldsAffected": 7,
+      "committerFieldsAffected": 3,
+      "signatureHeaders": 4,
+      "tags": 0,
+      "toolInstalled": false,
+      "exactNoreplyOwnerConfirmed": true,
+      "privateBackupCreated": false,
+      "rewritePerformed": false,
+      "forcePushPerformed": false,
+      "proposedPowerShellBlocks": 6,
+      "powershellParseErrors": 0,
+      "pythonSyntax": "PASS; AST parse only",
+      "relativeLinks": 479,
+      "brokenLinks": 0,
+      "prospectiveFilesScanned": 373,
+      "generatedClientAssets": 19,
+      "credentialMatches": 0,
+      "format": "PASS",
+      "whitespace": "PASS",
+      "stagedFiles": 0,
+      "applicationTests": "Not rerun for planning-only change; Phase 18B results retained"
+    }
+  },
+  "currentDisposition": {
+    "date": "2026-10-26",
+    "phase": 19,
+    "existingCommitEmailDisclosureAcceptedByOwner": true,
+    "historyRewriteRequired": false,
+    "veraCryptRequired": false,
+    "historyAndEncryptedRehearsalPlans": "Canceled; historical findings retained, no rewrite/backup success claimed",
+    "currentReadiness": "See docs/PHASE_19_PUBLIC_RELEASE_READINESS.md"
+  }
+}
