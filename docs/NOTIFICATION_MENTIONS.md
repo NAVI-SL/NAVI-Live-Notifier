@@ -47,7 +47,7 @@ No application rows were manually edited. Compatibility fixtures use isolated da
 | Real local Chrome         | PASS: both controls render, old checkbox gone, existing saved role choices intact. Unsaved everyone selection shows warning/missing permission and disables Save; original choice restored without saving.                                      |
 | Real Discord messages     | NOT EXECUTED. No message, mass mention or live settings save performed.                                                                                                                                                                         |
 
-The built-client secret scan also passed: 19 assets, 12 configured candidate fields, no exact secret matches. This bounded scan is not a guarantee against every possible leak. An intermediate formatting-only failure was corrected before final checks passed. [Browser evidence](evidence/mention-dropdown-permission.png) shows an **unsaved** everyone selection and permission error; everyone was not saved/enabled.
+The built-client secret scan also passed: 19 assets, 12 configured candidate fields, no exact secret matches. This bounded scan is not a guarantee against every possible leak. An intermediate formatting-only failure was corrected before final checks passed. [Browser evidence (private image omitted: mention-dropdown-permission.png)](evidence/UPLOAD_PRIVACY_NOTE.md) shows an **unsaved** everyone selection and permission error; everyone was not saved/enabled.
 
 ## Changed files
 

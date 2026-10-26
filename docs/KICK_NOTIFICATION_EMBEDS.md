@@ -32,7 +32,7 @@ The existing **Preview message** action remains server-authorized, template-vali
 
 An already-running development process initially returned its older text-only preview response. The dashboard supports this compatible response by building the same pure sample card locally only after the server preview succeeds. Rich-response and text-only-response paths are tested. No authorization or template/target check is bypassed. Rebuild/restart the existing web/bot/worker processes to load all shared package/service changes; do not start competing bot sessions.
 
-Browser evidence: [Kick sample preview](evidence/kick-embed-preview.png). This is the local dashboard, **not** a real Discord message or evidence of a live broadcast. Reference artwork is represented with labelled CSS samples rather than copied game artwork or fabricated live images.
+Browser evidence: [Kick sample preview (private image omitted: kick-embed-preview.png)](evidence/UPLOAD_PRIVACY_NOTE.md). This is the local dashboard, **not** a real Discord message or evidence of a live broadcast. Reference artwork is represented with labelled CSS samples rather than copied game artwork or fabricated live images.
 
 ## Persistence and reliability
 

@@ -50,7 +50,7 @@ The API inspection found a real missing grant; refreshing alone will not grant i
 | Built-client secret scan           | PASS: 19 assets, 12 configured candidate fields, no exact secret matches. Bounded exact-value scan only.                                                                                                                                                                                                |
 | Real permission grant/save/message | NOT EXECUTED: no Discord grants, real settings save or notification send performed. Grant→save behavior is automated/simulated evidence, not a real permission-change claim.                                                                                                                            |
 
-[Browser evidence](evidence/mention-permission-refresh.png) shows an unsaved everyone draft, step-by-step instructions and disabled Save after fresh denial. No actual granted-state screenshot or real send is claimed. Existing release/live-stream acceptance limits remain unchanged.
+[Browser evidence (private image omitted: mention-permission-refresh.png)](evidence/UPLOAD_PRIVACY_NOTE.md) shows an unsaved everyone draft, step-by-step instructions and disabled Save after fresh denial. No actual granted-state screenshot or real send is claimed. Existing release/live-stream acceptance limits remain unchanged.
 
 ## Changed files
 

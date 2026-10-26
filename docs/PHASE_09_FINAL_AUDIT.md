@@ -15,7 +15,7 @@ Primary evidence reviewed:
 - [Phase 9 test report](PHASE_09_TEST_REPORT.md): twenty journey scenarios and security/fault matrices.
 - [Release readiness](RELEASE_READINESS.md): NO-GO and open acceptance checklist.
 - [Sanitized Phase 9 results](evidence/phase09-results.json): command exits, HTTP statuses, configuration observations and limited browser checks.
-- [Phase 9 Chrome screenshot](evidence/phase09-login-database-unavailable.png): inspected directly; it shows the generic recoverable login error on a synthetic configuration with unavailable PostgreSQL. It proves neither successful Discord login nor delivery.
+- [Phase 9 Chrome screenshot (private image omitted: phase09-login-database-unavailable.png)](evidence/UPLOAD_PRIVACY_NOTE.md): inspected directly; it shows the generic recoverable login error on a synthetic configuration with unavailable PostgreSQL. It proves neither successful Discord login nor delivery.
 - [Phase 8 audit](PHASE_08_AUDIT.md), [deployment guide](DEPLOYMENT_GUIDE.md) and [production checklist](PRODUCTION_CHECKLIST.md): outstanding executable deployment, database, backup and monitoring gates.
 
 Historical successful OAuth/Gateway/PostgreSQL observations remain dated evidence; they are not a fresh end-to-end certification. Historical proposed Redis/BullMQ, idle worker and no-Gateway descriptions do not override the implemented PostgreSQL queue and bot Gateway.
