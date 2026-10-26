@@ -1,0 +1,54 @@
+# REVIEW ONLY. Replace BOTH __APPROVED_WEBHOOK_HOST__ occurrences after approval.
+# Local TLS bind is deliberate. Public binding/DNS/certificate provisioning require approval.
+user nginx;
+worker_processes auto;
+pid /var/run/nginx.pid;
+error_log /dev/null crit;
+events { worker_connections 1024; }
+http {
+  server_tokens off;
+  log_format safe escape=json '{"service":"webhook_edge","method":"$request_method","status":$status,"duration":$request_time}';
+  access_log /dev/stdout safe;
+  limit_req_zone $binary_remote_addr zone=hooks:10m rate=10r/s;
+  limit_req_zone $server_name zone=hook_total:1m rate=20r/s;
+  limit_req_status 429;
+  client_max_body_size 64k;
+  client_body_timeout 10s;
+  client_header_timeout 10s;
+  proxy_connect_timeout 5s;
+  proxy_read_timeout 45s;
+  proxy_send_timeout 15s;
+  proxy_http_version 1.1;
+  proxy_set_header Host $host;
+  proxy_set_header X-Forwarded-Host $host;
+  proxy_set_header X-Forwarded-Proto https;
+  proxy_set_header X-Forwarded-For $remote_addr;
+  proxy_set_header Forwarded '';
+  proxy_set_header Connection '';
+  server {
+    listen 127.0.0.1:8081;
+    access_log off;
+    location = /health { return 200 'ok'; }
+    location / { return 404; }
+  }
+  server {
+    listen 127.0.0.1:8443 ssl;
+    server_name __APPROVED_WEBHOOK_HOST__;
+    if ($host != __APPROVED_WEBHOOK_HOST__) { return 421; }
+    ssl_certificate /etc/navi/tls/fullchain.pem;
+    ssl_certificate_key /etc/navi/tls/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    add_header X-Content-Type-Options nosniff always;
+    location = /webhooks/kick {
+      limit_req zone=hooks burst=20 nodelay;
+      limit_req zone=hook_total burst=40 nodelay;
+      proxy_pass http://127.0.0.1:4100;
+    }
+    location ~ "^/webhooks/youtube/UC[A-Za-z0-9_-]{22}/[a-f0-9]{64}$" {
+      limit_req zone=hooks burst=20 nodelay;
+      limit_req zone=hook_total burst=40 nodelay;
+      proxy_pass http://127.0.0.1:4100;
+    }
+    location / { return 404; }
+  }
+}

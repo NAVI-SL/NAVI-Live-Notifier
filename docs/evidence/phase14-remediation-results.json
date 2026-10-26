@@ -1,0 +1,431 @@
+{
+  "date": "2026-10-22",
+  "timezone": "Asia/Colombo",
+  "phase": "14 remediation",
+  "decision": "NO-GO for wider release",
+  "correctedDefects": [
+    {
+      "id": "dependency-esbuild",
+      "before": "Nested esbuild 0.18.20 inherited four moderate findings",
+      "after": "core-utils override 0.28.2; stale nested lock resolution removed; existing Drizzle 0.25.12 branch retained",
+      "unrelatedExistingVersionChanges": [],
+      "cleanWorkingInstallExit": 0,
+      "audits": [
+        {
+          "command": "npm audit --json",
+          "exitCode": 0,
+          "counts": {
+            "info": 0,
+            "low": 0,
+            "moderate": 0,
+            "high": 0,
+            "critical": 0,
+            "total": 0
+          }
+        },
+        {
+          "command": "npm audit --omit=dev --json",
+          "exitCode": 0,
+          "counts": {
+            "info": 0,
+            "low": 0,
+            "moderate": 0,
+            "high": 0,
+            "critical": 0,
+            "total": 0
+          }
+        },
+        {
+          "command": "npm ls esbuild --all --json",
+          "exitCode": 1,
+          "problems": [
+            "invalid: esbuild@0.28.2 D:\\Project\\NAVI Live Notifier\\node_modules\\esbuild"
+          ]
+        },
+        {
+          "actualLoaderEsbuild": "0.28.2"
+        }
+      ],
+      "regressions": [
+        "Actual loader resolution and affected lock entries",
+        "Executable CJS/ESM TypeScript and source maps",
+        "Typed Drizzle config, scratch generation/check, SQL execution"
+      ],
+      "dockerBuildRunsToolingTests": true,
+      "linuxRuntime": {
+        "node": "24.22.1",
+        "architecture": "amd64",
+        "resolvedTransformer": "0.28.2",
+        "transform": true
+      },
+      "npmListingCaveat": "npm ls exits 1 with original parent range shown as invalid; actual clean installed override is patched; consistent with npm/cli#9514. Keep npm ci/lock and regression gates; npm update can reintroduce old resolutions."
+    },
+    {
+      "id": "forwarded-host",
+      "before": "Untrusted X-Forwarded-Host reached upstream",
+      "after": "Nginx overwrites X-Forwarded-Host with accepted $http_host",
+      "originalProbe": {
+        "event": "local_proxy_regression",
+        "network": "none",
+        "hostPorts": false,
+        "realCredentials": false,
+        "realMessages": false,
+        "checks": [
+          {
+            "name": "trusted local TLS and web upstream",
+            "pass": true
+          },
+          {
+            "name": "response security headers",
+            "pass": true
+          },
+          {
+            "name": "canonical upstream forwarded host",
+            "pass": false
+          },
+          {
+            "name": "HTTPS protocol replaces spoofed header",
+            "pass": true
+          },
+          {
+            "name": "Forwarded header removed",
+            "pass": true
+          },
+          {
+            "name": "unknown Host rejected",
+            "pass": true
+          },
+          {
+            "name": "plain HTTP not redirected using attacker Host",
+            "pass": true
+          },
+          {
+            "name": "private broker routes blocked",
+            "pass": true
+          },
+          {
+            "name": "Kick callback upstream",
+            "pass": true
+          },
+          {
+            "name": "YouTube callback upstream",
+            "pass": true
+          },
+          {
+            "name": "unknown callback rejected",
+            "pass": true
+          },
+          {
+            "name": "oversized body rejected",
+            "pass": true
+          },
+          {
+            "name": "local auth burst throttled",
+            "pass": true
+          },
+          {
+            "name": "OAuth query marker absent from logs",
+            "pass": true
+          }
+        ],
+        "cleanup": true
+      },
+      "fixedProbe": {
+        "event": "local_proxy_regression",
+        "network": "none",
+        "hostPorts": false,
+        "realCredentials": false,
+        "realMessages": false,
+        "checks": [
+          {
+            "name": "trusted local TLS and web upstream",
+            "pass": true
+          },
+          {
+            "name": "response security headers",
+            "pass": true
+          },
+          {
+            "name": "canonical upstream forwarded host",
+            "pass": true
+          },
+          {
+            "name": "HTTPS protocol replaces spoofed header",
+            "pass": true
+          },
+          {
+            "name": "Forwarded header removed",
+            "pass": true
+          },
+          {
+            "name": "unknown Host rejected",
+            "pass": true
+          },
+          {
+            "name": "plain HTTP not redirected using attacker Host",
+            "pass": true
+          },
+          {
+            "name": "private broker routes blocked",
+            "pass": true
+          },
+          {
+            "name": "Kick callback upstream",
+            "pass": true
+          },
+          {
+            "name": "YouTube callback upstream",
+            "pass": true
+          },
+          {
+            "name": "unknown callback rejected",
+            "pass": true
+          },
+          {
+            "name": "oversized body rejected",
+            "pass": true
+          },
+          {
+            "name": "local auth burst throttled",
+            "pass": true
+          },
+          {
+            "name": "OAuth query marker absent from logs",
+            "pass": true
+          }
+        ],
+        "cleanup": true
+      }
+    }
+  ],
+  "checks": [
+    {
+      "name": "npm run check",
+      "exitCode": 0,
+      "status": "PASS",
+      "tests": 383,
+      "testFiles": 36,
+      "vitestSeconds": 13.11,
+      "includes": ["type checks", "lint", "formatting", "Vitest"]
+    },
+    {
+      "name": "npm run build",
+      "exitCode": 0,
+      "status": "PASS",
+      "scope": "Native shared/web/bot/worker"
+    },
+    {
+      "name": "npm run test:proxy",
+      "exitCode": 0,
+      "status": "PASS",
+      "assertions": 14,
+      "network": "none",
+      "hostPorts": false,
+      "certificate": "temporary synthetic localhost CA trusted explicitly; no TLS validation bypass"
+    },
+    {
+      "name": "Docker guarded build",
+      "exitCode": 0,
+      "status": "PASS",
+      "toolingTests": 3,
+      "toolingTestSeconds": 2.76,
+      "platform": "linux/amd64"
+    },
+    {
+      "name": "PostgreSQL connection and independent reliability",
+      "exitCode": 0,
+      "status": "PASS",
+      "cases": [
+        "SKIP LOCKED and concurrent admission",
+        "longest cooldown",
+        "advisory lock",
+        "interrupted sending quarantined and dedup retained",
+        "temporary schema removed"
+      ]
+    },
+    {
+      "name": "Auth environment validation",
+      "exitCode": 0,
+      "status": "PASS",
+      "network": false
+    },
+    {
+      "name": "Client known-value secret scan",
+      "exitCode": 0,
+      "status": "PASS",
+      "assets": 19,
+      "candidateFields": 12,
+      "leaks": []
+    },
+    {
+      "name": "Release preflight",
+      "exitCode": 1,
+      "status": "FAIL",
+      "missing": [
+        "beta_guild_scope_present",
+        "web_worker_scope_matches",
+        "public_https_web_origin",
+        "public_https_webhook_origin"
+      ],
+      "liveVerification": false
+    },
+    {
+      "name": "Configured application health",
+      "exitCode": 1,
+      "status": "FAIL",
+      "time": "2026-10-22T04:48:20.112Z",
+      "web": "unavailable",
+      "bot": "unavailable",
+      "worker": "unavailable",
+      "alert": "console_only"
+    }
+  ],
+  "linuxImage": {
+    "event": "isolated_linux_image",
+    "imageId": "sha256:fd09f8efeb46b569fdde5403d70904acf646377ffc31ee28a494b0c01bf332df",
+    "nodeVersion": "v24.22.1",
+    "botScaffoldExit": 0,
+    "workerScaffoldExit": 0,
+    "websiteStarted": true,
+    "httpCases": [
+      {
+        "path": "/",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/support",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/privacy",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/terms",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/dashboard",
+        "method": "GET",
+        "expected": 307,
+        "actual": 307,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds",
+        "method": "GET",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      },
+      {
+        "path": "/api/auth/get-access-token",
+        "method": "GET",
+        "expected": 404,
+        "actual": 404,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "method": "POST",
+        "expected": 403,
+        "actual": 403,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "method": "POST",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      }
+    ],
+    "gracefulExitCode": 143,
+    "fixtureRemoved": true,
+    "network": "none",
+    "realMessages": false,
+    "realOAuth": false
+  },
+  "recovery": {
+    "event": "remediation_restore",
+    "existingProtectedArchiveReused": true,
+    "sourceRelations": 14,
+    "restoredRowsMatch": true,
+    "sourceUnchanged": true,
+    "scratchRemoved": true,
+    "backupEncrypted": false,
+    "offsite": false
+  },
+  "redis": {
+    "ping": "PONG",
+    "aofEnabled": true,
+    "write": "ok",
+    "rewrite": "ok",
+    "rdb": "ok"
+  },
+  "firstAttemptCorrections": [
+    {
+      "scope": "new regression harness",
+      "issue": "Embedded database initialization before blocking subprocess, Windows absolute schema glob, required NODE_ENV type, unsafe-finally lint",
+      "resolution": "Explicit waitReady, relative scratch globs, synthetic NODE_ENV, guarded cleanup helper; final tests/checks pass"
+    },
+    {
+      "scope": "isolated dependency trials",
+      "issue": "Zero audit was insufficient: expected override version/tree metadata did not agree",
+      "resolution": "Narrow exact actual-resolved pin, explicit stale lock invalidation, clean install and behavioral checks; npm workspace listing problem remains disclosed"
+    }
+  ],
+  "manualBlockers": [
+    "Approved actual bot/worker startup and continuous health/soak",
+    "Exact targets/send approval and observed YouTube/Kick new-live receipt/dedup/restart matrix",
+    "Complete real browser login/logout/install/revocation/multi-server journey",
+    "Approved public TLS/callbacks/real signed webhooks and full real topology",
+    "External alert destination/transport and observed incident/recovery receipt",
+    "Encrypted offsite backup/keys/retention/deletion exclusions and host-loss rollback",
+    "Selected approved hosting, cost and measured sustained resource/API capacity",
+    "Reviewed public legal/support/deletion/feedback details"
+  ],
+  "sourceHashes": {
+    "package.json": "9e96e3d376f33bc565397c1e355c549aec737c51c9ac96cc521eee9999311ee6",
+    "package-lock.json": "172b1137073b49f0f131cf0de31ec3d06d043bb76edb89ac8640df8621e725b9",
+    "Dockerfile": "18706650516f9b51c97a412d20ff10780cfde1e0c77b01305b81369fdcf046c4",
+    "deployment/nginx.conf": "a87aa3962f2b20968fa92a5549a9476de33c76287d8268976879de99f1622fde",
+    "scripts/check-proxy.ts": "8187f38e1afe5ede16812f92ea0909a93fef7ca619b83b86a747cf6860e0c65a",
+    "tests/tooling-compatibility.test.ts": "38229640e673862f0c06cb52f73d5cb66ccfd6466212652548afef5617188e9d"
+  },
+  "invariants": {
+    "realMessagesSent": false,
+    "actualSenderOrWorkerStarted": false,
+    "publicInstallEnabled": false,
+    "productionDeployed": false,
+    "productionInfrastructureChanged": false,
+    "credentialsChanged": false,
+    "accessOrPermissionsChanged": false,
+    "existingDataReset": false,
+    "originalApplicationDataUnchanged": true,
+    "applicationMigrationsChanged": false,
+    "originalNamedVolumesRetained": true
+  },
+  "sources": [
+    {
+      "url": "https://github.com/evanw/esbuild/security/advisories/GHSA-67mh-4wv8-2f99",
+      "purpose": "Affected versions through 0.24.2, patch from 0.25.0"
+    },
+    {
+      "url": "https://github.com/npm/cli/issues/9514",
+      "purpose": "Open workspace override listing/update behavior consistent with observed npm 11 warning; not proof that warning is fixed"
+    }
+  ]
+}

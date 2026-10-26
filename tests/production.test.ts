@@ -41,14 +41,20 @@ async function command(script: string, service: string, file: string) {
   }
 }
 describe('production secret loading, startup and health probes', () => {
-  it.each([false, true])(
-    'checks beta release configuration without networking or printing credentials (scope configured: %s)',
-    async (scoped) => {
+  it.each([
+    [false, true],
+    [true, true],
+    [false, false],
+    [true, false],
+  ])(
+    'checks release configuration without networking or printing credentials (scope: %s, monitoring: %s)',
+    async (scoped, enabled) => {
       const file = environmentFile(
         [
-          'WEB_ORIGIN=https://navi.example',
-          'DATABASE_URL=postgresql://synthetic:FAKE_SECRET@localhost/navi',
-          'REDIS_URL=redis://localhost:6379',
+          // Official-domain strings are syntax fixtures only; no network call is made.
+          'WEB_ORIGIN=https://discord.com',
+          'DATABASE_URL=postgresql://synthetic:FAKE_SECRET@direct.example/navi?sslmode=verify-full',
+          'REDIS_URL=rediss://localhost:6379',
           'BOT_INTERNAL_URL=http://127.0.0.1:4001',
           'BOT_STATUS_PORT=4001',
           'STREAMER_SOURCE_LIMIT=10',
@@ -58,20 +64,24 @@ describe('production secret loading, startup and health probes', () => {
           'DISCORD_ALLOWED_USER_IDS=222222222222222222',
           'DISCORD_BOT_TOKEN=FAKE_SECRET',
           'BOT_INTERNAL_SECRET=synthetic-broker-secret-at-least-thirty-two-characters',
-          'MONITOR_PUBLIC_ORIGIN=https://hooks.navi.example',
+          'MONITOR_PUBLIC_ORIGIN=https://discord.com',
+          `MONITORING_ENABLED=${enabled}`,
           'MONITOR_WEBHOOK_SECRET=synthetic-hook-secret-at-least-thirty-two-characters',
+          'YOUTUBE_API_KEY=FAKE_SECRET',
+          'KICK_CLIENT_ID=synthetic-app',
+          'KICK_CLIENT_SECRET=FAKE_SECRET',
           `BETA_GUILD_IDS=${scoped ? '333333333333333333' : ''}`,
         ].join('\n'),
       );
       const result = await command('scripts/check-release.ts', 'check', file);
-      expect(result.code).toBe(scoped ? 0 : 1);
+      expect(result.code).toBe(scoped && enabled ? 0 : 1);
       expect(result.output).not.toContain('FAKE_SECRET');
       const report = JSON.parse(result.output) as {
         ready: boolean;
         liveVerification: boolean;
         checks: { beta_guild_scope_present: boolean };
       };
-      expect(report.ready).toBe(scoped);
+      expect(report.ready).toBe(scoped && enabled);
       expect(report.liveVerification).toBe(false);
       expect(report.checks.beta_guild_scope_present).toBe(scoped);
     },

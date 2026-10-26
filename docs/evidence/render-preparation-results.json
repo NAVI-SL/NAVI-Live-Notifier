@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-22",
+  "scope": "Render Free preparation only; no deployment or monitoring startup",
+  "decision": "NO-GO for complete split Free private-beta topology",
+  "nativeNode": "25.3.0",
+  "npm": "11.15.0",
+  "containerNode": "24.22.1",
+  "checks": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "formattingAtInitialCheck": "PASS",
+    "automatedTests": {
+      "status": "PASS",
+      "tests": 432,
+      "files": 38
+    },
+    "newCompatibilityCases": 8,
+    "nativeProductionBuild": "PASS",
+    "blueprintLocalYamlSyntax": "PASS; not provider schema/account validation",
+    "productionComposeModel": "PASS",
+    "linuxImageBuild": "PASS",
+    "isolatedWebHttpLiveness": "PASS; no network, no host ports or credentials",
+    "isolatedWebSigterm": "PASS",
+    "localPostgresReliability": "PASS; temporary schema cleaned",
+    "localRedisPing": "PASS",
+    "fullDependencyAudit": {
+      "status": "PASS",
+      "findings": 0
+    },
+    "productionDependencyAudit": {
+      "status": "PASS",
+      "findings": 0
+    },
+    "finalFormatting": "PASS",
+    "boundedSecretScan": {
+      "status": "PASS",
+      "preparationFiles": 8,
+      "clientAssets": 19,
+      "configuredCandidateValues": 8,
+      "matches": 0,
+      "limitation": "Known configured values only, not exhaustive secret detection"
+    }
+  },
+  "blocked": [
+    "Secure broker access from separate Free dashboard",
+    "Continuous bot/worker availability on sleeping Free services",
+    "Actual Render validation and deployment",
+    "Actual Neon TLS, migrations, lock behavior and restore",
+    "Actual Upstash TCP/TLS, isolated Pub/Sub and queue-command verification",
+    "Approved real OAuth/install/webhook/livestream receipt tests",
+    "Measured resource quotas, sustained availability, external alerts and offsite recovery"
+  ],
+  "applicationBehaviorChanged": false,
+  "credentialsChanged": false,
+  "workerStarted": false,
+  "discordMessagesSent": false,
+  "productionInfrastructureChanged": false,
+  "localAppListenersAfterChecks": 0
+}

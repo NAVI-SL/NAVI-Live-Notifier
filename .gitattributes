@@ -1,0 +1,4 @@
+# Keep cross-platform checkouts compatible with the existing Prettier LF policy.
+* text=auto eol=lf
+# Applied SQL migration bytes must never change during checkout normalization.
+packages/database/migrations/*.sql -text

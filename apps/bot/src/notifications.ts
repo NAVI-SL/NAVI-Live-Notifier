@@ -234,7 +234,7 @@ export function createBotNotifications(rest: Pick<REST, 'get' | 'post'>) {
   }
   const targets = (guildId: string, fresh = false) =>
     readTargets(guildId, () => loadTargets(guildId), fresh);
-  async function send(guildId: string, input: unknown, automatic = false) {
+  async function send(guildId: string, input: unknown, automatic = false, receipt = false) {
     const value = object(input),
       config = readNotificationConfig(value.config),
       identity = readNotificationIdentity(value.identity);
@@ -260,9 +260,15 @@ export function createBotNotifications(rest: Pick<REST, 'get' | 'post'>) {
         .update(`${guildId}:${value.requestId}`)
         .digest('hex')
         .slice(0, 24);
-      await rest.post(Routes.channelMessages(config.channelId), {
+      const sent = await rest.post(Routes.channelMessages(config.channelId), {
         body: { ...message, nonce, enforce_nonce: true },
       });
+      if (receipt) {
+        const message = object(sent);
+        if (!isDiscordId(message.id) || message.channel_id !== config.channelId)
+          throw new NotificationError(503, 'test_delivery_uncertain');
+        return { status: 'sent' as const, channelId: config.channelId, messageId: message.id };
+      }
       return { status: 'sent' as const };
     } catch (error) {
       safeError(error, true);
@@ -281,6 +287,12 @@ export function createBotNotifications(rest: Pick<REST, 'get' | 'post'>) {
     },
     targets,
     sendTest: (guildId: string, input: unknown) => send(guildId, input),
+    async sendTestWithReceipt(guildId: string, input: unknown) {
+      const result = await send(guildId, input, false, true);
+      if (!isDiscordId(result.messageId) || !isDiscordId(result.channelId))
+        throw new NotificationError(503, 'test_delivery_uncertain');
+      return { status: 'sent' as const, channelId: result.channelId, messageId: result.messageId };
+    },
     sendLive: (guildId: string, input: unknown) => send(guildId, input, true),
   };
 }

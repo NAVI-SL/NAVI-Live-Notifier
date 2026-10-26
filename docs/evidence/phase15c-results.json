@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-22",
+  "phase": "15C",
+  "scope": "Opt-in command processing foundation; no dashboard or runtime cutover",
+  "migration": "0007_phase15c_commands.sql",
+  "migrationAppliedToDevelopmentDatabase": false,
+  "checks": {
+    "fullSuite": {
+      "status": "PASS",
+      "exitCode": 0,
+      "tests": 475,
+      "files": 39,
+      "newCommandCases": 43,
+      "vitestSeconds": 10.91
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "formatting": "PASS",
+    "nativeProductionBuild": "PASS",
+    "nativeNode": "25.3.0",
+    "newRealPostgresCommandConcurrency": "PASS; independent pools, disposable schema cleaned",
+    "existingRealPostgresReliability": "PASS; existing migration fixture, disposable schema cleaned",
+    "drizzleSchemaRecheck": "PASS; no further changes",
+    "fullDependencyAudit": {
+      "status": "PASS",
+      "findings": 0
+    },
+    "productionDependencyAudit": {
+      "status": "PASS",
+      "findings": 0
+    },
+    "roleIsolation": "PASS in embedded PostgreSQL; no auth-table rights for consumer fixtures"
+  },
+  "evidenceLimits": {
+    "discordCallsSimulated": true,
+    "actualDiscordCommandDeliveryVerified": false,
+    "cloudIntegrationVerified": false,
+    "newLinuxRuntimeVerified": false,
+    "productionServiceRolesProvisioned": false
+  },
+  "safety": {
+    "dashboardTransportChanged": false,
+    "privateBrokerRemovedOrExposed": false,
+    "monitoringWorkerStarted": false,
+    "realDiscordNotificationsSent": false,
+    "realCredentialsChanged": false,
+    "applicationDataDeleted": false,
+    "cloudResourcesChanged": false,
+    "commitOrPushPerformed": false,
+    "localApplicationListenersAfterChecks": 0
+  },
+  "decisions": {
+    "phase15D": "GO for separately approved local fixture integration",
+    "activationAndRelease": "NO-GO",
+    "phase15DEFImplemented": false
+  }
+}

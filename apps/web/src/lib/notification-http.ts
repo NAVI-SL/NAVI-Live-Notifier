@@ -1,35 +1,8 @@
 import 'server-only';
 import { AppError, assertOrigin, errorResponse } from './errors';
 import { getRuntime } from './runtime';
-async function json(request: Request): Promise<Record<string, unknown>> {
-  if (!request.headers.get('content-type')?.startsWith('application/json'))
-    throw new AppError(415, 'json_required');
-  const reader = request.body?.getReader();
-  if (!reader) throw new AppError(400, 'invalid_body');
-  const chunks: Uint8Array[] = [];
-  let size = 0;
-  try {
-    for (;;) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      size += value.length;
-      if (size > 12000) throw new AppError(413, 'body_too_large');
-      chunks.push(value);
-    }
-  } finally {
-    await reader.cancel().catch(() => undefined);
-    reader.releaseLock();
-  }
-  let data: unknown;
-  try {
-    data = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-  } catch {
-    throw new AppError(400, 'invalid_body');
-  }
-  if (!data || typeof data !== 'object' || Array.isArray(data))
-    throw new AppError(400, 'invalid_body');
-  return data as Record<string, unknown>;
-}
+import { json } from './request-json';
+import { commandAccepted } from './command-http';
 export async function notificationRequest(
   request: Request,
   guildId: string,
@@ -37,7 +10,7 @@ export async function notificationRequest(
   subscriptionId = '',
 ) {
   try {
-    const { notifications, environment } = getRuntime();
+    const { notifications, commands, environment } = getRuntime();
     let result: unknown;
     if (action === 'list')
       result = { subscriptions: await notifications.list(request.headers, guildId) };
@@ -50,6 +23,26 @@ export async function notificationRequest(
     else {
       assertOrigin(request, environment.WEB_ORIGIN);
       const input = await json(request);
+      if (commands && (action === 'save' || action === 'test')) {
+        if (environment.BOT_COMMAND_ADMISSION_ENABLED === false)
+          throw new AppError(503, 'command_admission_paused');
+        const command = await commands.submit(
+          request.headers,
+          guildId,
+          action === 'test'
+            ? String(input.requestId ?? '')
+            : (request.headers.get('idempotency-key') ?? ''),
+          {
+            kind: action === 'save' ? 'notification_settings.apply' : 'notification_test.send',
+            payload: {
+              subscriptionId,
+              expectedVersion: input.version,
+              ...(action === 'save' ? { config: input.config } : {}),
+            },
+          },
+        );
+        return commandAccepted(guildId, command);
+      }
       if (action === 'save')
         result = await notifications.save(
           request.headers,

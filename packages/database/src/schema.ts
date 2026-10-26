@@ -9,6 +9,7 @@ import {
   check,
   foreignKey,
   jsonb,
+  primaryKey,
 } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 
@@ -250,3 +251,110 @@ export const monitorLimits = pgTable('monitor_limits', {
   used: integer('used').notNull().default(0),
   blockedUntil: instant('blocked_until'),
 });
+
+// Soft references intentionally retain command/uncertainty evidence after logout or removal.
+export const botCommands = pgTable(
+  'bot_commands',
+  {
+    id: text('id').primaryKey(),
+    schemaVersion: integer('schema_version').notNull().default(1),
+    kind: text('kind').notNull(),
+    guildId: text('guild_id').notNull(),
+    requesterUserId: text('requester_user_id').notNull(),
+    requesterDiscordId: text('requester_discord_id').notNull(),
+    sessionRef: text('session_ref').notNull(),
+    subscriptionId: text('subscription_id'),
+    expectedVersion: integer('expected_version'),
+    idempotencyKey: text('idempotency_key').notNull(),
+    payloadHash: text('payload_hash').notNull(),
+    policyHash: text('policy_hash').notNull(),
+    payload: jsonb('payload').notNull(),
+    status: text('status').notNull().default('pending'),
+    createdAt: instant('created_at').notNull().defaultNow(),
+    expiresAt: instant('expires_at').notNull(),
+    dueAt: instant('due_at').notNull().defaultNow(),
+    updatedAt: instant('updated_at').notNull().defaultNow(),
+    finishedAt: instant('finished_at'),
+    attemptCount: integer('attempt_count').notNull().default(0),
+    retryCount: integer('retry_count').notNull().default(0),
+    maxAttempts: integer('max_attempts').notNull().default(3),
+    leaseOwner: text('lease_owner'),
+    leaseGeneration: integer('lease_generation').notNull().default(0),
+    leaseExpiresAt: instant('lease_expires_at'),
+    effectStartedAt: instant('effect_started_at'),
+    result: jsonb('result'),
+    errorCode: text('error_code'),
+    retryAfterSeconds: integer('retry_after_seconds').notNull().default(0),
+  },
+  (t) => [
+    uniqueIndex('bot_command_idempotency').on(t.guildId, t.kind, t.idempotencyKey),
+    index('bot_command_due')
+      .on(t.dueAt, t.createdAt, t.id)
+      .where(sql`${t.status} = 'pending'`),
+    index('bot_command_lease')
+      .on(t.leaseExpiresAt)
+      .where(sql`${t.status} = 'processing'`),
+    index('bot_command_expiry').on(t.expiresAt),
+    index('bot_command_actor').on(t.guildId, t.requesterUserId, t.id),
+    check(
+      'bot_command_kind',
+      sql`${t.kind} in ('guild_status.refresh','notification_targets.refresh','notification_settings.apply','notification_test.send')`,
+    ),
+    check(
+      'bot_command_status',
+      sql`${t.status} in ('pending','processing','completed','failed','expired','cancelled','uncertain')`,
+    ),
+    check(
+      'bot_command_shape',
+      sql`${t.schemaVersion}=1 and jsonb_typeof(${t.payload})='object' and octet_length(${t.payload}::text)<=12000 and (${t.result} is null or octet_length(${t.result}::text)<=1048576)`,
+    ),
+    check(
+      'bot_command_bounds',
+      sql`${t.attemptCount} between 0 and 3 and ${t.retryCount} between 0 and 2 and ${t.maxAttempts}=3 and ${t.leaseGeneration}>=0 and ${t.retryAfterSeconds}>=0 and ${t.expiresAt}>${t.createdAt}`,
+    ),
+    check(
+      'bot_command_identity',
+      sql`${t.guildId} ~ '^[0-9]{17,20}$' and ${t.requesterDiscordId} ~ '^[0-9]{17,20}$' and ${t.id} ~* '^[a-f0-9-]{36}$' and ${t.idempotencyKey} ~* '^[a-f0-9-]{36}$' and ${t.payloadHash} ~ '^[a-f0-9]{64}$'`,
+    ),
+    check(
+      'bot_command_ownership',
+      sql`${t.status}<>'processing' or (${t.leaseOwner} is not null and ${t.leaseExpiresAt} is not null)`,
+    ),
+    check('bot_command_result', sql`(${t.status}='completed') = (${t.result} is not null)`),
+  ],
+);
+export const botCommandAttempts = pgTable(
+  'bot_command_attempts',
+  {
+    commandId: text('command_id')
+      .notNull()
+      .references(() => botCommands.id),
+    generation: integer('generation').notNull(),
+    owner: text('owner').notNull(),
+    startedAt: instant('started_at').notNull().defaultNow(),
+    effectStartedAt: instant('effect_started_at'),
+    finishedAt: instant('finished_at'),
+    errorCode: text('error_code'),
+    channelId: text('channel_id'),
+    messageId: text('message_id'),
+  },
+  (t) => [
+    primaryKey({ columns: [t.commandId, t.generation] }),
+    check('bot_attempt_generation', sql`${t.generation}>0`),
+  ],
+);
+export const botGuildSnapshots = pgTable(
+  'bot_guild_snapshots',
+  {
+    guildId: text('guild_id').notNull(),
+    kind: text('kind').notNull(),
+    payload: jsonb('payload').notNull(),
+    observedAt: instant('observed_at').notNull().defaultNow(),
+    staleAfter: instant('stale_after').notNull(),
+    generation: integer('generation').notNull(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.guildId, t.kind] }),
+    check('bot_snapshot_size', sql`octet_length(${t.payload}::text)<=1048576`),
+  ],
+);

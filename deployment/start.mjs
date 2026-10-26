@@ -5,6 +5,7 @@ import {
   readBotEnvironment,
   readWorkerEnvironment,
   readMonitoringEnvironment,
+  readBotCommandEnvironment,
 } from '@navi/config';
 
 const service = process.argv[2];
@@ -15,6 +16,7 @@ try {
   if (service === 'web') readAuthEnvironment(env);
   if (service === 'bot') {
     const bot = readBotEnvironment(env);
+    readBotCommandEnvironment(env);
     if (!bot.DISCORD_BOT_TOKEN || !bot.BOT_INTERNAL_SECRET || bot.BOT_INTERNAL_SECRET.length < 32)
       throw new Error();
   }

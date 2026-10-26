@@ -21,12 +21,24 @@ const environmentKeys = {
     'BETA_GUILD_IDS',
     'BOT_INTERNAL_URL',
     'BOT_INTERNAL_SECRET',
+    'BOT_COMMAND_TRANSPORT',
+    'BOT_COMMAND_ADMISSION_ENABLED',
     'YOUTUBE_API_KEY',
     'KICK_CLIENT_ID',
     'KICK_CLIENT_SECRET',
     'STREAMER_SOURCE_LIMIT',
   ],
-  bot: ['NODE_ENV', 'LOG_LEVEL', 'DISCORD_BOT_TOKEN', 'BOT_INTERNAL_SECRET', 'BOT_STATUS_PORT'],
+  bot: [
+    'NODE_ENV',
+    'LOG_LEVEL',
+    'DISCORD_BOT_TOKEN',
+    'BOT_INTERNAL_SECRET',
+    'BOT_STATUS_PORT',
+    'BOT_COMMANDS_ENABLED',
+    'DATABASE_URL',
+    'DISCORD_ALLOWED_USER_IDS',
+    'BETA_GUILD_IDS',
+  ],
   worker: [
     'NODE_ENV',
     'LOG_LEVEL',
@@ -184,8 +196,22 @@ export function readAuthEnvironment(input: Environment = process.env) {
           .transform((value) => value.split(',').map((id) => id.trim()))
           .pipe(z.array(snowflake).min(1)),
         BOT_INTERNAL_URL: internalUrl.default('http://127.0.0.1:4001'),
-        BOT_INTERNAL_SECRET: z.string().min(32),
+        BOT_INTERNAL_SECRET: z.string().default(''),
+        BOT_COMMAND_TRANSPORT: z.enum(['http', 'postgres']).default('http'),
+        BOT_COMMAND_ADMISSION_ENABLED: z
+          .enum(['true', 'false'])
+          .default('true')
+          .transform((value) => value === 'true'),
       })
+      .refine(
+        (value) => value.BOT_COMMAND_TRANSPORT !== 'http' || value.BOT_INTERNAL_SECRET.length >= 32,
+        { path: ['BOT_INTERNAL_SECRET'] },
+      )
+      .refine(
+        (value) =>
+          value.BOT_COMMAND_TRANSPORT !== 'postgres' || Boolean(value.BETA_GUILD_IDS?.length),
+        { path: ['BETA_GUILD_IDS'] },
+      )
       .refine(
         (value) => value.NODE_ENV !== 'production' || value.WEB_ORIGIN.startsWith('https://'),
         { path: ['WEB_ORIGIN'] },
@@ -194,6 +220,35 @@ export function readAuthEnvironment(input: Environment = process.env) {
   );
 }
 export type AuthEnvironment = ReturnType<typeof readAuthEnvironment>;
+
+/** Separate opt-in: legacy bot startup needs neither a DB identity nor queue scope. */
+export function readBotCommandEnvironment(input: Environment = process.env) {
+  const flag = parse(
+    z.object({ BOT_COMMANDS_ENABLED: z.enum(['true', 'false']).default('false') }),
+    input,
+  );
+  if (flag.BOT_COMMANDS_ENABLED === 'false') return { enabled: false as const };
+  const value = parse(
+    z
+      .object({
+        DATABASE_URL: databaseUrl,
+        DISCORD_BOT_TOKEN: z.string().min(1),
+        BETA_GUILD_IDS: betaGuilds,
+        DISCORD_ALLOWED_USER_IDS: z
+          .string()
+          .transform((x) => x.split(',').map((id) => id.trim()))
+          .pipe(z.array(snowflake).min(1)),
+      })
+      .refine((x) => Boolean(x.BETA_GUILD_IDS?.length), { path: ['BETA_GUILD_IDS'] }),
+    input,
+  );
+  return {
+    enabled: true as const,
+    databaseUrl: value.DATABASE_URL,
+    allowedUsers: value.DISCORD_ALLOWED_USER_IDS,
+    allowedGuilds: value.BETA_GUILD_IDS!,
+  };
+}
 
 export function readWorkerEnvironment(input: Environment = process.env) {
   return parse(z.object({ ...common, DATABASE_URL: databaseUrl, REDIS_URL: redisUrl }), input);

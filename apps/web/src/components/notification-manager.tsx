@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   DEFAULT_NOTIFICATION_TEMPLATE,
   normalizeNotificationMentions,
@@ -10,6 +10,13 @@ import {
 } from '@navi/core';
 import { KickEmbedPreview } from './kick-embed-preview';
 import type { NotificationRow } from '@navi/database';
+import {
+  awaitCommand,
+  prepareSubmission,
+  finishSubmission,
+  type CommandProgress,
+} from '../lib/command-client';
+import { CommandStatus } from './command-status';
 const messages: Record<string, string> = {
   login_required: 'Your session expired. Sign in again.',
   discord_reauthentication_required: 'Reconnect Discord before continuing.',
@@ -48,26 +55,70 @@ class RequestError extends Error {
     super(message);
   }
 }
-const pendingTargets = new Map<string, Promise<NotificationTargets>>();
-function targetsRequest(url: string) {
+type TargetRequest = {
+  promise: Promise<NotificationTargets>;
+  listeners: Set<(state: CommandProgress) => void>;
+  latest?: CommandProgress;
+};
+const pendingTargets = new Map<string, TargetRequest>();
+function targetsRequest(
+  url: string,
+  commandMode = false,
+  progress?: (state: CommandProgress) => void,
+) {
   const pending = pendingTargets.get(url);
-  if (pending) return pending;
-  const operation = request<NotificationTargets>(url).finally(() => {
-    if (pendingTargets.get(url) === operation) pendingTargets.delete(url);
+  if (pending) {
+    if (progress) {
+      pending.listeners.add(progress);
+      if (pending.latest) progress(pending.latest);
+    }
+    return pending.promise;
+  }
+  const listeners = new Set(progress ? [progress] : []);
+  const operation = (
+    commandMode
+      ? request<NotificationTargets>(
+          url.split('/notifications')[0] + '/commands',
+          'POST',
+          { kind: 'notification_targets.refresh', payload: {} },
+          (state) => {
+            entry.latest = state;
+            for (const notify of listeners) notify(state);
+          },
+          true,
+        )
+      : request<NotificationTargets>(url)
+  ).finally(() => {
+    if (pendingTargets.get(url)?.promise === operation) pendingTargets.delete(url);
   });
-  pendingTargets.set(url, operation);
+  const entry: TargetRequest = { promise: operation, listeners };
+  pendingTargets.set(url, entry);
   return operation;
 }
-async function request<T>(url: string, method = 'GET', data?: unknown): Promise<T> {
+async function request<T>(
+  url: string,
+  method = 'GET',
+  data?: unknown,
+  progress?: (state: CommandProgress) => void,
+  queueMode = false,
+): Promise<T> {
+  const submission = data !== undefined && queueMode ? prepareSubmission(url, data) : undefined;
   let response: Response;
   try {
     response = await fetch(url, {
       method,
       credentials: 'same-origin',
       cache: 'no-store',
+      signal: AbortSignal.timeout(30000),
       ...(data === undefined
         ? {}
-        : { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }),
+        : {
+            headers: {
+              'Content-Type': 'application/json',
+              'Idempotency-Key': submission?.key ?? crypto.randomUUID(),
+            },
+            body: JSON.stringify(submission?.body ?? data),
+          }),
     });
   } catch {
     throw new Error(
@@ -76,6 +127,7 @@ async function request<T>(url: string, method = 'GET', data?: unknown): Promise<
   }
   const result = await response.json();
   if (!response.ok) {
+    if (response.status < 500) finishSubmission(url);
     const retry = response.headers.get('retry-after');
     const seconds =
       retry && /^\d+(?:\.\d+)?$/.test(retry) ? Math.max(1, Math.ceil(Number(retry))) : 0;
@@ -85,20 +137,29 @@ async function request<T>(url: string, method = 'GET', data?: unknown): Promise<
       seconds,
     );
   }
+  if (response.status === 202 && result.accepted === true) {
+    progress?.(result.command);
+    finishSubmission(url);
+    return awaitCommand<T>(result.command, progress);
+  }
+  finishSubmission(url);
   return result as T;
 }
 export function NotificationManager({
   guildId,
   initial,
+  commandMode = false,
 }: {
   guildId: string;
   initial: NotificationRow[];
+  commandMode?: boolean | undefined;
 }) {
   const [targets, setTargets] = useState<NotificationTargets>({ channels: [], roles: [] }),
     [loading, setLoading] = useState(true),
     [error, setError] = useState(''),
     [refreshed, setRefreshed] = useState(false),
-    [retryUntil, setRetryUntil] = useState(0);
+    [retryUntil, setRetryUntil] = useState(0),
+    [command, setCommand] = useState<CommandProgress | null>(null);
   const endpoint = `/api/guilds/${guildId}/notifications`;
   async function refresh() {
     if (retryUntil > Date.now()) return;
@@ -106,7 +167,8 @@ export function NotificationManager({
     setError('');
     setRefreshed(false);
     try {
-      setTargets(await targetsRequest(endpoint + '/targets?fresh=1'));
+      setTargets(await targetsRequest(endpoint + '/targets?fresh=1', commandMode, setCommand));
+      setCommand(null);
       setRefreshed(true);
     } catch (error) {
       setTargets({ channels: [], roles: [] });
@@ -128,11 +190,14 @@ export function NotificationManager({
     setTargets({ channels: [], roles: [] });
     setRefreshed(false);
     setRetryUntil(0);
-    targetsRequest(endpoint + '/targets').then(
+    targetsRequest(endpoint + '/targets', commandMode, (state) => {
+      if (mounted) setCommand(state);
+    }).then(
       (data) => {
         if (mounted) {
           setTargets(data);
           setLoading(false);
+          setCommand(null);
         }
       },
       (error) => {
@@ -146,7 +211,7 @@ export function NotificationManager({
     return () => {
       mounted = false;
     };
-  }, [endpoint]);
+  }, [endpoint, commandMode]);
   return (
     <section aria-labelledby="notifications-title">
       <div className="section-heading">
@@ -178,6 +243,19 @@ export function NotificationManager({
         notification preference is disabled.
       </p>
       {loading && <p role="status">Loading Discord text channels and roles…</p>}
+      {command && (
+        <CommandStatus
+          key={command.id}
+          command={command}
+          polling={loading}
+          complete={(result) => {
+            setTargets(result as NotificationTargets);
+            setCommand(null);
+            setLoading(false);
+            setError('');
+          }}
+        />
+      )}
       {refreshed && !loading && !error && (
         <p role="status">Permissions refreshed from Discord. Your selections were kept.</p>
       )}
@@ -210,6 +288,7 @@ export function NotificationManager({
               initial={row}
               targets={targets}
               unavailable={loading || !!error}
+              commandMode={commandMode}
             />
           ))}
         </div>
@@ -222,12 +301,52 @@ function NotificationEditor({
   initial,
   targets,
   unavailable,
+  commandMode = false,
 }: {
   endpoint: string;
   initial: NotificationRow;
   targets: NotificationTargets;
   unavailable: boolean;
+  commandMode?: boolean;
 }) {
+  const [command, setCommand] = useState<CommandProgress | null>(null),
+    [commandAction, setCommandAction] = useState<'save' | 'test'>('save'),
+    [disabling, setDisabling] = useState(false);
+  const displayedVersion = useRef(initial.version);
+  useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem(`navi-command:${endpoint}`);
+      if (stored) {
+        const data = JSON.parse(stored);
+        setCommand(data.command);
+        setCommandAction(data.action);
+      }
+    } catch {
+      /* Status recovery remains available in this page when storage is unavailable. */
+    }
+  }, [endpoint]);
+  function track(action: 'save' | 'test') {
+    return (state: CommandProgress) => {
+      setCommand(state);
+      setCommandAction(action);
+      try {
+        sessionStorage.setItem(
+          `navi-command:${endpoint}`,
+          JSON.stringify({ command: state, action }),
+        );
+      } catch {
+        /* Never retry an action because local storage failed. */
+      }
+    };
+  }
+  function clearCommand() {
+    setCommand(null);
+    try {
+      sessionStorage.removeItem(`navi-command:${endpoint}`);
+    } catch {
+      /* No external side effect. */
+    }
+  }
   const [row, setRow] = useState({
     ...initial,
     config: initial.config ? normalizeNotificationMentions(initial.config) : null,
@@ -274,7 +393,13 @@ function NotificationEditor({
       setBusy(false);
     }
   }
-  function saved(updated: NotificationRow) {
+  function saved(updated: NotificationRow, clear = true) {
+    if (clear) clearCommand();
+    if (updated.version < displayedVersion.current) {
+      setSuccess('Command completed. Newer settings are already displayed.');
+      return;
+    }
+    displayedVersion.current = updated.version;
     setRow({ ...updated, config: normalizeNotificationMentions(updated.config!) });
     setDraft(normalizeNotificationMentions(updated.config!));
     setPreview('');
@@ -420,14 +545,20 @@ function NotificationEditor({
       </label>
       <div className="actions">
         <button
-          disabled={busy || !ready}
+          disabled={busy || !ready || command !== null}
           onClick={() =>
             void run(async () =>
               saved(
-                await request<NotificationRow>(endpoint, 'PUT', {
-                  config: draft,
-                  version: row.version,
-                }),
+                await request<NotificationRow>(
+                  endpoint,
+                  'PUT',
+                  {
+                    config: draft,
+                    version: row.version,
+                  },
+                  track('save'),
+                  commandMode,
+                ),
               ),
             )
           }
@@ -439,6 +570,11 @@ function NotificationEditor({
           disabled={busy || !ready}
           onClick={() =>
             void run(async () => {
+              if (commandMode)
+                await targetsRequest(
+                  endpoint.split('/notifications/')[0] + '/notifications/targets?fresh=1',
+                  true,
+                );
               const sample = await request<{ content: string; kick?: NotificationMessage }>(
                 endpoint + '/preview',
                 'POST',
@@ -457,14 +593,17 @@ function NotificationEditor({
         </button>
         <button
           className="secondary"
-          disabled={busy || !ready || dirty || !row.config}
+          disabled={busy || !ready || dirty || !row.config || command !== null}
           onClick={() =>
             void run(async () => {
               const result = await request<{ status: string; replayed: boolean }>(
                 endpoint + '/test',
                 'POST',
                 { requestId: crypto.randomUUID(), version: row.version },
+                track('test'),
+                commandMode,
               );
+              clearCommand();
               setSuccess(
                 result.status === 'sent'
                   ? 'Test message accepted by Discord.'
@@ -480,16 +619,18 @@ function NotificationEditor({
         {row.config?.enabled && (
           <button
             className="secondary"
-            disabled={busy}
-            onClick={() =>
+            disabled={disabling}
+            onClick={() => {
+              setDisabling(true);
               void run(async () =>
                 saved(
                   await request<NotificationRow>(endpoint + '/disable', 'POST', {
                     version: row.version,
                   }),
+                  false,
                 ),
-              )
-            }
+              ).finally(() => setDisabling(false));
+            }}
           >
             Disable saved notifications
           </button>
@@ -501,6 +642,22 @@ function NotificationEditor({
         </p>
       )}
       {busy && <p role="status">Working…</p>}
+      {command && (
+        <CommandStatus
+          key={command.id}
+          command={command}
+          polling={busy}
+          dismiss={clearCommand}
+          complete={(result) => {
+            if (commandAction === 'save') saved(result as NotificationRow);
+            else {
+              clearCommand();
+              setError('');
+              setSuccess('Test message accepted by Discord.');
+            }
+          }}
+        />
+      )}
       {error && (
         <p role="alert" className="registration-error">
           {error}

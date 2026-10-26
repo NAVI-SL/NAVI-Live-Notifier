@@ -1,0 +1,265 @@
+{
+  "event": "phase14d_controlled_testing_configuration",
+  "date": "2026-10-22",
+  "timezone": "Asia/Colombo",
+  "publicLaunch": "NO-GO",
+  "assessment": "FAIL_HOLD",
+  "workerStarted": false,
+  "messagesSent": 0,
+  "broadcastsInitiated": 0,
+  "externalWebhookMutations": 0,
+  "productionCredentialsChanged": false,
+  "dnsHostingOrPublicInstallationChanged": false,
+  "initialInventory": {
+    "event": "phase14d_readonly_inventory",
+    "observedAt": "2026-10-22T10:43:52.573Z",
+    "savedSubscriptions": 2,
+    "enabledSubscriptions": 2,
+    "enabledNotifications": 2,
+    "uniqueGuilds": 1,
+    "uniqueDestinations": 2,
+    "providedIdMatchesGuild": true,
+    "providedIdMatchesChannel": false,
+    "enabledProviders": ["youtube", "kick"],
+    "rolesConfigured": 0,
+    "everyoneConfigured": 2,
+    "deliveryStates": [
+      {
+        "status": "sent",
+        "count": 6
+      },
+      {
+        "status": "uncertain",
+        "count": 1
+      }
+    ]
+  },
+  "approvedIsolation": {
+    "event": "phase14d_approved_local_isolation",
+    "realMessagesSent": false,
+    "workerStarted": false,
+    "credentialsChanged": false,
+    "productionChanged": false,
+    "settingsUpdated": 2,
+    "cutoffAt": "2026-10-22T10:50:37.19Z",
+    "otherConfigurationUnchanged": true,
+    "scopeMatches": true,
+    "monitoringDisabled": true,
+    "ledgerUnchanged": true,
+    "templatesChannelsEnabledPreserved": true,
+    "allMentionsDisabled": true
+  },
+  "dryRunInvariance": {
+    "event": "phase14d_actual_dry_run_invariance",
+    "exit": 0,
+    "relationsCompared": 14,
+    "allApplicationRelationsUnchanged": true,
+    "plan": {
+      "event": "controlled_test_plan",
+      "mode": "offline_dry_run",
+      "liveExecutionAuthorized": false,
+      "workerStarted": false,
+      "sends": 0,
+      "webhookMutations": 0,
+      "databaseMutations": 0,
+      "scopeSelected": true,
+      "selectedSubscriptions": 2,
+      "selectedProviders": ["kick", "youtube"],
+      "eligibleNoMentionSubscriptions": 2,
+      "preservedUncertainRecords": 1,
+      "pendingAfterCutoff": 0,
+      "webhookPlan": "skipped_requires_separate_approval",
+      "blockers": [],
+      "controlledMonitoringReady": false,
+      "requiredBeforeLive": [
+        "explicit_live_approval",
+        "refresh_and_verify_settings_start_cutoff",
+        "webhook_change_approval_or_suppression"
+      ]
+    }
+  },
+  "finalDryRun": {
+    "event": "controlled_test_plan",
+    "mode": "offline_dry_run",
+    "liveExecutionAuthorized": false,
+    "workerStarted": false,
+    "sends": 0,
+    "webhookMutations": 0,
+    "databaseMutations": 0,
+    "scopeSelected": true,
+    "selectedSubscriptions": 2,
+    "selectedProviders": ["kick", "youtube"],
+    "eligibleNoMentionSubscriptions": 2,
+    "preservedUncertainRecords": 1,
+    "pendingAfterCutoff": 0,
+    "webhookPlan": "skipped_requires_separate_approval",
+    "blockers": [],
+    "controlledMonitoringReady": false,
+    "requiredBeforeLive": [
+      "explicit_live_approval",
+      "refresh_and_verify_settings_start_cutoff",
+      "webhook_change_approval_or_suppression"
+    ]
+  },
+  "releaseConfiguration": {
+    "event": "release_configuration",
+    "checks": {
+      "beta_guild_scope_present": true,
+      "web_worker_scope_matches": true,
+      "user_allowlist_present": true,
+      "broker_secret_matches": true,
+      "database_target_matches": true,
+      "broker_target_matches": true,
+      "source_cap_within_beta_ceiling": true,
+      "bot_token_configured": true,
+      "monitoring_enabled": false,
+      "public_https_web_origin": false,
+      "public_https_webhook_origin": false
+    },
+    "ready": false,
+    "liveVerification": false
+  },
+  "runtimeHealth": {
+    "time": "2026-10-22T10:56:59.654Z",
+    "event": "beta_health",
+    "severity": "error",
+    "sample": 1,
+    "status": "degraded",
+    "services": {
+      "web": "unavailable",
+      "bot": "unavailable",
+      "worker": "disabled"
+    },
+    "checks": {
+      "web": {
+        "kind": "liveness",
+        "status": "unavailable",
+        "reason": "connection_refused"
+      },
+      "bot": {
+        "kind": "readiness",
+        "status": "unavailable",
+        "reason": "connection_refused"
+      },
+      "worker": {
+        "kind": "readiness",
+        "status": "disabled",
+        "reason": "monitoring_disabled"
+      }
+    },
+    "database": {
+      "status": "ok",
+      "reason": "auth_schema_accessible"
+    }
+  },
+  "finalApplicationListeners": [
+    {
+      "port": 3000,
+      "listeners": 0
+    },
+    {
+      "port": 4001,
+      "listeners": 0
+    },
+    {
+      "port": 4100,
+      "listeners": 0
+    }
+  ],
+  "automated": {
+    "checkExit": 0,
+    "tests": 424,
+    "testFiles": 37,
+    "vitestSeconds": 11.8,
+    "newPlannerOriginAndArgumentCases": 25,
+    "newHistoricalCutoffCases": 2,
+    "newProductionEnabledCases": 2,
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "format": "PASS",
+    "nativeBuildExit": 0,
+    "dockerBuildExit": 0,
+    "composeModelExit": 0,
+    "proxyExit": 0,
+    "proxyAssertions": 14,
+    "postgresReliabilityExit": 0,
+    "authEnvironmentExit": 0,
+    "realLiveValidation": false
+  },
+  "redis": {
+    "ping": "PONG",
+    "loading": 0,
+    "aofEnabled": 1,
+    "aofLastWrite": "ok",
+    "rdbLastSave": "ok",
+    "originalContainerRestarted": false
+  },
+  "dependencies": {
+    "fullAuditExit": 0,
+    "fullCounts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "productionAuditExit": 0,
+    "productionCounts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "npmLsExit": 1,
+    "npmLsWarning": "workspace override parent range",
+    "dependencyChanges": false,
+    "completeOsImageScan": false
+  },
+  "clientSecretScan": {
+    "check": "client_secret_values",
+    "scanned": 19,
+    "configuredCandidates": 12,
+    "leakedFields": []
+  },
+  "localOnlyChanges": {
+    "serviceFiles": [".env.web", ".env.worker"],
+    "approvedSettingsRows": 2,
+    "fields": ["role_id", "mention_everyone", "version", "updated_at"],
+    "templatesDestinationsAndEnabledStatesPreserved": true,
+    "deliveryLedgerPreserved": true,
+    "scopeIdentifiersPublished": false,
+    "privateRollbackSnapshotRetained": true
+  },
+  "correctedValidationFailures": [
+    "Two introduced TypeScript inference/assertion errors",
+    "Native helper import extension and reserved-domain fixture mismatch: 418 PASS, 2 FAIL before correction",
+    "New report formatting gate before final rerun"
+  ],
+  "blocked": [
+    "Explicit monitoring/send/reconciliation approval",
+    "Fresh browser OAuth logout install and authorization journey",
+    "New controlled YouTube and Kick actual receipt tests",
+    "Production HTTPS origins and actual callbacks",
+    "Uncertain outcome reconciliation",
+    "Sustained runtime and operational alert receipts",
+    "Encrypted offsite host-loss recovery",
+    "Measured hosting capacity costs and public policy acceptance"
+  ],
+  "requiredFieldPresence": {
+    "webAuthShapeValid": true,
+    "webProductionMode": false,
+    "botProductionMode": false,
+    "workerMonitoringEnabled": false,
+    "workerYouTubeKeyPresent": true,
+    "workerKickClientPresent": true,
+    "workerKickSecretPresent": true,
+    "webYouTubeKeyPresent": true,
+    "webKickClientPresent": true,
+    "webKickSecretPresent": true,
+    "workerPublicOriginPresent": false,
+    "webhookSecretPresent": false
+  }
+}

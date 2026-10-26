@@ -26,14 +26,21 @@
     "test": "npm run build:shared && vitest run",
     "test:watch": "npm run build:shared && vitest",
     "test:postgres": "npm run build:shared && tsx scripts/check-reliability.ts",
+    "test:commands:postgres": "npm run build:shared && tsx scripts/check-command-queue.ts",
+    "test:commands:integration": "npm run build:shared && tsx scripts/validate-command-integration.ts",
+    "test:redis:compatibility": "npm run build:shared && tsx scripts/check-redis-compatibility.ts",
+    "test:proxy": "tsx scripts/check-proxy.ts",
+    "test:tooling": "vitest run tests/tooling-compatibility.test.ts",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm test",
     "env:check": "npm run build:shared && tsx scripts/check-env.ts",
     "env:check:auth": "npm run build:shared && tsx scripts/check-env.ts --auth",
     "env:check:example": "npm run build:shared && tsx scripts/check-env.ts --example",
     "db:check": "npm run build:shared && npm run db:check --workspace=@navi/database",
     "monitor:check": "npm run build:shared && tsx scripts/check-monitoring.ts",
+    "monitor:dry-run": "npm run build:shared && tsx scripts/plan-controlled-test.ts",
     "beta:health": "npm run build:shared && tsx scripts/check-beta-health.ts",
     "release:check": "npm run build:shared && tsx scripts/check-release.ts",
+    "cloud:check": "npm run build:shared && tsx scripts/check-cloud-preparation.ts",
     "db:prune-streamers": "npm run build:shared && npm run db:prune-streamers --workspace=@navi/database",
     "db:generate": "npm run build:shared && npm run db:generate --workspace=@navi/database",
     "db:migrate": "npm run build:shared && npm run db:migrate --workspace=@navi/database",
@@ -61,5 +68,10 @@
     "typescript": "5.9.3",
     "typescript-eslint": "8.71.2",
     "vitest": "4.1.12"
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "0.28.2"
+    }
   }
 }

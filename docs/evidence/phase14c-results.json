@@ -1,0 +1,467 @@
+{
+  "event": "phase14c_runtime_real_world_validation",
+  "date": "2026-10-22",
+  "timezone": "Asia/Colombo",
+  "publicLaunch": "NO-GO",
+  "releaseAcceptance": "FAIL_HOLD",
+  "messagesInitiatedByValidation": 0,
+  "workerStartedByValidation": false,
+  "ownerWorkerInstruction": "Keep worker stopped; no real sends",
+  "externalEffectsOfSeparateRuntimeCertified": false,
+  "applicationCodeChanged": false,
+  "productionConfigurationChanged": false,
+  "credentialsChanged": false,
+  "ownedRuntime": {
+    "event": "phase14c_actual_runtime",
+    "startedAt": "2026-10-22T10:18:54.155Z",
+    "realMessagesSent": false,
+    "workerStarted": false,
+    "botSamples": [
+      {
+        "at": "2026-10-22T10:18:57.036Z",
+        "http": 200,
+        "status": "ok",
+        "gateway": "ready"
+      },
+      {
+        "at": "2026-10-22T10:19:31.012Z",
+        "http": 200,
+        "status": "ok",
+        "gateway": "ready"
+      },
+      {
+        "at": "2026-10-22T10:20:01.443Z",
+        "http": 200,
+        "status": "ok",
+        "gateway": "ready"
+      }
+    ],
+    "webChecks": [
+      {
+        "path": "/api/health",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      },
+      {
+        "path": "/dashboard",
+        "expected": 307,
+        "actual": 307,
+        "pass": true
+      },
+      {
+        "path": "/api/auth/get-session",
+        "expected": 404,
+        "actual": 404,
+        "pass": true
+      }
+    ],
+    "shutdown": {
+      "bot-restart": 0,
+      "web": 1,
+      "bot": 0
+    },
+    "firstBotGracefulExit": 0,
+    "restartSample": {
+      "at": "2026-10-22T10:20:04.607Z",
+      "http": 200,
+      "status": "ok",
+      "gateway": "ready"
+    },
+    "endedAt": "2026-10-22T10:20:05.163Z"
+  },
+  "duringRuntimeHealth": {
+    "time": "2026-10-22T10:19:29.191Z",
+    "event": "beta_health",
+    "severity": "error",
+    "sample": 1,
+    "status": "degraded",
+    "services": {
+      "web": "ok",
+      "bot": "ok",
+      "worker": "unavailable"
+    },
+    "checks": {
+      "web": {
+        "kind": "liveness",
+        "status": "ok",
+        "reason": "healthy",
+        "httpStatus": 200
+      },
+      "bot": {
+        "kind": "readiness",
+        "status": "ok",
+        "reason": "healthy",
+        "httpStatus": 200
+      },
+      "worker": {
+        "kind": "readiness",
+        "status": "unavailable",
+        "reason": "connection_refused"
+      }
+    },
+    "database": {
+      "status": "ok",
+      "reason": "auth_schema_accessible"
+    }
+  },
+  "readonlyIntegrations": {
+    "event": "phase14c_readonly_integrations",
+    "observedAt": "2026-10-22T10:21:18.56Z",
+    "realMessagesSent": false,
+    "subscriptionsChanged": false,
+    "identities": [
+      {
+        "provider": "kick",
+        "officialResolution": "PASS",
+        "stableIdMatches": true
+      },
+      {
+        "provider": "youtube",
+        "officialResolution": "PASS",
+        "stableIdMatches": true
+      }
+    ],
+    "guilds": [
+      {
+        "installed": true,
+        "sendableChannels": 12,
+        "eligibleRoles": 9,
+        "configuredDestinations": [
+          {
+            "channelAvailable": true,
+            "embedAllowed": true,
+            "configuredMentionPermitted": true,
+            "enabled": true
+          },
+          {
+            "channelAvailable": true,
+            "embedAllowed": true,
+            "configuredMentionPermitted": true,
+            "enabled": true
+          }
+        ],
+        "installUrl": {
+          "clientMatches": true,
+          "guildMatches": true,
+          "scopes": "bot applications.commands",
+          "guildInstall": true,
+          "administratorRequested": false
+        }
+      }
+    ],
+    "configuredApplicationMatches": true,
+    "settingsUnchanged": true,
+    "slashDashboardCommandImplemented": false
+  },
+  "workerDependencyProbes": {
+    "event": "phase14c_worker_dependencies_only",
+    "workerProcessStarted": false,
+    "realMessagesSent": false,
+    "monitoringSchemaReadiness": "PASS",
+    "ownedConnectionTerminated": true,
+    "actualPoolReconnect": true,
+    "redis": "PONG"
+  },
+  "uncertainInspection": {
+    "event": "phase14c_uncertain_readonly_diagnosis",
+    "observedAt": "2026-10-22T10:22:06.32Z",
+    "realMessagesSent": false,
+    "databaseChanged": false,
+    "ports": [
+      {
+        "port": 3000,
+        "state": "connection_refused"
+      },
+      {
+        "port": 4001,
+        "state": "connection_refused"
+      },
+      {
+        "port": 4100,
+        "state": "connection_refused"
+      }
+    ],
+    "uncertain": [
+      {
+        "provider": "youtube",
+        "status": "uncertain",
+        "errorCode": "delivery_interrupted",
+        "attempts": 1,
+        "updatedAt": "2026-10-18T04:43:50.81Z",
+        "storedMessageIdAvailable": false,
+        "messagesSampled": 6,
+        "ownMessagesSampled": 1,
+        "matchingSessionUrlMessages": 0,
+        "matchingNonceMessages": 0,
+        "historySampleMayBeIncomplete": false,
+        "logFilesSearched": 198,
+        "logFilesWithDeliveryReference": 0,
+        "rowUnchanged": true,
+        "decision": "preserve_uncertain_no_replay"
+      }
+    ],
+    "configuration": {
+      "oauthCallbackPath": "/api/auth/callback/discord",
+      "websiteLoopback": true,
+      "monitoringEnabled": true,
+      "publicWebhooksConfigured": false,
+      "botTokenPresent": true,
+      "authFieldsPresent": true
+    },
+    "applicationMatches": true,
+    "postgres": "PASS"
+  },
+  "separateRuntime": {
+    "startedByValidation": false,
+    "ownerComment": "May have been started through VS Code terminals",
+    "firstAllHealthy": {
+      "time": "2026-10-22T10:27:43.417Z",
+      "event": "beta_health",
+      "severity": "info",
+      "sample": 1,
+      "status": "ok",
+      "services": {
+        "web": "ok",
+        "bot": "ok",
+        "worker": "ok"
+      },
+      "checks": {
+        "web": {
+          "kind": "liveness",
+          "status": "ok",
+          "reason": "healthy",
+          "httpStatus": 200
+        },
+        "bot": {
+          "kind": "readiness",
+          "status": "ok",
+          "reason": "healthy",
+          "httpStatus": 200
+        },
+        "worker": {
+          "kind": "readiness",
+          "status": "ok",
+          "reason": "healthy",
+          "httpStatus": 200
+        }
+      },
+      "database": {
+        "status": "ok",
+        "reason": "auth_schema_accessible"
+      }
+    },
+    "observedListenerMetadata": [
+      {
+        "port": 3000,
+        "startedAt": "2026-10-22T10:22:27.026793Z",
+        "workspaceInCommand": true,
+        "workerInCommand": false,
+        "parentStartedAt": "2026-10-22T10:22:26.842105Z",
+        "parentIsNpmOrDev": false,
+        "ownedByPhase14CSupervisor": false
+      },
+      {
+        "port": 4001,
+        "startedAt": "2026-10-22T10:22:26.90454Z",
+        "workspaceInCommand": true,
+        "workerInCommand": true,
+        "parentStartedAt": "2026-10-22T10:22:26.843367Z",
+        "parentIsNpmOrDev": true,
+        "ownedByPhase14CSupervisor": false
+      },
+      {
+        "port": 4100,
+        "startedAt": "2026-10-22T10:22:26.913168Z",
+        "workspaceInCommand": true,
+        "workerInCommand": true,
+        "parentStartedAt": "2026-10-22T10:22:26.86077Z",
+        "parentIsNpmOrDev": true,
+        "ownedByPhase14CSupervisor": false
+      }
+    ],
+    "firstWorkerObservationAt": "2026-10-22T10:29:18.365Z",
+    "firstHeartbeatCompletedAt": 1792664957929,
+    "laterWorkerObservation": {
+      "event": "phase14c_unowned_runtime_observation",
+      "observedAt": "2026-10-22T10:31:00.296Z",
+      "startedByThisValidation": false,
+      "controlledWorkerTest": false,
+      "worker": {
+        "http": 200,
+        "status": "ok",
+        "worker": "running",
+        "database": "ok",
+        "bot": "ok",
+        "integrations": {
+          "youtube": "ok",
+          "kick": "ok"
+        },
+        "heartbeat": {
+          "lastCompletedTickAt": 1792665058462,
+          "ageMs": 1851
+        }
+      },
+      "recentDeliveryStates": []
+    },
+    "controlledWorkerTest": false
+  },
+  "restrictionEnforcement": {
+    "event": "phase14c_enforce_no_send_restriction",
+    "stoppedOnlyVerifiedWorkspaceGroup": true,
+    "killExit": 0,
+    "gracefulShutdownVerified": false,
+    "ports": [
+      {
+        "port": 3000,
+        "listeners": 0
+      },
+      {
+        "port": 4001,
+        "listeners": 0
+      },
+      {
+        "port": 4100,
+        "listeners": 0
+      }
+    ],
+    "originalDatabaseServicesStopped": false
+  },
+  "finalLedger": {
+    "event": "phase14c_after_restriction_enforcement",
+    "observedAt": "2026-10-22T10:34:30.39Z",
+    "recentDeliveryStates": [],
+    "uncertain": [
+      {
+        "status": "uncertain",
+        "error_code": "delivery_interrupted",
+        "attempts": 1,
+        "updated_at": "2026-10-18T04:43:50.81Z"
+      }
+    ]
+  },
+  "finalHealth": {
+    "time": "2026-10-22T10:33:48.028Z",
+    "event": "beta_health",
+    "severity": "error",
+    "sample": 1,
+    "status": "degraded",
+    "services": {
+      "web": "unavailable",
+      "bot": "unavailable",
+      "worker": "unavailable"
+    },
+    "checks": {
+      "web": {
+        "kind": "liveness",
+        "status": "unavailable",
+        "reason": "connection_refused"
+      },
+      "bot": {
+        "kind": "readiness",
+        "status": "unavailable",
+        "reason": "connection_refused"
+      },
+      "worker": {
+        "kind": "readiness",
+        "status": "unavailable",
+        "reason": "connection_refused"
+      }
+    },
+    "database": {
+      "status": "ok",
+      "reason": "auth_schema_accessible"
+    }
+  },
+  "releaseConfiguration": {
+    "event": "release_configuration",
+    "checks": {
+      "beta_guild_scope_present": false,
+      "web_worker_scope_matches": false,
+      "user_allowlist_present": true,
+      "broker_secret_matches": true,
+      "database_target_matches": true,
+      "broker_target_matches": true,
+      "source_cap_within_beta_ceiling": true,
+      "bot_token_configured": true,
+      "public_https_web_origin": false,
+      "public_https_webhook_origin": false
+    },
+    "ready": false,
+    "liveVerification": false
+  },
+  "automated": {
+    "checkExit": 0,
+    "tests": 395,
+    "testFiles": 36,
+    "vitestSeconds": 9.31,
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "format": "PASS",
+    "nativeBuildExit": 0,
+    "composeModelExit": 0,
+    "dockerBuildExit": 0,
+    "dockerCacheAllowed": true,
+    "proxyExit": 0,
+    "proxyAssertions": 14,
+    "postgresReliabilityExit": 0,
+    "providerConnectivityExit": 0,
+    "newLiveStreamTest": false
+  },
+  "dependencies": {
+    "fullAuditExit": 0,
+    "fullAuditCounts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "productionAuditExit": 0,
+    "productionAuditCounts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "npmLsExit": 1,
+    "npmLsWarning": "workspace override parent range",
+    "completeOsImageScan": false
+  },
+  "clientSecretScan": {
+    "check": "client_secret_values",
+    "scanned": 19,
+    "configuredCandidates": 12,
+    "leakedFields": []
+  },
+  "resourceSample": {
+    "scope": "direct_child_only_during_owned_runtime",
+    "botWorkingSetMiB": 76.05,
+    "botCpuSeconds": 0.73,
+    "webParentWorkingSetMiB": 63.15,
+    "webParentCpuSeconds": 0.19,
+    "fullTreeOrCapacityMeasurement": false
+  },
+  "originalDatabaseContainersPreserved": true,
+  "blocked": [
+    "Controlled worker startup and restart under approved send scope",
+    "Fresh complete browser OAuth onboarding and installation",
+    "New controlled YouTube and Kick actual receipt matrix",
+    "Uncertain delivery outcome reconciliation",
+    "Public HTTPS and beta scope release configuration",
+    "Real external webhook registration and verification",
+    "Long-term soak and actual network disconnection recovery",
+    "Received external operational alerts",
+    "Encrypted offsite host-loss restoration",
+    "Intended hosting capacity cost and policy acceptance"
+  ]
+}

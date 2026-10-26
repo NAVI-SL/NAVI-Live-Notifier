@@ -8,7 +8,11 @@ export default async function Notifications({ params }: { params: Promise<{ guil
     subscriptions = await dashboardNotifications(guildId);
   return (
     <ServerWorkspace data={data} section="notifications">
-      <NotificationManager guildId={guildId} initial={subscriptions} />
+      <NotificationManager
+        guildId={guildId}
+        initial={subscriptions}
+        commandMode={data.commandMode}
+      />
     </ServerWorkspace>
   );
 }

@@ -18,7 +18,7 @@ Evidence classes:
 - **External read-only calls:** official provider authentication/key/inventory and Discord identity/application requests. These neither create event subscriptions nor prove a stream transition/message receipt.
 - **Blocked:** real database, containers/TLS, controlled broadcasts, actual sends and complete authenticated browser journey.
 
-[Machine-readable results](evidence/phase09-results.json) preserve sanitized command outcomes and HTTP statuses. [Chrome evidence](evidence/phase09-login-database-unavailable.png) shows the expected recoverable login failure, with no credentials. Logs below are redacted summaries of actual tool output, not fabricated application delivery logs.
+[Machine-readable results](evidence/phase09-results.json) preserve sanitized command outcomes and HTTP statuses. [Chrome evidence (private image omitted: phase09-login-database-unavailable.png)](evidence/UPLOAD_PRIVACY_NOTE.md) shows the expected recoverable login failure, with no credentials. Logs below are redacted summaries of actual tool output, not fabricated application delivery logs.
 
 ## Commands executed
 

@@ -1,0 +1,334 @@
+{
+  "event": "phase14b_final_blocker_resolution",
+  "date": "2026-10-22",
+  "timezone": "Asia/Colombo",
+  "publicLaunch": "NO-GO",
+  "assessment": "FAIL",
+  "realMessagesSent": false,
+  "botStarted": false,
+  "workerStarted": false,
+  "publicDeployment": false,
+  "credentialsChanged": false,
+  "productionConfigurationChanged": false,
+  "changes": [
+    "scripts/lib/beta-health.ts",
+    "scripts/check-beta-health.ts",
+    "tests/beta-health.test.ts"
+  ],
+  "automated": {
+    "checkExit": 0,
+    "tests": 395,
+    "testFiles": 36,
+    "vitestSeconds": 17.03,
+    "focusedHealthTests": 25,
+    "newRegressionCases": 12,
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "format": "PASS",
+    "nativeBuildExit": 0,
+    "authEnvironmentExit": 0,
+    "postgresReliabilityExit": 0,
+    "proxyExit": 0,
+    "proxyAssertions": 14,
+    "composeModelExit": 0,
+    "dockerBuildExit": 0,
+    "linuxBuildToolingTests": 3,
+    "providerConnectivityExit": 0,
+    "realLiveTransitionTest": false
+  },
+  "diagnosis": {
+    "event": "phase14b_readonly_diagnosis",
+    "observedAt": "2026-10-22T10:00:21.707Z",
+    "realMessagesSent": false,
+    "databaseChanged": false,
+    "ports": [
+      {
+        "port": 3000,
+        "state": "connection_refused"
+      },
+      {
+        "port": 4001,
+        "state": "connection_refused"
+      },
+      {
+        "port": 4100,
+        "state": "connection_refused"
+      }
+    ],
+    "uncertain": [
+      {
+        "provider": "youtube",
+        "status": "uncertain",
+        "errorCode": "delivery_interrupted",
+        "attempts": 1,
+        "updatedAt": "2026-10-18T04:43:50.81Z",
+        "storedMessageIdAvailable": false,
+        "messagesSampled": 6,
+        "ownMessagesSampled": 1,
+        "matchingSessionUrlMessages": 0,
+        "matchingNonceMessages": 0,
+        "historySampleMayBeIncomplete": false,
+        "logFilesSearched": 168,
+        "logFilesWithDeliveryReference": 0,
+        "rowUnchanged": true,
+        "decision": "preserve_uncertain_no_replay"
+      }
+    ],
+    "configuration": {
+      "oauthCallbackPath": "/api/auth/callback/discord",
+      "websiteLoopback": true,
+      "monitoringEnabled": true,
+      "publicWebhooksConfigured": false,
+      "botTokenPresent": true,
+      "authFieldsPresent": true
+    },
+    "applicationMatches": true,
+    "postgres": "PASS"
+  },
+  "webRuntime": {
+    "event": "phase14b_actual_local_web",
+    "realMessagesSent": false,
+    "botStarted": false,
+    "workerStarted": false,
+    "checks": [
+      {
+        "path": "/api/health",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      },
+      {
+        "path": "/dashboard",
+        "expected": 307,
+        "actual": 307,
+        "pass": true
+      },
+      {
+        "path": "/api/auth/get-session",
+        "expected": 404,
+        "actual": 404,
+        "pass": true
+      }
+    ],
+    "ownedProcessStopped": true
+  },
+  "runtimeHealth": {
+    "time": "2026-10-22T10:05:05.742Z",
+    "event": "beta_health",
+    "severity": "error",
+    "sample": 1,
+    "status": "degraded",
+    "services": {
+      "web": "unavailable",
+      "bot": "unavailable",
+      "worker": "unavailable"
+    },
+    "checks": {
+      "web": {
+        "kind": "liveness",
+        "status": "unavailable",
+        "reason": "connection_refused"
+      },
+      "bot": {
+        "kind": "readiness",
+        "status": "unavailable",
+        "reason": "connection_refused"
+      },
+      "worker": {
+        "kind": "readiness",
+        "status": "unavailable",
+        "reason": "connection_refused"
+      }
+    },
+    "database": {
+      "status": "ok",
+      "reason": "auth_schema_accessible"
+    }
+  },
+  "releaseConfiguration": {
+    "event": "release_configuration",
+    "checks": {
+      "beta_guild_scope_present": false,
+      "web_worker_scope_matches": false,
+      "user_allowlist_present": true,
+      "broker_secret_matches": true,
+      "database_target_matches": true,
+      "broker_target_matches": true,
+      "source_cap_within_beta_ceiling": true,
+      "bot_token_configured": true,
+      "public_https_web_origin": false,
+      "public_https_webhook_origin": false
+    },
+    "ready": false,
+    "liveVerification": false
+  },
+  "postgresRedis": {
+    "postgres": "accepting_connections",
+    "redis": "PONG",
+    "redisLoading": 0,
+    "aofEnabled": 1,
+    "aofLastWrite": "ok",
+    "rdbLastSave": "ok",
+    "originalServicesRestarted": false
+  },
+  "backupRestore": {
+    "archiveHashMatches": true,
+    "relations": 14,
+    "restored": true,
+    "rowsMatch": true,
+    "originalUnchanged": true,
+    "scratchRemoved": true,
+    "encrypted": false,
+    "offsiteVerified": false
+  },
+  "image": {
+    "event": "isolated_linux_image",
+    "imageId": "sha256:bbe90a3644ecc8b90a7abd584864a245dbbbe0e78d3a3d54ca86192440733ec0",
+    "nodeVersion": "v24.22.1",
+    "botScaffoldExit": 0,
+    "workerScaffoldExit": 0,
+    "websiteStarted": true,
+    "httpCases": [
+      {
+        "path": "/",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/support",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/privacy",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/terms",
+        "method": "GET",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "path": "/dashboard",
+        "method": "GET",
+        "expected": 307,
+        "actual": 307,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds",
+        "method": "GET",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      },
+      {
+        "path": "/api/auth/get-access-token",
+        "method": "GET",
+        "expected": 404,
+        "actual": 404,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "method": "POST",
+        "expected": 403,
+        "actual": 403,
+        "pass": true
+      },
+      {
+        "path": "/api/guilds/REDACTED_DISCORD_ID/install",
+        "method": "POST",
+        "expected": 401,
+        "actual": 401,
+        "pass": true
+      }
+    ],
+    "gracefulExitCode": 143,
+    "fixtureRemoved": true,
+    "network": "none",
+    "realMessages": false,
+    "realOAuth": false
+  },
+  "imageIsolation": {
+    "uid": 1000,
+    "configuredSecretFilesPresent": false
+  },
+  "dependencyAudits": {
+    "fullExit": 0,
+    "fullCounts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "productionExit": 0,
+    "productionCounts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "npmLsExit": 1,
+    "npmLsWarning": "ELSPROBLEMS workspace override parent range",
+    "dependencyChanges": false,
+    "completeOsImageScan": false
+  },
+  "clientSecretScan": {
+    "check": "client_secret_values",
+    "scanned": 19,
+    "configuredCandidates": 12,
+    "leakedFields": []
+  },
+  "resourceSnapshot": {
+    "scope": "idle_local_database_containers_only",
+    "postgresCpuPercent": 0.01,
+    "postgresMiB": 36.05,
+    "redisCpuPercent": 0.24,
+    "redisMiB": 8.422,
+    "reportedDockerHostGiB": 15.18,
+    "loadTest": false,
+    "oracleArm64Verified": false,
+    "capacityAccepted": false
+  },
+  "initialProbeFailure": {
+    "scenario": "unauthenticated public get-session",
+    "initialExpected": 200,
+    "actual": 404,
+    "cause": "probe expectation contradicted intentionally hidden route",
+    "applicationChanged": false,
+    "correctedExpected": 404,
+    "rerun": "PASS"
+  },
+  "blocked": [
+    "Approved continuous bot and worker operation",
+    "Fresh complete Discord onboarding",
+    "New controlled YouTube and Kick receipt matrix",
+    "Uncertain delivery outcome reconciliation",
+    "Public HTTPS and approved beta scope",
+    "Genuine external signed callback acceptance",
+    "External alert receipt and incident handling",
+    "Encrypted offsite host-loss recovery",
+    "Measured hosting capacity and costs",
+    "Public policy support deletion and retention acceptance"
+  ]
+}

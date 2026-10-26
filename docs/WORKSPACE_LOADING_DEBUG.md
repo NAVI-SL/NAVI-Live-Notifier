@@ -50,6 +50,6 @@ There is no dashboard interval polling or automatic retry loop. The server Notif
 - `apps/web/src/app/dashboard/error.tsx`: documented Next.js retry behavior and neutral fallback copy.
 - `tests/dashboard-error.test.tsx`: hydrated click invokes fresh-render retry exactly once; no automatic retries or blanket Discord blame.
 - `tests/production-database.test.ts`: creates an older-schema fixture, reproduces 42703/503, applies existing 0006 and verifies prior destination/template/enabled/version survive with everyone off.
-- This diagnosis, [progress](PROGRESS.md) and [recovered workspace screenshot](evidence/workspace-recovered.png).
+- This diagnosis, [progress](PROGRESS.md) and [recovered workspace screenshot (private image omitted: workspace-recovered.png)](evidence/UPLOAD_PRIVACY_NOTE.md).
 
 Migration 0006 was applied locally, not modified. Temporary safe diagnostic script removed afterward. Existing auth/session/Origin/manager checks, provider credentials, bot permissions, notification settings and sender behavior remain unchanged. The recovered dashboard is verified; this does not imply real livestream delivery or a private-beta GO decision.

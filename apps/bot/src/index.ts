@@ -1,9 +1,10 @@
-import { loadRootEnvironment, readBotEnvironment } from '@navi/config';
+import { loadRootEnvironment, readBotEnvironment, readBotCommandEnvironment } from '@navi/config';
 import { runScaffoldProcess } from '@navi/core';
 import { createBot } from './application.js';
 import { discordBotServices, startStatusServer } from './status-server.js';
 import { createGateway } from './gateway.js';
 import { acquireGatewayLease } from './gateway-lease.js';
+import { startBotCommands, stopBotResources } from './command-runtime.js';
 
 const environment = readBotEnvironment(loadRootEnvironment('bot'));
 if (!environment.DISCORD_BOT_TOKEN || process.argv.includes('--smoke')) {
@@ -14,6 +15,7 @@ if (!environment.DISCORD_BOT_TOKEN || process.argv.includes('--smoke')) {
   let lease: Awaited<ReturnType<typeof acquireGatewayLease>> | undefined;
   let stopBroker: (() => Promise<void>) | undefined;
   let gateway: ReturnType<typeof createGateway> | undefined;
+  let stopCommands: (() => Promise<void>) | undefined;
   let requestStop!: () => void;
   const stopping = new Promise<void>((resolve) => {
     requestStop = resolve;
@@ -38,7 +40,17 @@ if (!environment.DISCORD_BOT_TOKEN || process.argv.includes('--smoke')) {
       () => gateway?.health() ?? { status: 'degraded', state: 'starting', changedAt: 0 },
     );
     gateway = createGateway(createBot(), environment.DISCORD_BOT_TOKEN, log, invalidated);
+    let shuttingDown = false;
+    void stopping.then(() => {
+      shuttingDown = true;
+    });
     await Promise.race([gateway.start(), stopping]);
+    if (!shuttingDown)
+      stopCommands = await startBotCommands(
+        readBotCommandEnvironment(loadRootEnvironment('bot')),
+        services.commandAccess,
+        log,
+      );
     await stopping;
   } catch {
     log({
@@ -53,14 +65,14 @@ if (!environment.DISCORD_BOT_TOKEN || process.argv.includes('--smoke')) {
     const watchdog = setTimeout(() => {
       log({ service: 'bot', event: 'shutdown_timeout' });
       process.exit(1);
-    }, 10000);
+    }, 60000);
     watchdog.unref();
     try {
-      try {
-        await gateway?.stop();
-      } finally {
-        await stopBroker?.();
-      }
+      await stopBotResources([
+        async () => stopCommands?.(),
+        async () => gateway?.stop(),
+        async () => stopBroker?.(),
+      ]);
     } catch {
       log({ service: 'bot', event: 'bot_shutdown_failed' });
       process.exitCode = 1;

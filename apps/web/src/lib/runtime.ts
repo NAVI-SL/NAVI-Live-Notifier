@@ -6,6 +6,8 @@ import {
   createStreamerRepository,
   createNotificationRepository,
   schema,
+  createCommandRepository,
+  createCommandAdmission,
 } from '@navi/database';
 import { loadRootEnvironment, readAuthEnvironment, readStreamerEnvironment } from '@navi/config';
 import { createNaviAuth } from './auth-factory';
@@ -17,6 +19,7 @@ import { createStreamerService } from './streamer-service';
 import { createNotificationBroker } from './notification-broker';
 import { createNotificationService } from './notification-service';
 import { AppError } from './errors';
+import { CommandError, readCommandTargets } from '@navi/core';
 
 let runtime: ReturnType<typeof createRuntime> | undefined;
 // React memoization ends with this RSC request; never reuse permission grants across requests.
@@ -30,6 +33,13 @@ function createRuntime() {
     drizzleAdapter(database.db, { provider: 'pg', schema }),
     recovery,
   );
+  const commandRepository =
+    environment.BOT_COMMAND_TRANSPORT === 'postgres'
+      ? createCommandRepository(database.db, {
+          allowedUsers: environment.DISCORD_ALLOWED_USER_IDS,
+          allowedGuilds: environment.BETA_GUILD_IDS!,
+        })
+      : undefined;
   const guilds = createGuildService({
     auth,
     allowedUsers: environment.DISCORD_ALLOWED_USER_IDS,
@@ -37,7 +47,14 @@ function createRuntime() {
     clientId: environment.DISCORD_CLIENT_ID,
     origin: environment.WEB_ORIGIN,
     fetchGuilds: (token, options) => (options?.fresh ? freshGuilds(token) : discordGuilds(token)),
-    installationStatus: (id) => botInstallationStatus(id, environment),
+    installationStatus: async (id) => {
+      if (!commandRepository) return botInstallationStatus(id, environment);
+      const snapshot = (await commandRepository.snapshot(id, 'guild_status.refresh')) as {
+        status: 'installed' | 'not_installed';
+      } | null;
+      return snapshot?.status ?? 'unknown';
+    },
+    commandMode: Boolean(commandRepository),
     accessToken: (headers, accountId) =>
       recovery.run(() =>
         database.withAccountLock(accountId, async () => {
@@ -46,6 +63,14 @@ function createRuntime() {
         }),
       ),
   });
+  const commands = commandRepository
+    ? createCommandAdmission({
+        repository: commandRepository,
+        origin: environment.WEB_ORIGIN,
+        session: (headers) => auth.api.getSession({ headers, query: { disableCookieCache: true } }),
+        authorize: (headers, guild) => guilds.authorize(headers, guild),
+      })
+    : undefined;
   const streamerEnvironment = readStreamerEnvironment(loadRootEnvironment('web'));
   const providers = createStreamerProviders(streamerEnvironment);
   const streamers = createStreamerService({
@@ -61,7 +86,21 @@ function createRuntime() {
   const notifications = createNotificationService({
     guilds,
     repository: createNotificationRepository(database.db),
-    broker: createNotificationBroker(environment),
+    broker: commandRepository
+      ? {
+          targets: async (guildId) => {
+            const snapshot = await commandRepository.snapshot(
+              guildId,
+              'notification_targets.refresh',
+            );
+            if (!snapshot) throw new CommandError('command_unavailable');
+            return readCommandTargets(snapshot);
+          },
+          sendTest: async () => {
+            throw new CommandError('command_unavailable');
+          },
+        }
+      : createNotificationBroker(environment),
   });
   async function authDatabaseReady() {
     try {
@@ -73,7 +112,7 @@ function createRuntime() {
       throw new AppError(503, 'authentication_database');
     }
   }
-  return { auth, guilds, streamers, notifications, environment, authDatabaseReady };
+  return { auth, guilds, streamers, notifications, commands, environment, authDatabaseReady };
 }
 // Configuration/DB are evaluated only for auth requests, not at static build time.
 export function getRuntime() {

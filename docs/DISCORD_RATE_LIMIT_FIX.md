@@ -44,7 +44,7 @@ Automated tests simulate Discord responses; they are not real rate-limit or mess
 
 Additional security check: `npx tsx scripts/check-client-secrets.ts` PASS, 19 client assets and 12 configured candidate fields, no exact secret matches. This is a bounded exact-value scan, not proof against every possible leak.
 
-Browser evidence: [recovered Notifications screenshot](evidence/discord-rate-fixed.png), showing the selected destination and bot installation status without the rate-limit warning.
+Browser evidence: [recovered Notifications screenshot (private image omitted: discord-rate-fixed.png)](evidence/UPLOAD_PRIVACY_NOTE.md), showing the selected destination and bot installation status without the rate-limit warning.
 
 ## Changed files and operational limits
 

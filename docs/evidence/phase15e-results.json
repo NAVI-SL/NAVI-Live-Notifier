@@ -1,0 +1,276 @@
+{
+  "date": "2026-10-25",
+  "phase": "15E",
+  "environment": {
+    "platform": "Windows local",
+    "npm": "11.15.0",
+    "node": "v25.3.0"
+  },
+  "checks": {
+    "productionBuild": {
+      "status": "PASS",
+      "exitCode": 0,
+      "deployed": false
+    },
+    "fullCheck": {
+      "status": "PASS",
+      "exitCode": 0,
+      "tests": 509,
+      "vitestSeconds": 10.56,
+      "files": 42
+    },
+    "postgresIntegration": {
+      "exitCode": 0,
+      "scenarios": [
+        {
+          "scenario": "Exact migrations, unique/index constraints and restricted service identities",
+          "status": "PASS",
+          "milliseconds": 102
+        },
+        {
+          "scenario": "Dashboard handler → physical PostgreSQL → bot → acknowledgment → dashboard poll",
+          "status": "PASS",
+          "milliseconds": 92
+        },
+        {
+          "scenario": "Real loopback HTTP command admission and status (synthetic identity and Discord)",
+          "status": "PASS",
+          "milliseconds": 76
+        },
+        {
+          "scenario": "Unauthenticated, unauthorized and cross-guild results are rejected",
+          "status": "PASS",
+          "milliseconds": 32
+        },
+        {
+          "scenario": "Strict allowlist, hostile payloads and CSRF cannot enter queue",
+          "status": "PASS",
+          "milliseconds": 21
+        },
+        {
+          "scenario": "Concurrent duplicate submissions and processors execute one command",
+          "status": "PASS",
+          "milliseconds": 78
+        },
+        {
+          "scenario": "Execution-time permission revocation fails without settings change",
+          "status": "PASS",
+          "milliseconds": 52
+        },
+        {
+          "scenario": "Session revoked after admission cannot execute or poll protected results",
+          "status": "PASS",
+          "milliseconds": 48
+        },
+        {
+          "scenario": "Independent guild settings share source identity without destination leakage",
+          "status": "PASS",
+          "milliseconds": 75
+        },
+        {
+          "scenario": "Safe errors and logs omit synthetic secrets and command internals",
+          "status": "PASS",
+          "milliseconds": 46
+        },
+        {
+          "scenario": "Bot offline expiration and retained pending evidence",
+          "status": "PASS",
+          "milliseconds": 49
+        },
+        {
+          "scenario": "Crash before effect, lease recovery and stale acknowledgment fencing",
+          "status": "PASS",
+          "milliseconds": 55
+        },
+        {
+          "scenario": "Physical PostgreSQL connection loss, transaction rollback and restoration",
+          "status": "PASS",
+          "milliseconds": 59
+        },
+        {
+          "scenario": "Immediate disabling invalidates older queued apply while backend offline",
+          "status": "PASS",
+          "milliseconds": 52
+        },
+        {
+          "scenario": "Atomic settings/ack rollback when commit path is interrupted",
+          "status": "PASS",
+          "milliseconds": 50
+        },
+        {
+          "scenario": "Rate limits defer safely and oversized Retry-After expires without an early retry",
+          "status": "PASS",
+          "milliseconds": 62
+        },
+        {
+          "scenario": "Ambiguous external send stays uncertain and a late receipt never authorizes retry",
+          "status": "PASS",
+          "milliseconds": 68
+        },
+        {
+          "scenario": "Simulated successful test receipt is durable and replay does not send twice",
+          "status": "PASS",
+          "milliseconds": 87
+        },
+        {
+          "scenario": "Legacy pruning preserves unresolved and command-linked test records",
+          "status": "PASS",
+          "milliseconds": 41
+        },
+        {
+          "scenario": "Rollback admission pause retains status access, queued evidence and direct disabling",
+          "status": "PASS",
+          "milliseconds": 36
+        },
+        {
+          "scenario": "Actual opt-in command loop startup and graceful stop with synthetic Discord only",
+          "status": "PASS",
+          "milliseconds": 76
+        },
+        {
+          "scenario": "Measured local command overhead and retention size (synthetic metadata)",
+          "status": "PASS",
+          "milliseconds": 1151
+        },
+        {
+          "scenario": "Owned command process SIGKILL and restart (unstarted work recovered)",
+          "status": "PASS",
+          "milliseconds": 630
+        },
+        {
+          "scenario": "Owned command process SIGKILL and restart (marked effect quarantined)",
+          "status": "PASS",
+          "milliseconds": 591
+        },
+        {
+          "scenario": "Existing SQL regression: scripts/check-command-queue.ts (isolated database only)",
+          "status": "PASS",
+          "milliseconds": 734
+        },
+        {
+          "scenario": "Existing SQL regression: scripts/check-reliability.ts (isolated database only)",
+          "status": "PASS",
+          "milliseconds": 887
+        }
+      ],
+      "scenarioCount": 26,
+      "boundary": "Physical local PostgreSQL; exact migrations in a new database; effective NOLOGIN service roles via SET ROLE; synthetic session/Discord adapters, no real Discord or provider traffic.",
+      "metrics": {
+        "normalCommandTableBefore": false,
+        "completedAckBytes": 329,
+        "sampleCommands": 50,
+        "p50Milliseconds": "REDACTED_DISCORD_ID",
+        "p95Milliseconds": "REDACTED_DISCORD_ID",
+        "idleStatementsPerStep": 6,
+        "estimatedIdleStatementsPer30Days": 5184000,
+        "sqlStatementsThroughDrizzle": 2185,
+        "rssBeforeBytes": 163291136,
+        "rssAfterBytes": 206671872,
+        "retention": {
+          "command_bytes": "163840",
+          "attempt_bytes": "32768",
+          "average_row_bytes": 484
+        },
+        "poolMaximums": {
+          "web": 3,
+          "bot": 3,
+          "owner": 2,
+          "admin": 1
+        },
+        "normalCommandTableAfter": false
+      },
+      "status": "PASS"
+    },
+    "productionDependencyAudit": {
+      "status": "PASS",
+      "exitCode": 0,
+      "vulnerabilities": 0
+    },
+    "redis": {
+      "boundary": "Local Redis TCP only. No Upstash connection, TLS endpoint, REST API or application Redis queue is verified.",
+      "status": "PASS",
+      "exitCode": 0,
+      "probes": [
+        {
+          "scenario": "Native TCP/RESP2 connection and PING",
+          "status": "PASS"
+        },
+        {
+          "scenario": "Cache SET NX EX, GET and bounded TTL",
+          "status": "PASS"
+        },
+        {
+          "scenario": "MULTI/EXEC transaction compatibility",
+          "status": "PASS"
+        },
+        {
+          "scenario": "Native Pub/Sub across independent connections",
+          "status": "PASS"
+        },
+        {
+          "scenario": "List queue LPUSH/BRPOP with pre-existing test item",
+          "status": "PASS"
+        }
+      ]
+    },
+    "proxy": {
+      "status": "PASS",
+      "exitCode": 0,
+      "cleanup": true,
+      "isolated": true,
+      "checks": 14
+    },
+    "fullDependencyAudit": {
+      "status": "PASS",
+      "exitCode": 0,
+      "vulnerabilities": 0
+    },
+    "redisConfigurationRedaction": {
+      "expectedNonzeroExit": true,
+      "syntheticInputRedacted": true,
+      "status": "PASS"
+    }
+  },
+  "offlineMemory": {
+    "gatewayConnected": false,
+    "workerSmokeDescriptorRssBytes": 38940672,
+    "fullBackendCapacityVerified": false,
+    "botClientConstructionRssBytes": 81981440,
+    "monitoringStarted": false
+  },
+  "finalState": {
+    "webPostgresModeConfigured": false,
+    "botConsumerConfigured": false,
+    "appListeners": 0,
+    "temporaryRoles": 0,
+    "temporaryDatabases": 0,
+    "normalQueueTablePresent": false,
+    "scratchSchemas": 0,
+    "redisFixtureKeys": 0
+  },
+  "unverified": [
+    "Real Discord OAuth, guild permission changes, installation and sends",
+    "Complete browser/Next.js deployed journey",
+    "Real YouTube/Kick livestream notifications",
+    "Neon/Upstash TLS and actual separate cloud logins",
+    "Full backend resource peak and continuous monitoring soak",
+    "External alert delivery and encrypted offsite disaster recovery"
+  ],
+  "decision": {
+    "localWorkflow": "PASS within controlled boundaries",
+    "nextPhaseStarted": false,
+    "currentFreeAlwaysOnHosting": "FAIL feasibility assessment",
+    "phase15F": "GO for separately approved preparation only",
+    "activationDeploymentPublicRelease": "NO-GO"
+  },
+  "safety": {
+    "normalMigrationApplied": false,
+    "applicationCodeChanged": false,
+    "realDiscordMessages": false,
+    "gitCommitOrPush": false,
+    "credentialsChanged": false,
+    "cloudDeployed": false,
+    "realEnvironmentChanged": false,
+    "liveMonitoringStarted": false
+  }
+}

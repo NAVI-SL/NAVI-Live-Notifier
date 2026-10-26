@@ -1,0 +1,176 @@
+{
+  "date": "2026-10-26",
+  "phase": 17,
+  "decision": {
+    "documentation": "PASS / ready for owner review",
+    "publicInstallation": "UNAVAILABLE",
+    "deploymentPublicRelease": "NO-GO"
+  },
+  "repository": {
+    "name": "NAVI-SL/NAVI-Live-Notifier",
+    "visibility": "private (read-only metadata verified)",
+    "branch": "feature/phase-15-cloud-architecture",
+    "head": "a6fec23397d7b00f65725ecfaccb0db550044ec5",
+    "main": "69c75f4b6d723067349534ab6bfaea92196f0cfb",
+    "stagedFiles": 0,
+    "newCommit": false,
+    "push": false,
+    "mainModified": false
+  },
+  "verification": {
+    "documentation": {
+      "date": "2026-10-26",
+      "markdownFiles": 102,
+      "relativeLinks": 462,
+      "newGuideRelativeLinks": 72,
+      "newGuideBroken": [],
+      "historicalBroken": [],
+      "npmScriptReferences": 37,
+      "missingCommands": [],
+      "environmentReferences": 44,
+      "unknownEnvironment": [],
+      "publicInviteFiles": [],
+      "facts": {
+        "no_user_command_registration": true,
+        "login_scopes": true,
+        "installation_permissions": true,
+        "install_context": true,
+        "settings_informational": true,
+        "supported_template_variables": true,
+        "isolated_local_ports": true,
+        "monitoring_example_disabled": true,
+        "no_license_selected": true,
+        "public_installation_marked_unavailable": true,
+        "direct_health_script": true,
+        "only_documentation_changes": true,
+        "same_feature_head": true,
+        "no_staged_files": true
+      },
+      "liveChecks": false
+    },
+    "secrets": {
+      "date": "2026-10-26",
+      "sourceFiles": 369,
+      "clientAssets": 19,
+      "knownCredentialCandidates": 8,
+      "patternFamilies": 6,
+      "matches": 0,
+      "sensitiveFileNames": 0,
+      "stagedFiles": 0,
+      "ignoreCases": 15,
+      "ignoreCasesPassed": true,
+      "environmentAndIgnoreFilesChanged": false,
+      "safe": true,
+      "scope": "Bounded known-value and common-pattern scan; no values printed or stored; not a guarantee against unknown secrets."
+    },
+    "powershellSnippet": {
+      "executed": false,
+      "snippetFound": true,
+      "syntaxErrors": 0
+    },
+    "automated": {
+      "command": "npm run check",
+      "exitCode": 0,
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "formatting": "PASS",
+      "testFiles": 43,
+      "tests": 537,
+      "vitestSeconds": 23.23,
+      "externalServices": "simulated"
+    },
+    "exampleEnvironment": {
+      "command": "npm run env:check:example",
+      "exitCode": 0,
+      "servicesContacted": false
+    },
+    "security": {
+      "fullNpmAudit": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "productionNpmAudit": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      }
+    },
+    "relativeLinkRepairs": {
+      "links": 9,
+      "uniqueImages": 6,
+      "files": [
+        "docs/DISCORD_RATE_LIMIT_FIX.md",
+        "docs/EVERYONE_PERMISSION_REFRESH.md",
+        "docs/KICK_NOTIFICATION_EMBEDS.md",
+        "docs/NOTIFICATION_MENTIONS.md",
+        "docs/PHASE_09_FINAL_AUDIT.md",
+        "docs/PHASE_09_TEST_REPORT.md",
+        "docs/PHASE_10_AUDIT.md",
+        "docs/PHASE_11_FINAL_AUDIT.md",
+        "docs/WORKSPACE_LOADING_DEBUG.md"
+      ],
+      "privateImagesRestored": false,
+      "historicalFindingsChanged": false
+    }
+  },
+  "files": {
+    "modified": [
+      "README.md",
+      "docs/DISCORD_RATE_LIMIT_FIX.md",
+      "docs/EVERYONE_PERMISSION_REFRESH.md",
+      "docs/KICK_NOTIFICATION_EMBEDS.md",
+      "docs/NOTIFICATION_MENTIONS.md",
+      "docs/PHASE_09_FINAL_AUDIT.md",
+      "docs/PHASE_09_TEST_REPORT.md",
+      "docs/PHASE_10_AUDIT.md",
+      "docs/PHASE_11_FINAL_AUDIT.md",
+      "docs/WORKSPACE_LOADING_DEBUG.md",
+      "docs/evidence/UPLOAD_PRIVACY_NOTE.md"
+    ],
+    "new": [
+      "CONTRIBUTING.md",
+      "SECURITY.md",
+      "docs/COMMANDS.md",
+      "docs/CONFIGURATION.md",
+      "docs/INSTALLATION.md",
+      "docs/PHASE_17_DOCUMENTATION_REPORT.md",
+      "docs/SELF_HOSTING.md",
+      "docs/evidence/phase17-results.json"
+    ]
+  },
+  "preserved": {
+    "applicationCode": true,
+    "manifestsLockfile": true,
+    "migrations": true,
+    "environmentExamples": true,
+    "ignoreRules": true,
+    "realCredentials": true,
+    "privateScreenshotsOmitted": true,
+    "noLicenseSelected": true
+  },
+  "notExecuted": [
+    "application or monitoring startup",
+    "real OAuth or bot installation",
+    "real provider lookup or livestream broadcasts",
+    "Discord notifications or operational alerts",
+    "database migrations or cloud deployment",
+    "new production/container build or datastore integration (documentation-only phase)"
+  ],
+  "remainingPublicPrerequisites": [
+    "approved official installation entry point and public dashboard origin",
+    "owner approval and eligible Discord install settings",
+    "always-on hosting and verified capacity/quotas",
+    "TLS callbacks and platform subscription acceptance",
+    "fresh controlled OAuth/install/YouTube/Kick delivery and duplicate/recovery/soak evidence",
+    "external alerts and encrypted offsite restore",
+    "reviewed public policy/support/deletion details and license selection"
+  ],
+  "scope": "Documentation changes only. Setup/start snippets are instructions, not executed actions or new live integration evidence."
+}

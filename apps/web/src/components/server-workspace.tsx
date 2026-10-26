@@ -2,9 +2,11 @@ import { GuildIcon } from './guild-icon';
 import { installationLabel, sectionContent, type DashboardSection } from '../lib/dashboard-model';
 import type { InstallationStatus } from '../lib/discord';
 import type { ReactNode } from 'react';
+import { InstallationRefresh } from './installation-refresh';
 export type ServerWorkspaceData = {
   guild: { id: string; name: string; icon: string | null };
   status: InstallationStatus;
+  commandMode?: boolean;
 };
 export function InstallationBadge({ status }: { status: InstallationStatus }) {
   return (
@@ -60,12 +62,16 @@ export function ServerWorkspace({
               <button type="submit">Install NAVI</button>
             </form>
           )}
-          <a
-            className="button secondary"
-            href={`/dashboard/${guild.id}${section === 'overview' ? '' : `/${section}`}`}
-          >
-            Refresh status
-          </a>
+          {data.commandMode ? (
+            <InstallationRefresh guildId={guild.id} />
+          ) : (
+            <a
+              className="button secondary"
+              href={`/dashboard/${guild.id}${section === 'overview' ? '' : `/${section}`}`}
+            >
+              Refresh status
+            </a>
+          )}
         </div>
       </div>
       {children ??

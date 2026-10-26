@@ -37,3 +37,13 @@ secrets
 **/id_rsa*
 **/id_ed25519*
 **/*.log
+
+# Additional local credential names; never include in source uploads or image contexts.
+id_ecdsa*
+id_dsa*
+.pgpass
+.envrc
+**/id_ecdsa*
+**/id_dsa*
+**/.pgpass
+**/.envrc
