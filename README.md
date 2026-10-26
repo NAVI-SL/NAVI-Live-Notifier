@@ -2,13 +2,13 @@
 
 YouTube and Kick livestream alerts for Discord, managed through a server-specific web dashboard. NAVI combines a Next.js website, a Discord bot and an independent monitoring worker with persistent PostgreSQL delivery records.
 
-**Public installation is unavailable.** This repository is in controlled private-beta preparation. No approved public dashboard address or NAVI invite link is published here. Cloud deployment and hosted-bot production activation remain **NO-GO**. Independent MIT self-hosting source publication is a separate decision. See the [installation status and prerequisites](docs/INSTALLATION.md).
+**The source code is public under the MIT License; the maintainer-hosted NAVI bot is not publicly available.** The hosted service remains in controlled private-beta preparation. No approved public dashboard address or NAVI invite link is published here. Cloud deployment and hosted-bot production activation remain **NO-GO**. Independent MIT self-hosting source publication is a separate decision. See the [installation status and prerequisites](docs/INSTALLATION.md).
 
 ## Independent self-hosting and source distribution
 
-Public GitHub distribution is being reviewed separately from the hosted NAVI service. Each self-hoster supplies their own Discord application, bot/OAuth credentials, provider keys, allowlists, PostgreSQL data and hosting. There is no required NAVI operator account or maintainer-hosted backend. Approval language for test sends/monitoring means approval by the owner of that instance; this review does not enable those effects.
+This repository is publicly available under the MIT License, independently of the hosted NAVI service. Each self-hoster supplies their own Discord application, bot/OAuth credentials, provider keys, allowlists, PostgreSQL data and hosting. There is no required NAVI operator account or maintainer-hosted backend. Approval language for test sends/monitoring means approval by the owner of that instance; this review does not enable those effects.
 
-The repository remains private. In Phase 19 the owner explicitly accepted possible disclosure of existing commit-email metadata; history will be preserved. Merge and visibility changes still require separate approval. See [Phase 18 source-release readiness](docs/PHASE_18_PUBLIC_RELEASE_READINESS.md). Making source public would not make the centrally hosted NAVI bot available.
+The source-release changes have been merged into `main`, and the repository is public. See [Phase 19 source-release readiness](docs/PHASE_19_PUBLIC_RELEASE_READINESS.md) for the pre-publication verification record. Publishing the source does not make a centrally hosted NAVI bot available.
 
 ## Features and supported platforms
 
@@ -70,7 +70,7 @@ There are **no user-facing Discord slash or prefix commands**. Configuration is 
 
 ## Developer quick start
 
-While the repository is private, authorized readers can clone the default branch and verify it without platform credentials. The release-preparation branch/PR contains the reviewed MIT and self-hosting changes; they reach the default branch only after owner-approved merge:
+Anyone can clone the public default branch and run the non-sending verification commands below without platform credentials:
 
 ```sh
 git clone https://github.com/NAVI-SL/NAVI-Live-Notifier.git
@@ -105,14 +105,14 @@ Earlier phase reports are dated evidence, sometimes describing superseded functi
 
 Never upload real environment files, credentials, database exports, private keys, logs or generated build output. Use scoped server authorization, minimal Discord permissions, explicit safe mentions and private internal services. See [security reporting](SECURITY.md) and [contribution guidance](CONTRIBUTING.md).
 
-The owner selected the **MIT License**; see [LICENSE](LICENSE) for the complete standard terms. Copyright year: 2026. The copyright holder is NAVI-SL. License terms are complete; Git-history privacy review and publication approval remain separate release gates. Third-party packages, images and trademarks retain their own terms; see the [Phase 18 review](docs/PHASE_18_PUBLIC_RELEASE_READINESS.md).
+The owner selected the **MIT License**; see [LICENSE](LICENSE) for the complete standard terms. Copyright year: 2026. The copyright holder is NAVI-SL. License terms are complete; the owner accepted disclosure of existing Git commit email metadata before publication. Third-party packages, images and trademarks retain their own terms; see the [Phase 18 review](docs/PHASE_18_PUBLIC_RELEASE_READINESS.md).
 
 ## Source release verification
 
-See [Phase 19 source-release readiness](docs/PHASE_19_PUBLIC_RELEASE_READINESS.md) for current checks and remaining manual approvals. Earlier privacy-cleanup and encrypted-rehearsal plans are historical and canceled; they are not self-hosting prerequisites. Each instance owner supplies their own credentials and infrastructure. This source release does not enable a shared NAVI service, public Discord installation or automatic monitoring.
+See [Phase 19 source-release readiness](docs/PHASE_19_PUBLIC_RELEASE_READINESS.md) for the pre-publication verification record and remaining hosted-service limitations. Earlier privacy-cleanup and encrypted-rehearsal plans are historical and canceled; they are not self-hosting prerequisites. Each instance owner supplies their own credentials and infrastructure. This source release does not enable a shared NAVI service, public Discord installation or automatic monitoring.
 
 ## Current project status
 
-Phase 15 implementation was committed to the private feature branch in Phase 16B. Phase 16A independently recorded 537 automated tests, 27 disposable PostgreSQL scenarios, five Redis probes and production builds passing; full/production dependency audits reported zero findings at that time. These are dated local/simulated results, not public uptime or live-delivery receipts. The older four-moderate-advisory README statement is superseded by the reviewed lockfile and dated evidence.
+Phase 15 implementation was committed to a feature branch in Phase 16B and subsequently merged into `main`. Phase 16A independently recorded 537 automated tests, 27 disposable PostgreSQL scenarios, five Redis probes and production builds passing; full/production dependency audits reported zero findings at that time. These are dated local/simulated results, not public uptime or live-delivery receipts. The older four-moderate-advisory README statement is superseded by the reviewed lockfile and dated evidence.
 
-Phase 17 prepares documentation only. Public installation still needs approved hosting and HTTPS origins, verified callbacks, private-beta onboarding, fresh YouTube/Kick delivery evidence, operational alerts/restore/capacity validation, and reviewed policy/support/deletion details. No deployment, queue activation or public launch is authorized by this README.
+Phase 17 prepared documentation, and Phase 19 published the MIT-licensed source. Public installation still needs approved hosting and HTTPS origins, verified callbacks, private-beta onboarding, fresh YouTube/Kick delivery evidence, operational alerts/restore/capacity validation, and reviewed policy/support/deletion details. No deployment, queue activation or public launch is authorized by this README.
