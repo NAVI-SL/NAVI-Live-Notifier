@@ -1,6 +1,6 @@
 # Installing NAVI Live Notifier
 
-**Public installation is currently unavailable.** There is no approved public NAVI invite or hosted dashboard address in this guide. The project remains NO-GO for public release. The steps below explain the implemented workflow for approved testing and the intended hosted experience after the operator completes the release gates.
+**Public installation is currently unavailable.** There is no approved public NAVI invite or hosted dashboard address in this guide. The hosted NAVI service remains NO-GO; independent MIT source distribution is reviewed separately in [Phase 19](PHASE_19_PUBLIC_RELEASE_READINESS.md). The steps below explain the implemented workflow for approved testing and the intended hosted experience after the operator completes the release gates.
 
 Server owners using a future hosted service will not need API keys or a local database. Developers running their own instance need their own credentials and the [self-hosting guide](SELF_HOSTING.md).
 

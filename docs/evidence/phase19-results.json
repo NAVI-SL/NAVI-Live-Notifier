@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-26",
+  "timezone": "Asia/Colombo",
+  "phase": 19,
+  "branch": "release/phase-18-mit-self-hosting",
+  "baseMain": "8979360afac987803fd78cd02efa97b2985249ab",
+  "ownerAcceptedExistingEmailMetadata": true,
+  "historyRewritten": false,
+  "veraCryptSetup": false,
+  "applicationCodeChanged": false,
+  "dependencyOrMigrationChanges": false,
+  "verification": {
+    "source": "Fresh remote main clone plus explicit 15-file safe release overlay; no real environment",
+    "windows": {
+      "node": "v25.3.0",
+      "architecture": "x64",
+      "npm": "11.15.0"
+    },
+    "dependencyInstall": "PASS; 312 packages",
+    "safeExample": "PASS; no services contacted",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "format": "PASS",
+    "tests": {
+      "status": "PASS",
+      "files": 43,
+      "tests": 537,
+      "command": "npm run test -- --maxWorkers=1"
+    },
+    "productionBuild": "PASS; shared packages, Next.js, bot, worker",
+    "dependencyAudit": {
+      "full": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "production": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      }
+    },
+    "documentation": {
+      "markdownFiles": 106,
+      "relativeLinks": 484,
+      "brokenLinks": 0,
+      "npmScriptReferences": 45
+    },
+    "security": {
+      "candidateFiles": 376,
+      "knownCredentialCandidates": 8,
+      "patternFamilies": 6,
+      "reachableBlobs": 421,
+      "commitAndTagObjects": 7,
+      "credentialMatches": 0,
+      "baselineIgnoreProbes": 20,
+      "newPrivateArtifactIgnoreProbes": [
+        {
+          "file": "private.hc",
+          "pass": true
+        },
+        {
+          "file": "archive.bundle",
+          "pass": true
+        },
+        {
+          "file": "identity.private",
+          "pass": true
+        },
+        {
+          "file": "disk.vhd",
+          "pass": true
+        },
+        {
+          "file": "disk.vhdx",
+          "pass": true
+        }
+      ]
+    },
+    "license": {
+      "licenseTermsMatch": true,
+      "copyright": "2026 NAVI-SL",
+      "packages": 413,
+      "licenseCounts": {
+        "MIT": 307,
+        "MIT-0": 2,
+        "Apache-2.0": 45,
+        "LGPL-3.0-or-later": 10,
+        "Apache-2.0 AND LGPL-3.0-or-later AND MIT": 1,
+        "Apache-2.0 AND LGPL-3.0-or-later": 3,
+        "ISC": 15,
+        "CC-BY-4.0": 1,
+        "BSD-2-Clause": 9,
+        "BSD-3-Clause": 4,
+        "MPL-2.0": 12,
+        "BlueOak-1.0.0": 2,
+        "CC0-1.0": 1,
+        "0BSD": 1
+      },
+      "unknown": 0,
+      "sourceFiles": 376,
+      "historyBlobs": 421,
+      "metadataObjects": 7,
+      "credentialMatches": 0
+    },
+    "knownWarnings": [
+      "Two deprecated transitive esbuild-kit packages remain; npm audits report zero vulnerabilities."
+    ],
+    "stagedContentScan": {
+      "status": "PASS",
+      "stagedFiles": 15,
+      "generatedClientAssets": 19,
+      "credentialMatches": 0,
+      "sensitiveFileNames": 0,
+      "scope": "Actual staged Git blobs plus prospective source and fresh isolated generated client assets"
+    }
+  },
+  "limitations": [
+    "Bounded known-value/pattern scans cannot prove absence of all unknown secrets.",
+    "Existing personal commit-email disclosure accepted by owner; no raw personal addresses duplicated in reports.",
+    "Contact-like fixture strings and official GitHub noreply literals reviewed as expected synthetic/public values.",
+    "No real Discord/YouTube/Kick delivery, hosted availability, ARM64 or new PostgreSQL/Redis runtime integration verified in this phase.",
+    "No new cloud/production capacity, backup restoration or compliance certification claimed."
+  ],
+  "decision": "GO for reviewed MIT source publication after owner-approved merge/visibility action; hosted-service launch remains NO-GO",
+  "githubActions": {
+    "commitAndBranchPush": "Authorized only after staged checks",
+    "prTarget": "main",
+    "merge": "Not authorized",
+    "visibilityChange": "Not authorized",
+    "deployment": "Not authorized"
+  }
+}

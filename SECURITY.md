@@ -4,7 +4,7 @@ NAVI Live Notifier is controlled-beta source, not an approved public deployment.
 
 ## Report privately
 
-Use the existing approved private communication channel with the repository owner. If GitHub offers a private vulnerability-reporting action for this repository and the owner has enabled it, that is another private route; its availability has not been verified. Otherwise agree on a private channel before sending sensitive details.
+Use the existing approved private communication channel with the repository owner. If GitHub offers a private vulnerability-reporting action for this repository and the owner has enabled it, that is another private route; its availability has not been verified. Otherwise agree on a private channel before sending sensitive details. If you do not already have a private route, open an issue containing only a request for a private reporting channel; do not disclose the vulnerability there. The owner should establish/verify a private intake route before public operation.
 
 Do not open a public issue with exploit details, tokens, OAuth callbacks/codes, cookies, webhook signatures, user/server information or database contents. Start with a sanitized description, affected commit/component, impact and reproducible steps using synthetic data. Do not send secrets to demonstrate a leak.
 
@@ -18,6 +18,10 @@ If you suspect a credential exposure, privately notify the owner. Credential rev
 - Verified webhook signatures/capabilities, official API LIVE confirmation, bounded input/timeouts and rate-limit handling.
 - Persistent uniqueness, bounded claims/retries and quarantined uncertain external sends. Do not reset evidence or blindly retry an ambiguous send.
 - Private least-privilege database roles, protected migration-owner credentials, verified TLS where required and separately tested backups/restores.
+
+## Source-publication scope
+
+The owner accepted disclosure of existing commit-email metadata in Phase 19. This acceptance does not authorize publishing tokens, private user data or infrastructure credentials. History cleanup and VeraCrypt setup are canceled. The project MIT license does not replace third-party notices or certify hosted-service readiness.
 
 ## Secret handling and deployment gates
 

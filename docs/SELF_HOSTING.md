@@ -1,8 +1,10 @@
 # Developer self-hosting
 
-This guide is for an authorized developer running **their own** Discord application and provider credentials. It is different from [using a future hosted NAVI bot](INSTALLATION.md). Repository access is currently private. Public installation and the complete free/no-card continuous deployment remain **NO-GO**.
+This guide is for an authorized developer running **their own** Discord application and provider credentials. It is different from [using a future hosted NAVI bot](INSTALLATION.md). Repository access is currently private. Public installation of the hosted NAVI bot and the complete free/no-card continuous deployment remain **NO-GO**. Public source distribution has a separate [Phase 18 checklist](PHASE_18_PUBLIC_RELEASE_READINESS.md).
 
-Commands below are setup instructions for a separately approved environment. They were not executed to start real services or migrate an existing database during documentation preparation. Use fresh local data for first setup; back up/review any existing target before migrations. Do not delete volumes or reset delivery records to repair a failed setup.
+An independent self-hoster uses their own application/keys, user and guild allowlists, database, broker and host. No original developer account, private database, existing NAVI installation or central NAVI service is required. Test/monitoring approvals in this guide belong to the owner of that instance; they are not a maintainer registration requirement.
+
+Commands below are setup instructions for your own isolated environment. Phase 18 executed installation, datastore/migration and non-sending runtime checks using disposable infrastructure and synthetic credentials; completed Discord consent, real Gateway login and real livestream delivery remain unverified in this review. Use fresh local data for first setup; back up/review any existing target before migrations. Do not delete volumes or reset delivery records to repair a failed setup.
 
 ## 1. Requirements and source checkout
 
@@ -12,7 +14,7 @@ Commands below are setup instructions for a separately approved environment. The
 - Your own Discord developer application and approved test account/server/channel; your own Google Cloud YouTube API key and Kick application credentials for the providers you use.
 
 ```sh
-git clone --branch feature/phase-15-cloud-architecture https://github.com/NAVI-SL/NAVI-Live-Notifier.git
+git clone https://github.com/NAVI-SL/NAVI-Live-Notifier.git
 cd NAVI-Live-Notifier
 npm ci
 npm run env:check:example
@@ -56,12 +58,12 @@ The local HTTP broker URL must be `http://127.0.0.1:4001` (or the reviewed match
 
 ### Keep the optional command architecture inactive
 
-| Flag                            | Source default / instruction                                                                                               |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `BOT_COMMAND_TRANSPORT`         | `http`; keep it for this local baseline.                                                                                   |
-| `BOT_COMMANDS_ENABLED`          | `false`; keep the bot consumer disabled.                                                                                   |
-| `BOT_COMMAND_ADMISSION_ENABLED` | `true` by library default, inert in HTTP mode; cloud staging templates pause it. Do not infer consumer activation from it. |
-| `MONITORING_ENABLED`            | `false`; keep monitoring off until an isolated test and its external effects are explicitly approved.                      |
+| Flag                            | Source default / instruction                                                                                                                                               |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BOT_COMMAND_TRANSPORT`         | `http`; keep it for this local baseline.                                                                                                                                   |
+| `BOT_COMMANDS_ENABLED`          | `false`; keep the bot consumer disabled.                                                                                                                                   |
+| `BOT_COMMAND_ADMISSION_ENABLED` | `true` by library default, inert in HTTP mode; the root safe example and cloud staging templates explicitly pause it with false. Do not infer consumer activation from it. |
+| `MONITORING_ENABLED`            | `false`; keep monitoring off until an isolated test and its external effects are explicitly approved.                                                                      |
 
 No step here enables PostgreSQL command mode. Separately approved activation requires migration 0007, distinct least-privilege roles/direct PostgreSQL sessions, matching user/guild policy, private readiness and a reviewed pause/drain/rollback sequence. Follow the [cloud plan](PHASE_15F_CLOUD_DEPLOYMENT_PLAN.md) and [Phase 15D](PHASE_15D_IMPLEMENTATION.md), not an improvised flag flip.
 
@@ -180,3 +182,26 @@ Run `npm run check` and `npm run build` for local code validation. `npm run test
 Persistent volumes are not a backup. Arrange separately approved encrypted offsite backups, a tested restore, runtime least privilege, rate-limit/queue progress monitoring, external alerts and controlled live verification before deployment. Metadata retention/cleanup and data deletion require operator care; do not run pruning/deletion commands as generic health checks. See [operations](OPERATIONS_RUNBOOK.md), [rollback](ROLLBACK_PLAN.md), [deletion](DATA_DELETION_PROCESS.md) and [security](../SECURITY.md).
 
 This guide neither selects hosting nor changes DNS, billing, Portal settings, credentials, worker flags or public availability. Public release still needs the prerequisites in [INSTALLATION.md](INSTALLATION.md).
+
+## 9. Continuous operation and controlled activation
+
+The local dev command is for development and stops when its terminal closes. After reviewing the deployment prerequisites, use a host with continuous compute and a service manager/container restart policy for the compiled website, bot and worker as separate processes. See the [deployment guide](DEPLOYMENT_GUIDE.md) for production start wrappers, TLS, private broker networking, persistent volumes, least-privilege roles and backups. Do not publish the broker or database ports. Configure HTTPS origins and exact callbacks before external access. Free sleeping services cannot guarantee monitoring continuity.
+
+Before enabling monitoring on your own instance, register your own YouTube/Kick accounts through Streaming Channels, select a destination under Notifications, save a template/mention choice, and review every enabled subscription and old delivery record. Keep mentions off during initial tests. Enable the existing monitoring settings only when you, as instance owner, intend external API/webhook operations and sends. Verify one controlled live event per platform, inspect delivery/latency and deduplication, and exercise recovery before promising continuous service. The non-sending test results below do not prove these external operations.
+
+## 10. Platform, external-service and cost boundaries
+
+Phase 18 tests current main plus the local release-preparation candidate in a fresh Windows clone and Linux x64 containers. Exact versions, PASS/FAIL/BLOCKED outcomes and test limitations are in [the report](PHASE_18_PUBLIC_RELEASE_READINESS.md). Native macOS and a fresh ARM64 runtime are not certified by this review. Scaffold startup without credentials is not an authenticated Discord Gateway connection or a working monitoring service.
+
+| Dependency                | Self-hosting requirement / cost boundary                                                                                                                                                                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Node/npm and PostgreSQL   | Run locally or on your own approved host; no managed database subscription is required. Review third-party notices and actual hardware/storage/network cost.                                                                                                             |
+| Redis                     | Local Compose includes Redis 7 for tooling/legacy URI setup. There is no Redis runtime queue. Review the selected server-image version/license; a project license does not license third-party images.                                                                   |
+| Docker                    | Compose already simplifies the two local datastores. Docker Desktop subscription terms may require payment for some organizations; [review its terms](https://docs.docker.com/subscription/desktop-license/). Do not assume all commercial Desktop use is free.          |
+| Discord, YouTube and Kick | Supply your own eligible applications/API credentials and Internet access. API quotas, app approval and provider terms apply; no unlimited access or platform-cost guarantee is made.                                                                                    |
+| Public HTTPS/webhooks     | A reachable HTTPS endpoint is needed for approved inbound webhooks/public web access. Poll-only operation has quota/latency limits; it is not a promise of live-delivery coverage. Domains, hosting and backup storage can add costs.                                    |
+| Render, Neon and Upstash  | Optional hosting/data choices, not dependencies on the maintainer. The [cloud plan](PHASE_15F_CLOUD_DEPLOYMENT_PLAN.md) documents free-tier sleep/compute limits and direct PostgreSQL/native Redis TLS requirements. No 24/7 free-stack guarantee or purchase approval. |
+
+The current local Compose file starts only PostgreSQL/Redis. The production review file also needs separate service secrets, TLS, role/migration preparation and explicit monitoring approval. It is not a safe one-command first-run installer. Keep the two-datastore/native-process quick start for now; any future app-service Compose profile should leave monitoring off by default and keep migrations explicit rather than starting a send-capable worker automatically.
+
+For separate installations on one machine, use distinct Compose project names, database names/volumes, published ports and application ports. Give each installation its own Discord application, OAuth configuration, bot token and internal broker secret. Set each website origin and broker address to its own processes. Never share one bot token between independent installations. The Phase 18 isolation checks used separate databases and sequential synthetic OAuth configurations; simultaneous authenticated bots remain a manual test.

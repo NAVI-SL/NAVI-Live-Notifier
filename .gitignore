@@ -77,3 +77,10 @@ id_ecdsa*
 id_dsa*
 .pgpass
 .envrc
+
+# Private history archives and encrypted-container artifacts are never distribution inputs.
+*.hc
+*.bundle
+*.private
+*.vhd
+*.vhdx
